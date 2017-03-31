@@ -62,12 +62,12 @@ public class GameManager : MonoBehaviour {
 					floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 					break;
 				case 2:
-					Player = Instantiate(PlayerPrefab,new Vector3(x,0,z),Quaternion.Euler(15,180,0)) as GameObject;
+					Player = Instantiate(PlayerPrefab,new Vector3(x,-0.25f,z),Quaternion.Euler(15,180,0)) as GameObject;
 					(Player.GetComponent<Player>() as Player).GameManager = this;
 					floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 					break;
 				case 3:
-					GameObject e = EnemyFactory.CreateEnemy("Dummy",new Vector3(x,0,z)) as GameObject;
+					GameObject e = EnemyFactory.CreateEnemy("Dummy",new Vector3(x,-0.25f,z)) as GameObject;
 					enemies.Add(e);
 					Enemy enemy = (e.GetComponent<Enemy>() as Enemy);
 					(enemy.GetComponent<Enemy>() as Enemy).GameManager = this;
