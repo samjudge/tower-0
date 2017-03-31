@@ -7,6 +7,9 @@ public abstract class Enemy : Unit {
 
 	public void Start(){
 		StartCoroutine(HPWatcher());
+		this.ActionsManager = new ActionsManager();
+		this.StatusManager = new StatusManager();
+		this.SkillManager = new SkillManager(this);
 		this.ActionsManager.AddGameAction("PhysicalHit",new GameActionMeleeHit(this,this));
 	}
 

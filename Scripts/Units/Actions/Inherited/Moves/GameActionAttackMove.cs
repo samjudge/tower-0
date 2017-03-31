@@ -27,13 +27,16 @@ public class GameActionAttackMove : GameAction {
 					Physics.Linecast(p.transform.position,this.target,out hit,enemyLayerMask);
 					if(hit.transform != null){
 						Enemy e = hit.transform.gameObject.GetComponent<Enemy>() as Enemy;
-						GameActionMeleeHit a = e.ActionsManager.GetGameAction("PhysicalHit") as GameActionMeleeHit;
-						a.attacker = p;
-						a.target = e;
-						a.action();
-						Debug.DrawLine(p.transform.position, this.target,Color.red,1f);
-						p.IsCurrentlyMoving = true;
-						p.StartCoroutine(Attack());
+						GameAction a = e.ActionsManager.GetGameAction("PhysicalHit") as GameAction;
+						if(a != null){
+							Debug.Log (a.GetType());
+							//a.attacker = p;
+							//a.target = e;
+							a.action();
+							Debug.DrawLine(p.transform.position, this.target,Color.red,1f);
+							p.IsCurrentlyMoving = true;
+							p.StartCoroutine(Attack());
+						}
 					} else {
 						Debug.DrawLine(p.transform.position, this.target,Color.green,1f);
 						p.IsCurrentlyMoving = true;

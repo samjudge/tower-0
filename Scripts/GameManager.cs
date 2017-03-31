@@ -64,9 +64,6 @@ public class GameManager : MonoBehaviour {
 				case 2:
 					Player = Instantiate(PlayerPrefab,new Vector3(x,0,z),Quaternion.Euler(15,180,0)) as GameObject;
 					(Player.GetComponent<Player>() as Player).GameManager = this;
-					(Player.GetComponent<Player>() as Player).StatusManager = new StatusManager();
-					(Player.GetComponent<Player>() as Player).ActionsManager = new ActionsManager();
-					(Player.GetComponent<Player>() as Player).SkillManager = new SkillManager(Player.GetComponent<Player>() as Unit);
 					floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 					break;
 				case 3:

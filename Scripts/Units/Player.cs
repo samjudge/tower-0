@@ -18,6 +18,9 @@ public class Player : Unit {
 
 	public void Start(){
 		IsCurrentlyMoving = false;
+		this.ActionsManager = new ActionsManager();
+		this.StatusManager = new StatusManager();
+		this.SkillManager = new SkillManager(this);
 		ActionsManager.AddGameAction(
 			"Up",
 		    new GameActionAttackMove(this,0,1)

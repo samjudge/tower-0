@@ -19,9 +19,6 @@ public class DummyEnemy : Enemy {
 	
 	public void Start(){
 		base.Start();
-		this.ActionsManager = new ActionsManager();
-		this.StatusManager = new StatusManager();
-		this.SkillManager = new SkillManager(this);
 		this.CastTarget = new Vector3(0f,0f,0f);
 		ActionsManager.AddGameAction("Cast", new GameActionCastSkillByNameToPointTarget("Heal",this as Unit));
 	}
