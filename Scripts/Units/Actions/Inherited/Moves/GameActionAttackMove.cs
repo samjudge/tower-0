@@ -29,7 +29,6 @@ public class GameActionAttackMove : GameAction {
 						Enemy e = hit.transform.gameObject.GetComponent<Enemy>() as Enemy;
 						GameAction a = e.ActionsManager.GetGameAction("PhysicalHit") as GameAction;
 						if(a != null){
-							Debug.Log (a.GetType());
 							//a.attacker = p;
 							//a.target = e;
 							a.action();
@@ -64,7 +63,6 @@ public class GameActionAttackMove : GameAction {
 		this.target = origin;
 		origin = new Vector3(p.transform.position.x,p.transform.position.y,p.transform.position.z);
 		distance = (p.transform.position - target).sqrMagnitude;
-		Debug.Log(distance);
 		y = 0;
 		while(distance > Vector3.kEpsilon){
 			distance =

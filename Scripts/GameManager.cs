@@ -45,6 +45,9 @@ public class GameManager : MonoBehaviour {
 
 	void Start () {
 		Debug.Log("Hi!");
+		DungeonGenerator dg = new DungeonGenerator();
+		Debug.Log(dg.m.LogTiles());
+
 		Canvas.overrideSorting = true;
 
 		walls = new ArrayList();

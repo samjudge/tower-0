@@ -23,8 +23,6 @@ public class ActionsManager {
 	}
 
 	public GameAction GetGameAction(String name){
-		Debug.Log(this.actions.Count);
-		Debug.Log(this.actions[name]);
 		if(actions.ContainsKey(name)){
 			return this.actions[name];
 		} else {
