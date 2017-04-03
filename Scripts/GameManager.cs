@@ -3,7 +3,9 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class GameManager : MonoBehaviour {
-	
+
+	public static GameManager instance;
+
 	public FloorFactory FloorFactory;
 	public WallFactory WallFactory;
 	public GUIImageFactory GuiFactory;
@@ -44,9 +46,10 @@ public class GameManager : MonoBehaviour {
 	ArrayList enemies {get;set;}
 
 	void Start () {
+		instance = this;
 		Debug.Log("Hi!");
 		DungeonGenerator dg = new DungeonGenerator();
-		Debug.Log(dg.m.LogTiles());
+
 
 		Canvas.overrideSorting = true;
 

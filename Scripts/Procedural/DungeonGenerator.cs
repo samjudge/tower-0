@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using System.Diagnostics;
+
 public class DungeonGenerator {
 
 	public class Tile {
@@ -18,47 +18,23 @@ public class DungeonGenerator {
 	}
 
 	public class Digger {
-		public Digger(float x, float y, float z, Map m){
-			this.x = x;
-			this.y = y;
-			this.z = z;
+
+		
+		public float planar_accelerationX = 0;
+		public float planar_accelerationY = 1;
+		
+		public float bias = 0.5f; //where 1 is always follow planar acceleration, and 0 is always mutate acceleration value
+		
+		ArrayList history;
+		ArrayList open;
+		Map m;
+
+		public Digger(Map m){
 			this.history = new ArrayList();
 			this.open = new ArrayList();
-			Position p = new Position(x,z);
-			this.open.Add(p);
-			carveAndOpen((int)this.x,(int)this.z,m);
-		}
-
-
-		private void openNodesAround(Position parent, float x, float y){
-			if(canOpenNode(x-1,y)) {
-				Position p = new Position();
-				p.x = x-1;
-				p.y = y;
-				p.parent = parent;
-				this.open.Add(p);
-			}
-			if(canOpenNode(x-1,y)) {
-				Position p = new Position();
-				p.x = x+1;
-				p.y = y;
-				p.parent = parent;
-				this.open.Add(p);
-			}
-			if(canOpenNode(x-1,y)) {
-				Position p = new Position();
-				p.x = x;
-				p.y = y-1;
-				p.parent = parent;
-				this.open.Add(p);
-			}
-			if(canOpenNode(x-1,y)) {
-				Position p = new Position();
-				p.x = x;
-				p.y = y+1;
-				p.parent = parent;
-				this.open.Add(p);
-			}
+			this.m = m;
+			this.activePosition = new Position(10,10);
+			GameManager.instance.StartCoroutine(Dig());
 		}
 
 		private int indexOfNode(float x,float y){
@@ -81,15 +57,6 @@ public class DungeonGenerator {
 			return -1;
 		}
 
-		private bool canOpenNode(float x, float z){
-			if(indexOfCarved(x-1,y) == -1
-			   && indexOfCarved(x+1,y) == -1
-			   && indexOfCarved(x,y-1) == -1
-			   && indexOfCarved(x,y+1) == -1){
-				return true;
-			}
-			return false;
-		}
 
 		public class Position {
 			public float x = 0;
@@ -102,81 +69,147 @@ public class DungeonGenerator {
 				this.y = y;
 			}
 
+			public Position Clone(){
+				Position p = new Position();
+				p.x = x;
+				p.y = y;
+				p.parent = parent;
+				return p;
+			}
+
 			public Position parent = null;
 		}
 
-		public float x = 0;
-		public float y = 0;
-		public float z = 0;
+		public Position activePosition;
 
-		public float planar_accelerationX = 1;
-		public float planar_accelerationZ = 0;
-
-		public float bias = 0.85f; //where 1 is always follow planar acceleration, and 0 is always mutate acceleration value
-
-		ArrayList history;
-		ArrayList open;
-
-		public void Dig(Map m){
-			while(this.open.Count > 0){
+		public IEnumerator Dig(){
+			foreach(Tile t in m.tiles){
+				this.open.Add (new Position(t.x,t.z));
+			}
+			while(open.Count > 0){
+				Debug.Log(open.Count);
+				Debug.Log(m.LogTiles());
 				System.Random r = new System.Random();
-			  float roll = ((float)r.Next(0,100))/100f;
-				if(roll > bias){
+				float roll = (float)(r.Next(0,100))/100f;
+				if(roll >= 0.7){
 					if(planar_accelerationX != 0){
-						planar_accelerationX = 0;
-						int changeTo = (r.Next(0,2) - 1);
-						while(changeTo == 0){
-							changeTo = (r.Next(0,2) - 1);
-						}
-						planar_accelerationZ = changeTo;
-					} else if(planar_accelerationZ != 0){
-						planar_accelerationZ = 0;
-						int changeTo = (r.Next(0,2) - 1);
-						while(changeTo == 0){
-							changeTo = (r.Next(0,2) - 1);
-						}
-						planar_accelerationX = changeTo;
-					}
-				}
-				float tX = this.x + planar_accelerationX;
-				float tY = this.z + planar_accelerationZ;
-				if(this.canOpenNode(tX,tY)){
-					carveAndOpen((int)tX,(int)tY,m);
-					this.x += planar_accelerationX;
-					this.z += planar_accelerationZ;
-				} else {
-					for(int i = this.open.Count -1 ; i > -1 ; i--){
-						Position p = this.open[i] as Position;
-						if(this.canOpenNode(p.x,p.y)){
-							carveAndOpen((int)p.x,(int)p.y,m);
-							this.x = p.x;
-							this.z = p.y;
-							this.planar_accelerationX = -(this.x - p.parent.x);
-							this.planar_accelerationZ = -(this.z - p.parent.y);
-							break;
+						float ro = r.Next(0,1);
+						this.planar_accelerationX = 0;
+						if(ro == 0){
+							this.planar_accelerationY = 1;
 						} else {
-							this.open.RemoveAt(i);
+							this.planar_accelerationY = -1;
+						}
+					} else if(planar_accelerationY != 0){
+						float ro = r.Next(0,1);
+						this.planar_accelerationY = 0;
+						if(ro == 0){
+							this.planar_accelerationX = 1;
+						} else {
+							this.planar_accelerationX = -1;
 						}
 					}
 				}
+				float x = this.activePosition.x+planar_accelerationX;
+				float y = this.activePosition.y+planar_accelerationY;
+				Debug.Log("Resolving");
+
+				if(indexOfNode(x,y) == -1  || !canCarve(x,y)){
+					//node does not exist in open, so use another open tile
+					Debug.Log("Other");
+					if(indexOfNode(x,y) != -1){
+						Position openPosition = this.open[indexOfNode(x,y)] as Position;
+						this.open.Remove(openPosition);
+					}
+					while(activePosition.parent != null){
+						Debug.Log("finding open...");
+						bool carved = false;
+						for(int aX = -1 ; aX <= 1; aX++){
+							for(int aY = -1 ; aY <= 1; aY++){
+								if(aX == 0 || aY == 0 && !(aX == 0 && aY == 0)){
+									if(canCarve(activePosition.x+aX,activePosition.y+aY)){
+										Debug.Log("found");
+										carve(activePosition.x+aX,activePosition.y+aY);
+										carved = true;
+									} else {
+										if(indexOfNode(activePosition.x+aX,activePosition.y+aY) != -1){
+											this.open.Remove(indexOfNode(activePosition.x+aX,activePosition.y+aY));
+										}
+									}
+								}
+								if (carved) break;
+							}
+							if (carved) break;
+						}
+						if (carved) break;
+						this.activePosition = this.activePosition.parent;
+					}
+
+				} else if(indexOfNode(x,y) != -1){
+					//preferred
+					Debug.Log("Carving Preferred");
+					carve(x,y);
+				} 
+
+
+
+				yield return null;
 			}
 		}
 
-		private void carveAndOpen(int x, int y, Map m){
-			Position historic = new Position(x,y);
-			if(x > -1 && y > -1 && x < m.width+1 && y < m.height+1){
-				int i = this.indexOfNode(x,y);
-				if(i != -1){
-					Tile t = m.GetTile(x,y);
-					carve(t);
-					this.openNodesAround(historic,historic.x,historic.y);
-					this.open.RemoveAt(this.indexOfNode(x,y));
+		private bool canCarve(float x, float y){
+			indexOfCarved(x,y);
+			if(indexOfNode(x,y) == -1){
+				return false;
+			}
+			if (y >= 1 && y < m.height-1 && x >= 1 && x < m.width-1){
+				int neighborCount = 0;
+				if(indexOfCarved(x-1,y) != -1){
+					neighborCount++;
+				}
+				if(indexOfCarved(x-1,y-1) != -1){
+					neighborCount++;
+				}
+				if(indexOfCarved(x-1,y+1) != -1){
+					neighborCount++;
+				}
+				if(indexOfCarved(x,y-1) != -1){
+					neighborCount++;
+				}
+				if(indexOfCarved(x,y+1) != -1){
+					neighborCount++;
+				}
+				if(indexOfCarved(x+1,y) != -1){
+					neighborCount++;
+				}
+				if(indexOfCarved(x+1,y-1) != -1){
+					neighborCount++;
+				}
+				if(indexOfCarved(x+1,y+1) != -1){
+					neighborCount++;
+				}
+				Debug.Log(neighborCount);
+				if(neighborCount <= 3){
+					return true;
 				}
 			}
-			this.history.Add(historic);
+			return false;
+		}
+
+		private void carve(float x, float y){
+			Position openPosition = this.open[indexOfNode(x,y)] as Position;
+			Tile t = m.GetTile((int)x,(int)y);
+			carveTile(t);
+			Debug.Log (openPosition.x);
+			Debug.Log (openPosition.y);
+			this.history.Add(openPosition);
+			this.open.Remove(openPosition);
+			openPosition.parent = this.activePosition;
+			this.activePosition = openPosition;
+
 		}
 		
-		private void carve(Tile t){
+		private void carveTile(Tile t){
 			t.tag = "Stonefloor";
 		}
 	}
@@ -185,7 +218,7 @@ public class DungeonGenerator {
 		public int width = 25;
 		public int height = 25;
 
-		private ArrayList tiles;
+		public ArrayList tiles;
 
 		public Map(){
 			this.tiles = new ArrayList();
@@ -219,13 +252,13 @@ public class DungeonGenerator {
 				}
 				switch(t.tag){
 				case "Blackwall":
-					s += "#";
+					s += "/";
 					break;
 				case "Stonefloor" :
-					s += i%10;
+					s += "\\";
 					break;
 				default :
-					s += "1";
+					s += "#";
 					break;
 				}
 			}
@@ -238,7 +271,7 @@ public class DungeonGenerator {
 
 	public DungeonGenerator () {
 		this.m = new Map();
-		Digger d = new Digger(10,0,10, this.m);
-		d.Dig(this.m);
+		Digger d = new Digger(this.m);
+		d.Dig();
 	}
 }
