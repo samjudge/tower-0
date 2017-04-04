@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DungeonGenerator {
 
+	public static bool hasLoaded = false;
+
 	public class Tile {
 		public Tile(float x, float y, float z){
 			this.x = x;
@@ -19,7 +21,6 @@ public class DungeonGenerator {
 
 	public class Digger {
 
-		
 		public float planar_accelerationX = 0;
 		public float planar_accelerationY = 1;
 		
@@ -84,14 +85,16 @@ public class DungeonGenerator {
 
 		public IEnumerator Dig(){
 			foreach(Tile t in m.tiles){
-				this.open.Add (new Position(t.x,t.z));
+				if(t.x > 0 && t.x < m.width && t.z > 0 && t.z < m.height){
+					this.open.Add (new Position(t.x,t.z));
+				}
 			}
-			while(open.Count > 0){
+			while(open.Count > 32){
 				Debug.Log(open.Count);
 				Debug.Log(m.LogTiles());
 				System.Random r = new System.Random();
 				float roll = (float)(r.Next(0,100))/100f;
-				if(roll >= 0.7){
+				if(roll >= 0.5){
 					if(planar_accelerationX != 0){
 						float ro = r.Next(0,1);
 						this.planar_accelerationX = 0;
@@ -114,13 +117,9 @@ public class DungeonGenerator {
 				float y = this.activePosition.y+planar_accelerationY;
 				Debug.Log("Resolving");
 
-				if(indexOfNode(x,y) == -1  || !canCarve(x,y)){
+				if(!canCarve(x,y)){
 					//node does not exist in open, so use another open tile
 					Debug.Log("Other");
-					if(indexOfNode(x,y) != -1){
-						Position openPosition = this.open[indexOfNode(x,y)] as Position;
-						this.open.Remove(openPosition);
-					}
 					while(activePosition.parent != null){
 						Debug.Log("finding open...");
 						bool carved = false;
@@ -133,7 +132,7 @@ public class DungeonGenerator {
 										carved = true;
 									} else {
 										if(indexOfNode(activePosition.x+aX,activePosition.y+aY) != -1){
-											this.open.Remove(indexOfNode(activePosition.x+aX,activePosition.y+aY));
+											this.open.RemoveAt(indexOfNode(activePosition.x+aX,activePosition.y+aY));
 										}
 									}
 								}
@@ -144,17 +143,21 @@ public class DungeonGenerator {
 						if (carved) break;
 						this.activePosition = this.activePosition.parent;
 					}
-
 				} else if(indexOfNode(x,y) != -1){
 					//preferred
 					Debug.Log("Carving Preferred");
 					carve(x,y);
-				} 
-
-
-
+				} else {
+					Position openPosition = this.open[indexOfNode(activePosition.x,activePosition.y)] as Position;
+					this.open.Remove(openPosition);
+				}
+				//Position op = this.open[indexOfNode(activePosition.x,activePosition.y)] as Position;
+				//this.open.Remove(op);
 				yield return null;
 			}
+			hasLoaded = true;
+			Tile tile = m.GetTile(10,10);
+			tile.tag = "Player";
 		}
 
 		private bool canCarve(float x, float y){
@@ -199,14 +202,15 @@ public class DungeonGenerator {
 		private void carve(float x, float y){
 			Position openPosition = this.open[indexOfNode(x,y)] as Position;
 			Tile t = m.GetTile((int)x,(int)y);
-			carveTile(t);
-			Debug.Log (openPosition.x);
-			Debug.Log (openPosition.y);
+			if(x == 10 && y == 10){
+				t.tag = "Player";
+			} else {
+				carveTile(t);
+			}
 			this.history.Add(openPosition);
 			this.open.Remove(openPosition);
 			openPosition.parent = this.activePosition;
 			this.activePosition = openPosition;
-
 		}
 		
 		private void carveTile(Tile t){
@@ -272,6 +276,5 @@ public class DungeonGenerator {
 	public DungeonGenerator () {
 		this.m = new Map();
 		Digger d = new Digger(this.m);
-		d.Dig();
 	}
 }

@@ -25,54 +25,39 @@ public class GameManager : MonoBehaviour {
 	//0 = wall
 	//1 = floor
 	//2 = player + floor
-	int[] map = {
-		0,0,0,0,0,0,0,0,0,0,
-		0,1,1,1,1,1,0,1,0,0,
-		0,1,2,1,1,3,0,1,0,0,
-		0,1,1,3,1,1,1,1,3,0,
-		0,1,1,1,1,1,0,1,0,0,
-		0,1,1,1,1,1,0,1,0,0,
-		0,0,1,0,1,0,1,1,0,0,
-		0,1,1,3,3,1,1,1,0,0,
-		0,0,0,1,0,0,0,0,1,0,
-		0,0,0,0,0,0,0,0,0,1,
-	};
+	ArrayList map;
 
-	int mapWidth = 10;
-	int mapHeight = 10;
+	int mapWidth = 25;
+	int mapHeight = 25;
 
 	ArrayList walls {get;set;}
 	ArrayList floors {get;set;}
 	ArrayList enemies {get;set;}
 
-	void Start () {
-		instance = this;
-		Debug.Log("Hi!");
+	private IEnumerator MapLoadCallback(){
 		DungeonGenerator dg = new DungeonGenerator();
-
-
-		Canvas.overrideSorting = true;
-
-		walls = new ArrayList();
-		floors = new ArrayList();
-		enemies = new ArrayList();
+		while(DungeonGenerator.hasLoaded == false){
+			yield return null;
+		}
+		this.map = dg.m.tiles;
 		for(int z = 0; z < mapHeight ; z++){
 			for(int x = 0; x < mapWidth; x++){
-				int tileCode = map[x + z*mapWidth];
+				DungeonGenerator.Tile tileCode = map[x + z*mapWidth] as DungeonGenerator.Tile;
 				GameObject o;
-				switch(tileCode){
-				case 0:
+				switch(tileCode.tag){
+				case "Blackwall":
 					walls.Add(WallFactory.CreateWall("Blackwall",new Vector3(x,0,z)));
 					break;
-				case 1:
+				case "Stonefloor":
 					floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 					break;
-				case 2:
+				case "Player":
+					Debug.Log("Player!!");
 					Player = Instantiate(PlayerPrefab,new Vector3(x,-0.25f,z),Quaternion.Euler(15,180,0)) as GameObject;
 					(Player.GetComponent<Player>() as Player).GameManager = this;
 					floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 					break;
-				case 3:
+				case "Dummy":
 					GameObject e = EnemyFactory.CreateEnemy("Dummy",new Vector3(x,-0.25f,z)) as GameObject;
 					enemies.Add(e);
 					Enemy enemy = (e.GetComponent<Enemy>() as Enemy);
@@ -82,6 +67,16 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	void Start () {
+		Debug.Log("Hi!");
+		instance = this;
+		this.StartCoroutine(MapLoadCallback());
+		walls = new ArrayList();
+		floors = new ArrayList();
+		enemies = new ArrayList();
+		Canvas.overrideSorting = true;
 	}
 
 	public ArrayList GetEnemies(){
@@ -94,14 +89,14 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update () {
-		if(ImageStatusManager == null){
+		if(ImageStatusManager == null && Player != null){
 			Player p = Player.GetComponent<Player>() as Player;
 			ImageStatusManager = new ImageStatusManager(
 				p.StatusManager,
 				GuiFactory
 			);
 		}
-		if(ImageSkillBarManager == null){
+		if(ImageSkillBarManager == null && Player != null){
 			Player p = Player.GetComponent<Player>() as Player;
 			ImageSkillBarManager = new ImageSkillBarManager(
 				p.SkillManager,
