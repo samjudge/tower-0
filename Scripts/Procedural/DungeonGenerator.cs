@@ -126,7 +126,7 @@ public class DungeonGenerator {
 						for(int aX = -1 ; aX <= 1; aX++){
 							for(int aY = -1 ; aY <= 1; aY++){
 								if(aX == 0 || aY == 0 && !(aX == 0 && aY == 0)){
-									if(canCarve(activePosition.x+aX,activePosition.y+aY)){
+									if(canCarve(activePosition.x+aX,activePosition.y+aY) && !carved){
 										Debug.Log("found");
 										carve(activePosition.x+aX,activePosition.y+aY);
 										carved = true;
@@ -147,9 +147,6 @@ public class DungeonGenerator {
 					//preferred
 					Debug.Log("Carving Preferred");
 					carve(x,y);
-				} else {
-					Position openPosition = this.open[indexOfNode(activePosition.x,activePosition.y)] as Position;
-					this.open.Remove(openPosition);
 				}
 				//Position op = this.open[indexOfNode(activePosition.x,activePosition.y)] as Position;
 				//this.open.Remove(op);
@@ -161,38 +158,74 @@ public class DungeonGenerator {
 		}
 
 		private bool canCarve(float x, float y){
-			indexOfCarved(x,y);
 			if(indexOfNode(x,y) == -1){
 				return false;
 			}
 			if (y >= 1 && y < m.height-1 && x >= 1 && x < m.width-1){
 				int neighborCount = 0;
+				int cornerCount = 0;
+				int adjacentCount = 0;
 				if(indexOfCarved(x-1,y) != -1){
 					neighborCount++;
+					adjacentCount++;
 				}
 				if(indexOfCarved(x-1,y-1) != -1){
 					neighborCount++;
+					cornerCount++;
 				}
 				if(indexOfCarved(x-1,y+1) != -1){
 					neighborCount++;
+					cornerCount++;
 				}
 				if(indexOfCarved(x,y-1) != -1){
 					neighborCount++;
+					adjacentCount++;
+				}
+				if(indexOfCarved(x,y) != -1){
+					neighborCount++;
+					cornerCount++;
 				}
 				if(indexOfCarved(x,y+1) != -1){
 					neighborCount++;
+					adjacentCount++;
 				}
 				if(indexOfCarved(x+1,y) != -1){
 					neighborCount++;
+					adjacentCount++;
 				}
 				if(indexOfCarved(x+1,y-1) != -1){
 					neighborCount++;
+					cornerCount++;
 				}
 				if(indexOfCarved(x+1,y+1) != -1){
 					neighborCount++;
+					cornerCount++;
 				}
 				Debug.Log(neighborCount);
 				if(neighborCount <= 3){
+					if(adjacentCount == 2 && cornerCount == 1){
+						return false;
+					}
+					if(indexOfCarved(x-1,y-1) != -1){
+						if(indexOfCarved(x,y-1) == -1 && indexOfCarved(x-1,y) == -1){
+							return false;
+						}
+					}
+					if(indexOfCarved(x+1,y-1) != -1){
+						if(indexOfCarved(x,y-1) == -1 && indexOfCarved(x+1,y) == -1){
+							return false;
+						}
+					}
+					if(indexOfCarved(x-1,y+1) != -1){
+						if(indexOfCarved(x,y+1) == -1 && indexOfCarved(x-1,y) == -1){
+							return false;
+						}
+					}
+					if(indexOfCarved(x+1,y+1) != -1){
+						if(indexOfCarved(x,y+1) == -1 && indexOfCarved(x+1,y) == -1){
+							return false;
+						}
+					}
 					return true;
 				}
 			}

@@ -124,7 +124,7 @@ public class Player : Unit {
 		);
 		this.TorchLight.transform.position = new Vector3(
 			this.transform.position.x,
-			this.transform.position.y+1.75f,
+			1f,
 			this.transform.position.z
 		);
 	}
