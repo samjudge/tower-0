@@ -85,13 +85,13 @@ public class DungeonGenerator {
 		public Position activePosition;
 
 		public IEnumerator Dig(){
+			System.Random r = new System.Random();
 			foreach(Tile t in m.tiles){
 				if(t.x > 0 && t.x < m.width && t.z > 0 && t.z < m.height){
 					this.open.Add (new Position(t.x,t.z));
 				}
 			}
 			while(open.Count > 32){
-				System.Random r = new System.Random();
 				float roll = (float)(r.Next(0,100))/100f;
 				if(roll >= 0.5){
 					if(planar_accelerationX != 0){
@@ -145,6 +145,18 @@ public class DungeonGenerator {
 				//Position op = this.open[indexOfNode(activePosition.x,activePosition.y)] as Position;
 				//this.open.Remove(op);
 				yield return null;
+			}
+			for(int x = 0; x < 3; x++){
+				int sX = r.Next(6,m.width-6);
+				int sY = r.Next(6,m.height-6);
+				int w = r.Next(3,6);
+				int h = r.Next(3,6);
+				for(int nx = 0; nx < w ; nx++){
+					for(int ny = 0; ny < h ; ny++){
+						Tile roomtile = m.GetTile(sX + nx, sY + ny);
+						roomtile.tag = "Stonefloor";
+					}
+				}
 			}
 			hasLoaded = true;
 			Tile tile = m.GetTile(10,10);
