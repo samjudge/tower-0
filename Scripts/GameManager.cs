@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour {
 	public FloorFactory FloorFactory;
 	public WallFactory WallFactory;
 	public GUIImageFactory GuiFactory;
-	public EnemyFactory EnemyFactory;
+	public UnitFactory UnitFactory;
+	public GamePropFactory GamePropFactory;
 	public Canvas Canvas;
 	public CanvasGroup CanvasStatuses;
 	public Canvas Overlay;
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour {
 	ArrayList walls {get;set;}
 	ArrayList floors {get;set;}
 	ArrayList enemies {get;set;}
+	ArrayList gameobjects {get;set;}
 
 	private IEnumerator MapLoadCallback(){
 		DungeonGenerator dg = new DungeonGenerator();
@@ -45,25 +47,38 @@ public class GameManager : MonoBehaviour {
 				DungeonGenerator.Tile tileCode = map[x + z*mapWidth] as DungeonGenerator.Tile;
 				GameObject o;
 				switch(tileCode.tag){
-				case "Blackwall":
-					walls.Add(WallFactory.CreateWall("Blackwall",new Vector3(x,0,z)));
-					break;
-				case "Stonefloor":
-					floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
-					break;
-				case "Player":
-					Debug.Log("Player!!");
-					Player = Instantiate(PlayerPrefab,new Vector3(x,-0.25f,z),Quaternion.Euler(15,180,0)) as GameObject;
-					(Player.GetComponent<Player>() as Player).GameManager = this;
-					floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
-					break;
-				case "Dummy":
-					GameObject e = EnemyFactory.CreateEnemy("Dummy",new Vector3(x,-0.25f,z)) as GameObject;
-					enemies.Add(e);
-					Enemy enemy = (e.GetComponent<Enemy>() as Enemy);
-					(enemy.GetComponent<Enemy>() as Enemy).GameManager = this;
-					floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
-					break;
+					case "Blackwall":
+						walls.Add(WallFactory.CreateWall("Blackwall",new Vector3(x,0,z)));
+						break;
+					case "Stonefloor":
+						floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+						break;
+					case "Player":
+						Debug.Log("Player!!");
+						Player = Instantiate(PlayerPrefab,new Vector3(x,-0.25f,z),Quaternion.Euler(15,180,0)) as GameObject;
+						(Player.GetComponent<Player>() as Player).GameManager = this;
+						floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+						break;
+					case "Dummy":
+						GameObject e = UnitFactory.CreateUnit("Dummy",new Vector3(x,-0.25f,z)) as GameObject;
+						enemies.Add(e);
+						Enemy enemy = (e.GetComponent<Enemy>() as Enemy);
+						(enemy.GetComponent<Enemy>() as Enemy).GameManager = this;
+						floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+						break;
+					case "Door":
+						GameObject d = null;
+						if(tileCode.rotation.eulerAngles == new Vector3(0,90,0)){
+							d = GamePropFactory.CreateProp("Door",new Vector3(x-0.3f,0.25f,z+0.25f)) as GameObject;
+						} else if(tileCode.rotation.eulerAngles == new Vector3(0,0,0)){
+							d = GamePropFactory.CreateProp("Door",new Vector3(x-0.3f,0.25f,z-0.25f)) as GameObject;
+						}
+						d.transform.rotation = tileCode.rotation;
+						gameobjects.Add(d);
+						GameProp door = (d.GetComponent<GameProp>() as GameProp);
+						(door.GetComponent<GameProp>() as GameProp).GameManager = this;
+						floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+						break;
 				}
 			}
 		}
@@ -76,6 +91,7 @@ public class GameManager : MonoBehaviour {
 		walls = new ArrayList();
 		floors = new ArrayList();
 		enemies = new ArrayList();
+		gameobjects = new ArrayList();
 		Canvas.overrideSorting = true;
 	}
 

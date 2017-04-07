@@ -26,15 +26,31 @@ public class GameActionAttackMove : GameAction {
 					int enemyLayerMask = LayerMask.GetMask("Enemies");
 					Physics.Linecast(p.transform.position,this.target,out hit,enemyLayerMask);
 					if(hit.transform != null){
+						GameAction a = null;
 						Enemy e = hit.transform.gameObject.GetComponent<Enemy>() as Enemy;
-						GameAction a = e.ActionsManager.GetGameAction("PhysicalHit") as GameAction;
+						if(e == null){
+							GameProp prop = hit.transform.gameObject.GetComponent<GameProp>() as GameProp;
+							a = prop.ActionsManager.GetGameAction("PhysicalHit") as GameAction;
+							GameActionMeleeOpenDoor aOpen = prop.ActionsManager.GetGameAction("PhysicalHit") as GameActionMeleeOpenDoor;
+							if(aOpen.isOpen){
+								p.IsCurrentlyMoving = true;
+								p.StartCoroutine(Move());
+							} else {
+								p.IsCurrentlyMoving = true;
+								p.StartCoroutine(Attack());
+							}
+						} else {
+							a = e.ActionsManager.GetGameAction("PhysicalHit") as GameAction;
+							p.IsCurrentlyMoving = true;
+							p.StartCoroutine(Attack());
+						}
 						if(a != null){
+							Debug.Log("hit");
 							//a.attacker = p;
 							//a.target = e;
 							a.action();
 							Debug.DrawLine(p.transform.position, this.target,Color.red,1f);
-							p.IsCurrentlyMoving = true;
-							p.StartCoroutine(Attack());
+
 						}
 					} else {
 						Debug.DrawLine(p.transform.position, this.target,Color.green,1f);

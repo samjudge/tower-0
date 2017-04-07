@@ -49,6 +49,10 @@ public class Player : Unit {
 		//Sight Status Passive
 		//(Because Skill Factory not created yet - see todo @ GameActionCastSkillByNameToPointTarget.cs)
 		new SightPassive(this);
+		Renderer renderer = this.GetComponentInParent<Renderer>() as Renderer;
+		if (!renderer.material.HasProperty("_Color")){
+			renderer.material.SetColor("_Color", Color.white);
+		}
 
 	}
 
@@ -124,7 +128,7 @@ public class Player : Unit {
 		);
 		this.TorchLight.transform.position = new Vector3(
 			this.transform.position.x,
-			0.5f,
+			0.8f,
 			this.transform.position.z
 		);
 	}

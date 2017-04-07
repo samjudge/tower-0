@@ -17,6 +17,7 @@ public class DungeonGenerator {
 		public float y = 0;
 		public float z = 0;
 		public String tag = "Default";
+		public Quaternion rotation;
 	}
 
 	public class Digger {
@@ -90,8 +91,6 @@ public class DungeonGenerator {
 				}
 			}
 			while(open.Count > 32){
-				Debug.Log(open.Count);
-				Debug.Log(m.LogTiles());
 				System.Random r = new System.Random();
 				float roll = (float)(r.Next(0,100))/100f;
 				if(roll >= 0.5){
@@ -115,19 +114,15 @@ public class DungeonGenerator {
 				}
 				float x = this.activePosition.x+planar_accelerationX;
 				float y = this.activePosition.y+planar_accelerationY;
-				Debug.Log("Resolving");
 
 				if(!canCarve(x,y)){
 					//node does not exist in open, so use another open tile
-					Debug.Log("Other");
 					while(activePosition.parent != null){
-						Debug.Log("finding open...");
 						bool carved = false;
 						for(int aX = -1 ; aX <= 1; aX++){
 							for(int aY = -1 ; aY <= 1; aY++){
 								if(aX == 0 || aY == 0 && !(aX == 0 && aY == 0)){
 									if(canCarve(activePosition.x+aX,activePosition.y+aY) && !carved){
-										Debug.Log("found");
 										carve(activePosition.x+aX,activePosition.y+aY);
 										carved = true;
 									} else {
@@ -145,7 +140,6 @@ public class DungeonGenerator {
 					}
 				} else if(indexOfNode(x,y) != -1){
 					//preferred
-					Debug.Log("Carving Preferred");
 					carve(x,y);
 				}
 				//Position op = this.open[indexOfNode(activePosition.x,activePosition.y)] as Position;
@@ -201,7 +195,6 @@ public class DungeonGenerator {
 					neighborCount++;
 					cornerCount++;
 				}
-				Debug.Log(neighborCount);
 				if(neighborCount <= 3){
 					if(adjacentCount == 2 && cornerCount == 1){
 						return false;
@@ -234,20 +227,63 @@ public class DungeonGenerator {
 
 		private void carve(float x, float y){
 			Position openPosition = this.open[indexOfNode(x,y)] as Position;
-			Tile t = m.GetTile((int)x,(int)y);
+
 			if(x == 10 && y == 10){
+				Tile t = m.GetTile((int)x,(int)y);
 				t.tag = "Player";
+				openPosition.parent = this.activePosition;
+				this.activePosition = openPosition;
 			} else {
-				carveTile(t);
+				carveTile(openPosition);
+				openPosition.parent = this.activePosition;
+				this.activePosition = openPosition;
 			}
-			this.history.Add(openPosition);
-			this.open.Remove(openPosition);
-			openPosition.parent = this.activePosition;
-			this.activePosition = openPosition;
 		}
 		
-		private void carveTile(Tile t){
-			t.tag = "Stonefloor";
+		private void carveTile(Position openPosition){
+			Tile t = m.GetTile((int)openPosition.x,(int)openPosition.y);
+			Tile par = m.GetTile((int)this.activePosition.x,(int)this.activePosition.y) as Tile;
+			if(par.tag == "Door"){
+				this.history.Add(openPosition);
+				this.open.Remove(openPosition);
+				return;
+			}
+			System.Random r = new System.Random();
+			int n = r.Next(0,10);
+			if(n < 2){
+				Debug.Log(t.x);
+				Debug.Log(t.z);
+				this.history.Add(openPosition);
+				this.open.Remove(openPosition);
+				int up = indexOfNode(this.activePosition.x,this.activePosition.y+1);
+				int down = indexOfNode(this.activePosition.x,this.activePosition.y-1);
+				int left = indexOfNode(this.activePosition.x-1,this.activePosition.y);
+				int right = indexOfNode(this.activePosition.x+1,this.activePosition.y);
+				if(up != -1 && down != -1){
+					t.tag = par.tag;
+					par.tag = "Door";
+					par.rotation = Quaternion.Euler(new Vector3(0,0,0));
+				} else if(left != -1 && right != -1){
+					t.tag = par.tag;
+					par.tag = "Door";
+					par.rotation = Quaternion.Euler(new Vector3(0,90,0));
+				} else {
+					t.tag = "Stonefloor";
+				}
+
+			} else if (n < 3){
+				t.tag = "Dummy";
+				this.history.Add(openPosition);
+				this.open.Remove(openPosition);
+				return;
+			} else {
+				t.tag = "Stonefloor";
+				this.history.Add(openPosition);
+				this.open.Remove(openPosition);
+				return;
+			}
+
+
 		}
 	}
 

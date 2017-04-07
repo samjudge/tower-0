@@ -21,6 +21,10 @@ public class DummyEnemy : Enemy {
 		base.Start();
 		this.CastTarget = new Vector3(0f,0f,0f);
 		ActionsManager.AddGameAction("Cast", new GameActionCastSkillByNameToPointTarget("Heal",this as Unit));
+		Renderer renderer = this.GetComponentInParent<Renderer>() as Renderer;
+		if (!renderer.material.HasProperty("_Color")){
+			renderer.material.SetColor("_Color", Color.white);
+		}
 	}
 	
 	float regen_every = 2;
