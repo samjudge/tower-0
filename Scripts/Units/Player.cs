@@ -17,6 +17,7 @@ public class Player : Unit {
 	}
 
 	public GameObject TorchLight;
+	public GameObject FloorLight;
 
 	public void Start(){
 		IsCurrentlyMoving = false;
@@ -24,6 +25,7 @@ public class Player : Unit {
 		this.StatusManager = new StatusManager();
 		this.SkillManager = new SkillManager(this);
 		this.TorchLight = Instantiate(TorchLight, this.transform.position, Quaternion.Euler(90,0,0)) as GameObject;
+		this.FloorLight = Instantiate(TorchLight, this.transform.position, Quaternion.Euler(90,0,0)) as GameObject;
 		ActionsManager.AddGameAction(
 			"Up",
 		    new GameActionAttackMove(this,0,1)
@@ -128,7 +130,12 @@ public class Player : Unit {
 		);
 		this.TorchLight.transform.position = new Vector3(
 			this.transform.position.x,
-			0.8f,
+			4f,
+			this.transform.position.z
+		);
+		this.FloorLight.transform.position = new Vector3(
+			this.transform.position.x,
+			0.1f,
 			this.transform.position.z
 		);
 	}
