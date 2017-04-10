@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour {
 	public Image SkillBarImage;
 	public GameObject PlayerPrefab;
 	public GameObject SkillSelector;
-	GameObject Player;
+	public GameObject Player;
 
 	//0 = wall
 	//1 = floor

@@ -22,5 +22,21 @@ public abstract class Enemy : Unit {
 		OnDeath();
 		yield return null;
 	}
+
+	public bool CheckIsInLOSOf(Unit u){
+		Vector3 origin = this.transform.position;
+		Vector3 target = u.transform.position;
+		RaycastHit hit = new RaycastHit();
+		int mask = LayerMask.GetMask("Walls");
+		bool isHit = Physics.Linecast(origin,target,out hit,mask);
+		//Debug.Log(origin);
+		//Debug.Log(target);
+		//Debug.DrawLine(origin,target);
+		if(isHit){
+			return false;
+		} else {
+			return true;
+		}
+	}
 }
 
