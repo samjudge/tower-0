@@ -26,16 +26,15 @@ public class DummyEnemy : Enemy {
 			renderer.material.SetColor("_Color", Color.white);
 		}
 	}
-	
-	float regen_every = 2;
-	float regen_current_timer = 0;
-	
+
 	public void Update(){
-		regen_current_timer += Time.deltaTime;
-		if(regen_current_timer > regen_every){
-			regen_current_timer = 0;
-			this.ActionsManager.GetGameAction("Cast").action();
-		}
+		if(this.CheckIsInLOSOf(GameManager.Player.GetComponent<Unit>() as Unit)){
+			Debug.Log("In LOS");
+			ArrayList statuses = this.StatusManager.GetStatuses();
+			if(statuses.Count == 0){
+				this.ActionsManager.GetGameAction("Cast").action();
+			}
+		};
 	}
 
 	override public void OnDeath(){
