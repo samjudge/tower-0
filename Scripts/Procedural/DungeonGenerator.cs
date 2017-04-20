@@ -251,7 +251,8 @@ public class DungeonGenerator {
 				this.activePosition = openPosition;
 			}
 		}
-		
+
+
 		private void carveTile(Position openPosition){
 			Tile t = m.GetTile((int)openPosition.x,(int)openPosition.y);
 			Tile par = m.GetTile((int)this.activePosition.x,(int)this.activePosition.y) as Tile;
@@ -262,7 +263,7 @@ public class DungeonGenerator {
 			}
 			System.Random r = new System.Random();
 			int n = r.Next(0,10);
-			if(n < 2){
+			if(n < 1){
 				Debug.Log(t.x);
 				Debug.Log(t.z);
 				this.history.Add(openPosition);
@@ -283,6 +284,11 @@ public class DungeonGenerator {
 					t.tag = "Stonefloor";
 				}
 
+			} else if (n < 2){
+				t.tag = "Chicken";
+				this.history.Add(openPosition);
+				this.open.Remove(openPosition);
+				return;
 			} else if (n < 3){
 				t.tag = "Dummy";
 				this.history.Add(openPosition);

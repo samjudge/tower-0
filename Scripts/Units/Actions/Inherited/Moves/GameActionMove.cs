@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GameActionMove : GameAction {
 
-	public Player p;
+	public Unit p;
 	public Vector3 target;
 
-	public GameActionMove (Player p, float dx, float dz){
+	public GameActionMove (Unit p, float dx, float dz){
 		this.p = p;
 		this.action = delegate(){
 			if(p.IsCurrentlyMoving == false){
