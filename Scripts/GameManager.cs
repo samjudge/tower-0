@@ -60,11 +60,18 @@ public class GameManager : MonoBehaviour {
 						(Player.GetComponent<Player>() as Player).GameManager = this;
 						floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 						break;
-					case "Dummy":
-						GameObject e = UnitFactory.CreateUnit("Dummy",new Vector3(x,-0.25f,z)) as GameObject;
+					case "Chicken":
+						GameObject e = UnitFactory.CreateUnit("Chicken",new Vector3(x,-0.25f,z)) as GameObject;
 						enemies.Add(e);
 						Enemy enemy = (e.GetComponent<Enemy>() as Enemy);
 						(enemy.GetComponent<Enemy>() as Enemy).GameManager = this;
+						floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+						break;
+					case "Dummy":
+						GameObject chickenEnemy = UnitFactory.CreateUnit("Dummy",new Vector3(x,-0.25f,z)) as GameObject;
+						enemies.Add(chickenEnemy);
+						Enemy chickenEnemyScript = (chickenEnemy.GetComponent<Enemy>() as Enemy);
+						(chickenEnemy.GetComponent<Enemy>() as Enemy).GameManager = this;
 						floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 						break;
 					case "Door":
