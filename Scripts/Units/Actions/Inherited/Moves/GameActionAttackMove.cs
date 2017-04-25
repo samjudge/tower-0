@@ -45,9 +45,6 @@ public class GameActionAttackMove : GameAction {
 							p.StartCoroutine(Attack());
 						}
 						if(a != null){
-							Debug.Log("hit");
-							//a.attacker = p;
-							//a.target = e;
 							a.action();
 							Debug.DrawLine(p.transform.position, this.target,Color.red,1f);
 

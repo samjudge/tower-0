@@ -22,7 +22,6 @@ public class ImmolateSkill : PointTargetSkill {
 			Physics.Linecast(Caster.transform.position, target, out EnemyHit, mask);
 			Debug.DrawLine(target, Caster.transform.position, Color.magenta, 5f);
 			if(EnemyHit.transform != null){
-				Debug.Log ("hit!");
 				float enemyDistance = (Caster.transform.position - EnemyHit.transform.position).sqrMagnitude;
 				if(WallHit.transform != null){
 					float wallDistance = (Caster.transform.position - WallHit.transform.position).sqrMagnitude;

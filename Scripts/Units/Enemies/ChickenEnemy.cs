@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ChickenEnemy : Enemy {
 
 	public float cHp = 6;
-	private AStarPathfind AI;
+	private AStarPathfindNoWalls AI;
 
 	public override float Hp {
 		get{ return cHp;}
@@ -21,7 +21,7 @@ public class ChickenEnemy : Enemy {
 	public void Start(){
 		base.Start();
 		this.CastTarget = new Vector3(0f,0f,0f);
-		this.AI = new AStarPathfind(this.GameManager.Player.transform.position,new Vector3(1,1,0));
+		this.AI = new AStarPathfindNoWalls(this.GameManager.Player.transform.position,new Vector3(1,0,1));
 		ActionsManager.AddGameAction("Cast", new GameActionCastSkillByNameToPointTarget("Heal",this as Unit));
 		Renderer renderer = this.GetComponentInParent<Renderer>() as Renderer;
 		if (!renderer.material.HasProperty("_Color")){
@@ -36,18 +36,19 @@ public class ChickenEnemy : Enemy {
 				this.ActionsManager.GetGameAction("Cast").action();
 			}
 			if(this.IsCurrentlyMoving == false){
-				this.AI = new AStarPathfind(this.GameManager.Player.transform.position,new Vector3(1,0,1));
+				this.AI = new AStarPathfindNoWalls(this.GameManager.Player.transform.position,new Vector3(1,0,1));
 				AStarPathfind.Node n = new AStarPathfind.Node();
 				n.parent = null;
 				n.position = this.transform.position;
 				AStarPathfind.Node top = this.AI.FindPath(n);
+				int count = 0;
 				while(top.parent != null){
-					if(top.parent.parent != null){ //so that it doen't get the position it's standing on
-						top = top.parent;
+					if(top.parent.parent == null){
+						break;
 					}
+					top = top.parent;
+					count++;
 				}
-				Debug.Log (top.position.x - this.transform.position.x);
-				Debug.Log (top.position.z - this.transform.position.z);
 				float targetX = 0f;
 				float targetY = 0f;
 				if((top.position.x - this.transform.position.x) < 0){

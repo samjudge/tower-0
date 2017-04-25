@@ -264,8 +264,6 @@ public class DungeonGenerator {
 			System.Random r = new System.Random();
 			int n = r.Next(0,10);
 			if(n < 1){
-				Debug.Log(t.x);
-				Debug.Log(t.z);
 				this.history.Add(openPosition);
 				this.open.Remove(openPosition);
 				int up = indexOfNode(this.activePosition.x,this.activePosition.y+1);
