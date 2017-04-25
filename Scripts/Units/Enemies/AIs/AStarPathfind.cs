@@ -5,11 +5,19 @@ using System.Collections.Generic;
 
 public class AStarPathfind {
 	
-	public Vector3 Target;
-	public ArrayList ClosedNodes;
-	public ArrayList OpenNodes;
-	public float LowestScore = 99999;
-	public Vector3 StepSize;
+	protected Vector3 Target;
+	protected ArrayList ClosedNodes;
+	protected ArrayList OpenNodes;
+	protected float LowestScore = 99999;
+	protected Vector3 StepSize;
+
+	public void AddClosedNodeSet(Vector3[] closedPositions){
+		foreach(Vector3 closed in closedPositions){
+			Node n = new Node();
+			n.position = closed;
+			this.ClosedNodes.Add(n);
+		}
+	}
 
 	public AStarPathfind(Vector3 Target,Vector3 StepSize){
 		this.Target = Target;
@@ -38,7 +46,8 @@ public class AStarPathfind {
 				Vector3 nNode = new Vector3((node.position.x+(StepSize.x*(x))), node.position.y, (node.position.z+(StepSize.z*(y))));
 				Node n = new Node();
 				n.position = nNode;
-				n.value = CalculateDistance(nNode);
+				n.parent = node;
+				n.value = CalculateH(n);
 				n.pathscore = (node.pathscore) + n.value;
 				if(IsClosed(n)){
 					continue; //ignore
@@ -101,11 +110,10 @@ public class AStarPathfind {
 		return ((Node) this.OpenNodes[0]).position;
 	}
 
-	int MaxSearchDepth = 10;
+	int MaxSearchDepth = 15;
 
 	public Node FindPath(Node Position){
 		ArrayList Adjacent = this.GetNeighborOpenNodes(Position);
-		Debug.Log("pathfind");
 		bool pathFound = false;
 		int searchDepth = 0;
 		while(!pathFound && searchDepth < MaxSearchDepth){
@@ -124,7 +132,11 @@ public class AStarPathfind {
 	}
 
 	//Heuristic
-	private float CalculateDistance(Vector3 Position){
+	protected virtual float CalculateH(Node n){
+		return CalculateDistance(n.position);
+	}
+
+	protected float CalculateDistance(Vector3 Position){
 		return (this.Target - Position).sqrMagnitude;
 	}
 }

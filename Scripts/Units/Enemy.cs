@@ -24,19 +24,48 @@ public abstract class Enemy : Unit {
 	}
 
 	public bool CheckIsInLOSOf(Unit u){
-		Vector3 origin = this.transform.position;
-		Vector3 target = u.transform.position;
-		RaycastHit hit = new RaycastHit();
-		int mask = LayerMask.GetMask("Walls");
-		bool isHit = Physics.Linecast(origin,target,out hit,mask);
-		//Debug.Log(origin);
-		//Debug.Log(target);
-		//Debug.DrawLine(origin,target);
-		if(isHit){
-			return false;
-		} else {
-			return true;
+		if((u.transform.position - this.transform.position).sqrMagnitude < 10f){
+			int mask = LayerMask.GetMask("Walls");
+			Vector3 boundPoint1 = this.GetComponent<MeshFilter>().mesh.bounds.min;
+			boundPoint1 = new Vector3(boundPoint1.x,0.5f,boundPoint1.z);
+			Vector3 boundPoint2 = this.GetComponent<MeshFilter>().mesh.bounds.max;
+			boundPoint2 = new Vector3(boundPoint2.x,0.5f,boundPoint2.z);
+			Vector3 boundPoint3 = new Vector3(boundPoint1.x, 0.5f, boundPoint2.z);
+			Vector3 boundPoint4 = new Vector3(boundPoint1.x, 0.5f, boundPoint1.z);
+			Vector3 boundPoint5 = new Vector3(boundPoint2.x, 0.5f, boundPoint1.z);
+			Vector3 boundPoint6 = new Vector3(boundPoint1.x, 0.5f, boundPoint2.z);
+			Vector3 boundPoint7 = new Vector3(boundPoint2.x, 0.5f, boundPoint2.z);
+			Vector3 boundPoint8 = new Vector3(boundPoint2.x, 0.5f, boundPoint1.z);
+			Vector3[] originPoints =
+				{boundPoint1,boundPoint2,boundPoint3,boundPoint4,boundPoint5,boundPoint6,boundPoint7,boundPoint8};
+			boundPoint1 = u.GetComponent<MeshFilter>().mesh.bounds.min;
+			boundPoint1 = new Vector3(boundPoint1.x,0.5f,boundPoint1.z);
+			boundPoint2 = u.GetComponent<MeshFilter>().mesh.bounds.max;
+			boundPoint2 = new Vector3(boundPoint2.x,0.5f,boundPoint2.z);
+			boundPoint3 = new Vector3(boundPoint1.x, 0.5f, boundPoint2.z);
+			boundPoint4 = new Vector3(boundPoint1.x, 0.5f, boundPoint1.z);
+			boundPoint5 = new Vector3(boundPoint2.x, 0.5f, boundPoint1.z);
+			boundPoint6 = new Vector3(boundPoint1.x, 0.5f, boundPoint2.z);
+			boundPoint7 = new Vector3(boundPoint2.x, 0.5f, boundPoint2.z);
+			boundPoint8 = new Vector3(boundPoint2.x, 0.5f, boundPoint1.z);
+			Vector3[] targetPoints =
+				{boundPoint1,boundPoint2,boundPoint3,boundPoint4,boundPoint5,boundPoint6,boundPoint7,boundPoint8};
+			foreach(Vector3 origin in originPoints){
+				foreach(Vector3 target in originPoints){
+					RaycastHit hit = new RaycastHit();
+					bool isHit = Physics.Linecast(
+						this.transform.TransformPoint(origin),
+						u.transform.TransformPoint(target),
+						out hit,
+						mask
+					);
+					if(!isHit){
+						return true;
+					}
+				}
+			}
 		}
+		return false;
 	}
 }
 

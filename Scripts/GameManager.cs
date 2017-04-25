@@ -31,10 +31,10 @@ public class GameManager : MonoBehaviour {
 	int mapWidth = 25;
 	int mapHeight = 25;
 
-	ArrayList walls {get;set;}
-	ArrayList floors {get;set;}
-	ArrayList enemies {get;set;}
-	ArrayList gameobjects {get;set;}
+	public ArrayList walls {get;set;}
+	public ArrayList floors {get;set;}
+	public ArrayList enemies {get;set;}
+	public ArrayList gameobjects {get;set;}
 
 	private IEnumerator MapLoadCallback(){
 		DungeonGenerator dg = new DungeonGenerator();
@@ -55,7 +55,6 @@ public class GameManager : MonoBehaviour {
 						floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 						break;
 					case "Player":
-						Debug.Log("Player!!");
 						Player = Instantiate(PlayerPrefab,new Vector3(x,-0.25f,z),Quaternion.Euler(15,180,0)) as GameObject;
 						(Player.GetComponent<Player>() as Player).GameManager = this;
 						floors.Add(FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));

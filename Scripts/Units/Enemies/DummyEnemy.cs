@@ -29,7 +29,6 @@ public class DummyEnemy : Enemy {
 
 	public void Update(){
 		if(this.CheckIsInLOSOf(GameManager.Player.GetComponent<Unit>() as Unit)){
-			Debug.Log("In LOS");
 			ArrayList statuses = this.StatusManager.GetStatuses();
 			if(statuses.Count == 0){
 				this.ActionsManager.GetGameAction("Cast").action();
