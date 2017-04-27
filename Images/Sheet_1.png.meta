@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: ddd46b809de1c574aa6d6682b4a39cc9
-timeCreated: 1490297061
+timeCreated: 1493313453
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -17,6 +17,11 @@ TextureImporter:
     21300020: Green
     21300022: Red
     21300024: Status_Sight
+    21300026: GUI_Placeholder
+    21300028: Status_Blink
+    21300030: Status_Magic_Missile
+    21300032: Status_Invisible
+    21300034: Status_Fear
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -177,6 +182,56 @@ TextureImporter:
         serializedVersion: 2
         x: 256
         y: 48
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: GUI_Placeholder
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 112
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Status_Blink
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 112
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Status_Magic_Missile
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 80
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Status_Invisible
+      rect:
+        serializedVersion: 2
+        x: 288
+        y: 48
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Status_Fear
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 80
         width: 32
         height: 32
       alignment: 0

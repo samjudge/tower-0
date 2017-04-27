@@ -19,8 +19,12 @@ public class Player : Unit {
 	public GameObject TorchLight;
 	public GameObject FloorLight;
 
+	public Inventory Inventory;
+	public bool IsInventoryOpen = false;
+
 	public void Start(){
-		IsCurrentlyMoving = false;
+		this.Inventory = new Inventory(this);
+		this.IsCurrentlyMoving = false;
 		this.ActionsManager = new ActionsManager();
 		this.StatusManager = new StatusManager();
 		this.SkillManager = new SkillManager(this);
@@ -55,89 +59,118 @@ public class Player : Unit {
 		if (!renderer.material.HasProperty("_Color")){
 			renderer.material.SetColor("_Color", Color.white);
 		}
+		this.Inventory.addItemToInventory(new Item("Immolate"));
+		this.Inventory.addItemToInventory(new Item("Immolate"));
 
 	}
 
+	private bool IsInvintoryOpen = false;
+
 	public void Update(){
-		CastTarget = Input.mousePosition;
-		//inputs
-		if(Input.GetKey(KeyCode.W)){
-			GameAction a = ActionsManager.GetGameAction("Up");
-			a.action();
-		}
-		if(Input.GetKey(KeyCode.S)){
-			GameAction a = ActionsManager.GetGameAction("Down");
-			a.action();
-		}
-		if(Input.GetKey(KeyCode.A)){
-			GameAction a = ActionsManager.GetGameAction("Left");
-			a.action();
-		}
-		if(Input.GetKey(KeyCode.D)){
-			GameAction a = ActionsManager.GetGameAction("Right");
-			a.action();
-		}
-		if(Input.GetMouseButtonDown(0)){
-			//Select Skill
-			ImageSkillBarManager skillbar = this.GameManager.ImageSkillBarManager;
-			Vector2 pos = new Vector2();
-			bool HasHitSkill = false;
-			foreach(Image SkillImage in skillbar.GetImages()){
-				if(RectTransformUtility.RectangleContainsScreenPoint(SkillImage.rectTransform,CastTarget,Camera.main)){
-					HasHitSkill = true;
-					foreach(ImageSkillBarManager.SkillMapKey k in skillbar.SkillMap.Keys){
-						if(skillbar.SkillMap[k] == SkillImage){
-							ActionsManager.AddGameAction(
-								"Cast",
-								new GameActionCastSkillByNameToPointTarget(k.s,this as Unit)
-							);
-							SetCurrentSkillToIndex(k.index);
+		Vector3 MousePosition = Input.mousePosition;;
+		if(IsInventoryOpen){
+			if(Input.GetKey(KeyCode.I)){
+				if(GameManager.ImageInventoryManager.IsInventoryOpen()){
+					Debug.Log("Close Inventory");
+					this.GameManager.ImageInventoryManager.ToggleInventory();
+					this.IsInventoryOpen = false;
+				}
+			}
+			if(Input.GetMouseButtonDown(0)){
+				//Select Skill
+				Item i = this.GameManager.ImageInventoryManager.GetItemRefAtVectorPos(MousePosition);
+				if(i != null){
+					Debug.Log(i.Name);
+				} else {
+					Debug.Log("No Item At Pos");
+				}
+			}
+		} else {
+			//inputs
+			CastTarget = MousePosition;
+			if(Input.GetKey(KeyCode.W)){
+				GameAction a = ActionsManager.GetGameAction("Up");
+				a.action();
+			}
+			if(Input.GetKey(KeyCode.S)){
+				GameAction a = ActionsManager.GetGameAction("Down");
+				a.action();
+			}
+			if(Input.GetKey(KeyCode.A)){
+				GameAction a = ActionsManager.GetGameAction("Left");
+				a.action();
+			}
+			if(Input.GetKey(KeyCode.D)){
+				GameAction a = ActionsManager.GetGameAction("Right");
+				a.action();
+			}
+			if(Input.GetMouseButtonDown(0)){
+				//Select Skill
+				ImageSkillBarManager skillbar = this.GameManager.ImageSkillBarManager;
+				bool HasHitSkill = false;
+				foreach(Image SkillImage in skillbar.GetImages()){
+					if(RectTransformUtility.RectangleContainsScreenPoint(SkillImage.rectTransform,CastTarget,Camera.main)){
+						HasHitSkill = true;
+						foreach(ImageSkillBarManager.SkillMapKey k in skillbar.SkillMap.Keys){
+							if(skillbar.SkillMap[k] == SkillImage){
+								ActionsManager.AddGameAction(
+									"Cast",
+									new GameActionCastSkillByNameToPointTarget(k.s,this as Unit)
+								);
+								SetCurrentSkillToIndex(k.index);
+							}
+
 						}
-
+						break;
 					}
-					break;
+				}
+				//Cast Spell
+				if(HasHitSkill == false){
+					GameAction a = ActionsManager.GetGameAction("Cast");
+					if(a != null){
+						a.action();
+					}
 				}
 			}
-			//Cast Spell
-			if(HasHitSkill == false){
-				GameAction a = ActionsManager.GetGameAction("Cast");
-				if(a != null){
-					a.action();
+			if(Input.GetKey(KeyCode.Alpha1)){
+				SetCurrentSkillToIndex(0);
+			}
+			if(Input.GetKey(KeyCode.Alpha2)){
+				SetCurrentSkillToIndex(1);
+			}
+			if(Input.GetKey(KeyCode.Alpha3)){
+				SetCurrentSkillToIndex(2);
+			}
+			if(Input.GetKey(KeyCode.Alpha4)){
+				SetCurrentSkillToIndex(3);
+			}
+			if(Input.GetKey(KeyCode.Alpha5)){
+				SetCurrentSkillToIndex(4);
+			}
+			if(Input.GetKey(KeyCode.I)){
+				if(this.GameManager.ImageInventoryManager.IsInventoryClosed()){
+					Debug.Log("Open Inventory");
+					this.GameManager.ImageInventoryManager.ToggleInventory();
+					this.IsInventoryOpen = true;
 				}
 			}
+			//camera
+			Camera.main.transform.position = new Vector3(
+				this.transform.position.x,
+				this.transform.position.y+10,
+				this.transform.position.z-3
+			);
+			this.TorchLight.transform.position = new Vector3(
+				this.transform.position.x,
+				4f,
+				this.transform.position.z
+			);
+			this.FloorLight.transform.position = new Vector3(
+				this.transform.position.x,
+				0.1f,
+				this.transform.position.z
+			);
 		}
-		if(Input.GetKey(KeyCode.Alpha1)){
-			SetCurrentSkillToIndex(0);
-		}
-		if(Input.GetKey(KeyCode.Alpha2)){
-			SetCurrentSkillToIndex(1);
-		}
-		if(Input.GetKey(KeyCode.Alpha3)){
-			SetCurrentSkillToIndex(2);
-		}
-		if(Input.GetKey(KeyCode.Alpha4)){
-			SetCurrentSkillToIndex(3);
-		}
-		if(Input.GetKey(KeyCode.Alpha5)){
-			SetCurrentSkillToIndex(4);
-		}
-
-		//camera
-		Camera.main.transform.position = new Vector3(
-			this.transform.position.x,
-			this.transform.position.y+10,
-			this.transform.position.z-3
-		);
-		this.TorchLight.transform.position = new Vector3(
-			this.transform.position.x,
-			4f,
-			this.transform.position.z
-		);
-		this.FloorLight.transform.position = new Vector3(
-			this.transform.position.x,
-			0.1f,
-			this.transform.position.z
-		);
 	}
 
 	public void SetCurrentSkillToIndex(int i){

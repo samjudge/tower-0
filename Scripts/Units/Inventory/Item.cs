@@ -1,8 +1,10 @@
 
 public class Item {
 
-	public string name;
+	public string Name;
 
-	public Item (){}
+	public Item (string Name){
+		this.Name = Name;
+	}
 }
 
