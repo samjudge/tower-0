@@ -16,9 +16,15 @@ public class GameManager : MonoBehaviour {
 	public Canvas Overlay;
 	
 	public ImageStatusManager ImageStatusManager;
+
 	public ImageSkillBarManager ImageSkillBarManager;
 	public Image[] SkillBarPlaceholders;
 	public Image SkillBarImage;
+
+	public ImageInventoryManager ImageInventoryManager;
+	public Image[] InventoryItemPlaceholders;
+	public Image InventoryOverlayImage;
+
 	public GameObject PlayerPrefab;
 	public GameObject SkillSelector;
 	public GameObject Player;
@@ -102,12 +108,12 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		Debug.Log("Hi!");
 		instance = this;
-		this.StartCoroutine(MapLoadCallback());
 		walls = new ArrayList();
 		floors = new ArrayList();
 		enemies = new ArrayList();
 		gameobjects = new ArrayList();
 		Canvas.overrideSorting = true;
+		this.StartCoroutine(MapLoadCallback());
 	}
 
 	public ArrayList GetEnemies(){
@@ -125,6 +131,15 @@ public class GameManager : MonoBehaviour {
 			ImageStatusManager = new ImageStatusManager(
 				p.StatusManager,
 				GuiFactory
+			);
+		}
+		if(ImageInventoryManager == null && Player != null){
+			Player p = Player.GetComponent<Player>() as Player;
+			ImageInventoryManager = new ImageInventoryManager(
+				p.Inventory,
+				GuiFactory,
+				InventoryOverlayImage,
+				InventoryItemPlaceholders
 			);
 		}
 		if(ImageSkillBarManager == null && Player != null){

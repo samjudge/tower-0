@@ -104,6 +104,9 @@ public class ImageStatusManager
 
 	private IEnumerator DestroyOnEndAnimation(Image i){
 		Animator a = i.GetComponent<Animator>() as Animator;
+		while(a.GetCurrentAnimatorClipInfo(0).Length < 1){
+			yield return null;
+		}
 		AnimatorStateInfo state = a.GetCurrentAnimatorStateInfo(0);
 		AnimatorClipInfo clip = a.GetCurrentAnimatorClipInfo(0)[0];
 		float current_time = 0;

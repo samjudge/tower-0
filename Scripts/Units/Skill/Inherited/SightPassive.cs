@@ -38,31 +38,47 @@ public class SightPassive : PassiveSkill {
 			Sight.TickEffect = delegate(){
 				ArrayList Enemies = Caster.GameManager.GetEnemies();
 				foreach(GameObject e in Enemies){
-					if(EnemiesPrevious.Contains(e)){
-						Enemy enemy = e.GetComponent<Enemy>() as Enemy;
-						float hpBarPercent = enemy.Hp/enemy.MaxHp;
-						Image red = EnemyHealthBars[e];
-						Image green = EnemyHealthBarsFill[e];
-						red.GetComponent<RectTransform>().position = new Vector3(e.transform.position.x,e.transform.position.y+1f,e.transform.position.z+0.5f);
-						red.GetComponent<RectTransform>().sizeDelta = new Vector3(1f,0.1f,0f);
-						green.GetComponent<RectTransform>().position = new Vector3(e.transform.position.x,e.transform.position.y+1f,e.transform.position.z+0.5f);
-						green.GetComponent<RectTransform>().sizeDelta = new Vector3(1f*hpBarPercent,0.1f,0f);
-					} else {
-						IntalizeHPBar(e);
+					Enemy enemy = e.GetComponent<Enemy>() as Enemy;
+					if(enemy.CheckIsInLOSOf(Caster)){
+						if(EnemiesPrevious.Contains(e)){
+							float hpBarPercent = enemy.Hp/enemy.MaxHp;
+							Image red = EnemyHealthBars[e];
+							Image green = EnemyHealthBarsFill[e];
+							red.GetComponent<RectTransform>().position = new Vector3(e.transform.position.x,e.transform.position.y+1f,e.transform.position.z+0.5f);
+							red.GetComponent<RectTransform>().sizeDelta = new Vector3(1f,0.1f,0f);
+							green.GetComponent<RectTransform>().position = new Vector3(e.transform.position.x,e.transform.position.y+1f,e.transform.position.z+0.5f);
+							green.GetComponent<RectTransform>().sizeDelta = new Vector3(1f*hpBarPercent,0.1f,0f);
+						} else {
+							IntalizeHPBar(e);
+						}
 					}
 				}
 				GameObject[] EnemiesPreviousClone = new GameObject[EnemiesPrevious.Count];
 				EnemiesPrevious.CopyTo(EnemiesPreviousClone);
 				foreach(GameObject ex in EnemiesPreviousClone){
-					if(!Enemies.Contains(ex)){
-						Image i = null;
-						EnemyHealthBars.TryGetValue(ex, out i);
-						MonoBehaviour.Destroy(i);
-						EnemyHealthBars.Remove(ex);
-						EnemyHealthBarsFill.TryGetValue(ex, out i);
-						MonoBehaviour.Destroy(i);
-						EnemyHealthBarsFill.Remove(ex);
-						EnemiesPrevious.Remove(ex);
+					if(ex != null){
+						Enemy enemy = ex.GetComponent<Enemy>() as Enemy;
+						if(!Enemies.Contains(ex) || !enemy.CheckIsInLOSOf(Caster)){
+							Image i = null;
+							EnemyHealthBars.TryGetValue(ex, out i);
+							MonoBehaviour.Destroy(i);
+							EnemyHealthBars.Remove(ex);
+							EnemyHealthBarsFill.TryGetValue(ex, out i);
+							MonoBehaviour.Destroy(i);
+							EnemyHealthBarsFill.Remove(ex);
+							EnemiesPrevious.Remove(ex);
+						}
+					} else {
+						if(!Enemies.Contains(ex)){
+							Image i = null;
+							EnemyHealthBars.TryGetValue(ex, out i);
+							MonoBehaviour.Destroy(i);
+							EnemyHealthBars.Remove(ex);
+							EnemyHealthBarsFill.TryGetValue(ex, out i);
+							MonoBehaviour.Destroy(i);
+							EnemyHealthBarsFill.Remove(ex);
+							EnemiesPrevious.Remove(ex);
+						}
 					}
 				}
 			};
