@@ -24,7 +24,7 @@ public class Player : Unit {
 
 	public void Start(){
 		this.Inventory = new Inventory(this);
-		this.IsCurrentlyMoving = false;
+		this.IsInputLocked = false;
 		this.ActionsManager = new ActionsManager();
 		this.StatusManager = new StatusManager();
 		this.SkillManager = new SkillManager(this);
@@ -61,100 +61,114 @@ public class Player : Unit {
 		}
 		this.Inventory.addItemToInventory(new Item("Immolate"));
 		this.Inventory.addItemToInventory(new Item("Immolate"));
-
+		this.StartCoroutine(MainCameraFollowPlayer());
 	}
 
 	private bool IsInvintoryOpen = false;
+	private float ATUsUsed = 0;
+	public override float ProcessTurn(){
+		ATUsUsed = 0;
+		if(!IsInputLocked){
+			Vector3 MousePosition = Input.mousePosition;;
+			if(IsInventoryOpen){
+				if(Input.GetKey(KeyCode.I)){
+					if(GameManager.ImageInventoryManager.IsInventoryOpen()){
+						Debug.Log("Close Inventory");
+						this.GameManager.ImageInventoryManager.ToggleInventory();
+						this.IsInventoryOpen = false;
+					}
+				}
+				if(Input.GetMouseButtonDown(0)){
+					//Select Skill
+					Item i = this.GameManager.ImageInventoryManager.GetItemRefAtVectorPos(MousePosition);
+					if(i != null){
+						Debug.Log(i.Name);
+					} else {
+						Debug.Log("No Item At Pos");
+					}
+				}
+			} else {
+				//inputs
+				CastTarget = MousePosition;
+				if(Input.GetKey(KeyCode.W)){
+					GameAction a = ActionsManager.GetGameAction("Up");
+					a.action();
+					ATUsUsed += 1;
+				}
+				if(Input.GetKey(KeyCode.S)){
+					GameAction a = ActionsManager.GetGameAction("Down");
+					a.action();
+					ATUsUsed += 1;
+				}
+				if(Input.GetKey(KeyCode.A)){
+					GameAction a = ActionsManager.GetGameAction("Left");
+					a.action();
+					ATUsUsed += 1;
+				}
+				if(Input.GetKey(KeyCode.D)){
+					GameAction a = ActionsManager.GetGameAction("Right");
+					a.action();
+					ATUsUsed += 1;
+				}
+				if(Input.GetMouseButtonDown(0)){
+					//Select Skill
+					ImageSkillBarManager skillbar = this.GameManager.ImageSkillBarManager;
+					bool HasHitSkill = false;
+					foreach(Image SkillImage in skillbar.GetImages()){
+						if(RectTransformUtility.RectangleContainsScreenPoint(SkillImage.rectTransform,CastTarget,Camera.main)){
+							HasHitSkill = true;
+							foreach(ImageSkillBarManager.SkillMapKey k in skillbar.SkillMap.Keys){
+								if(skillbar.SkillMap[k] == SkillImage){
+									ActionsManager.AddGameAction(
+										"Cast",
+										new GameActionCastSkillByNameToPointTarget(k.s,this as Unit)
+									);
+									SetCurrentSkillToIndex(k.index);
+								}
 
-	public void Update(){
-		Vector3 MousePosition = Input.mousePosition;;
-		if(IsInventoryOpen){
-			if(Input.GetKey(KeyCode.I)){
-				if(GameManager.ImageInventoryManager.IsInventoryOpen()){
-					Debug.Log("Close Inventory");
-					this.GameManager.ImageInventoryManager.ToggleInventory();
-					this.IsInventoryOpen = false;
-				}
-			}
-			if(Input.GetMouseButtonDown(0)){
-				//Select Skill
-				Item i = this.GameManager.ImageInventoryManager.GetItemRefAtVectorPos(MousePosition);
-				if(i != null){
-					Debug.Log(i.Name);
-				} else {
-					Debug.Log("No Item At Pos");
-				}
-			}
-		} else {
-			//inputs
-			CastTarget = MousePosition;
-			if(Input.GetKey(KeyCode.W)){
-				GameAction a = ActionsManager.GetGameAction("Up");
-				a.action();
-			}
-			if(Input.GetKey(KeyCode.S)){
-				GameAction a = ActionsManager.GetGameAction("Down");
-				a.action();
-			}
-			if(Input.GetKey(KeyCode.A)){
-				GameAction a = ActionsManager.GetGameAction("Left");
-				a.action();
-			}
-			if(Input.GetKey(KeyCode.D)){
-				GameAction a = ActionsManager.GetGameAction("Right");
-				a.action();
-			}
-			if(Input.GetMouseButtonDown(0)){
-				//Select Skill
-				ImageSkillBarManager skillbar = this.GameManager.ImageSkillBarManager;
-				bool HasHitSkill = false;
-				foreach(Image SkillImage in skillbar.GetImages()){
-					if(RectTransformUtility.RectangleContainsScreenPoint(SkillImage.rectTransform,CastTarget,Camera.main)){
-						HasHitSkill = true;
-						foreach(ImageSkillBarManager.SkillMapKey k in skillbar.SkillMap.Keys){
-							if(skillbar.SkillMap[k] == SkillImage){
-								ActionsManager.AddGameAction(
-									"Cast",
-									new GameActionCastSkillByNameToPointTarget(k.s,this as Unit)
-								);
-								SetCurrentSkillToIndex(k.index);
 							}
-
+							break;
 						}
-						break;
+					}
+					//Cast Spell
+					if(HasHitSkill == false){
+						GameAction a = ActionsManager.GetGameAction("Cast");
+						ATUsUsed += 1;
+						if(a != null){
+							a.action();
+						}
 					}
 				}
-				//Cast Spell
-				if(HasHitSkill == false){
-					GameAction a = ActionsManager.GetGameAction("Cast");
-					if(a != null){
-						a.action();
+				if(Input.GetKey(KeyCode.Alpha1)){
+					SetCurrentSkillToIndex(0);
+				}
+				if(Input.GetKey(KeyCode.Alpha2)){
+					SetCurrentSkillToIndex(1);
+				}
+				if(Input.GetKey(KeyCode.Alpha3)){
+					SetCurrentSkillToIndex(2);
+				}
+				if(Input.GetKey(KeyCode.Alpha4)){
+					SetCurrentSkillToIndex(3);
+				}
+				if(Input.GetKey(KeyCode.Alpha5)){
+					SetCurrentSkillToIndex(4);
+				}
+				if(Input.GetKey(KeyCode.I)){
+					if(this.GameManager.ImageInventoryManager.IsInventoryClosed()){
+						Debug.Log("Open Inventory");
+						this.GameManager.ImageInventoryManager.ToggleInventory();
+						this.IsInventoryOpen = true;
 					}
 				}
 			}
-			if(Input.GetKey(KeyCode.Alpha1)){
-				SetCurrentSkillToIndex(0);
-			}
-			if(Input.GetKey(KeyCode.Alpha2)){
-				SetCurrentSkillToIndex(1);
-			}
-			if(Input.GetKey(KeyCode.Alpha3)){
-				SetCurrentSkillToIndex(2);
-			}
-			if(Input.GetKey(KeyCode.Alpha4)){
-				SetCurrentSkillToIndex(3);
-			}
-			if(Input.GetKey(KeyCode.Alpha5)){
-				SetCurrentSkillToIndex(4);
-			}
-			if(Input.GetKey(KeyCode.I)){
-				if(this.GameManager.ImageInventoryManager.IsInventoryClosed()){
-					Debug.Log("Open Inventory");
-					this.GameManager.ImageInventoryManager.ToggleInventory();
-					this.IsInventoryOpen = true;
-				}
-			}
-			//camera
+		}
+
+		return ATUsUsed;
+	}
+
+	public IEnumerator MainCameraFollowPlayer(){
+		while(true){
 			Camera.main.transform.position = new Vector3(
 				this.transform.position.x,
 				this.transform.position.y+10,
@@ -170,6 +184,7 @@ public class Player : Unit {
 				0.1f,
 				this.transform.position.z
 			);
+			yield return null;
 		}
 	}
 

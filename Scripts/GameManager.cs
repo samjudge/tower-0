@@ -125,6 +125,8 @@ public class GameManager : MonoBehaviour {
 		Destroy(e.gameObject);
 	}
 
+	public TurnManager TurnManager;
+
 	void Update () {
 		if(ImageStatusManager == null && Player != null){
 			Player p = Player.GetComponent<Player>() as Player;
@@ -152,6 +154,17 @@ public class GameManager : MonoBehaviour {
 			(this.SkillSelector.GetComponent<RectTransform>() as RectTransform).localPosition = this.SkillBarPlaceholders[0].rectTransform.localPosition;
 			p.SetCurrentSkillToIndex(0);
 
+		}
+		if(TurnManager == null){
+			if(Player != null){
+				Player p = Player.GetComponent<Player>();
+				if(p != null){
+					TurnManager = new TurnManager(this);
+				}
+			}
+		}
+		if(TurnManager != null){
+			TurnManager.ProcessAllTurns();
 		}
 	}
 }

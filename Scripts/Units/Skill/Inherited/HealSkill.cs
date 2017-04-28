@@ -8,7 +8,7 @@ public class HealSkill : PointTargetSkill {
  	public HealSkill (Unit Caster, Vector3 PointTarget) : base(Caster, PointTarget)
 	{
 		this.action = delegate(){
-			TimedStatus status = new TimedStatus("Heal",2f,Caster);
+			ATUTimedStatus status = new ATUTimedStatus("Heal",5f,Caster.GameManager.TurnManager,Caster);
 			status.StartEffect = delegate(){
 				Renderer render = Caster.gameObject.GetComponent<Renderer>() as Renderer;
 				render.material.color = new Color(render.material.color.r-0.2f,render.material.color.g-0.2f,render.material.color.b);

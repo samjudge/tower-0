@@ -31,7 +31,7 @@ public class ImmolateSkill : PointTargetSkill {
 				}
 				GameObject g = EnemyHit.collider.gameObject;
 				Unit u = g.GetComponent<Unit>();
-				TimedStatus status = new TimedStatus("Immolate",4,u);
+				ATUTimedStatus status = new ATUTimedStatus("Immolate",4,u.GameManager.TurnManager,u);
 				status.TickTime = 0.1f;
 				status.StartEffect = delegate(){
 					Renderer render = u.GetComponent<Renderer>();

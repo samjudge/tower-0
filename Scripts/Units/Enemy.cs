@@ -14,6 +14,7 @@ public abstract class Enemy : Unit {
 	}
 
 	public abstract void OnDeath();
+	public float ATUsRemaining = 0f;
 
 	protected IEnumerator HPWatcher(){
 		while(this.Hp > 0){

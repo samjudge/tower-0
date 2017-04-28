@@ -17,9 +17,25 @@ public class StatusManager
 		action.Begin();
 	}
 
+	public void AddStatus(ATUTimedStatus action){
+		action.Owner.StartCoroutine(ManageStatusInList(action));
+		this.Statuses.Add(action);
+		action.Begin();
+	}
+
 	public void AddStatus(Status action){
 		this.Statuses.Add(action);
 		action.Begin();
+	}
+
+	public IEnumerator ManageStatusInList(ATUTimedStatus s){
+		while(s.RemainingDuration >= 0){
+			yield return null;
+			if(s.RemainingDuration <= 0){
+				Debug.Log ("Removing from manager");
+				Statuses.Remove(s);
+			}
+		}
 	}
 
 	public IEnumerator ManageStatusInList(TimedStatus s){

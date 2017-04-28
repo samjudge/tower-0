@@ -10,7 +10,7 @@ public class GameActionMove : GameAction {
 	public GameActionMove (Unit p, float dx, float dz){
 		this.p = p;
 		this.action = delegate(){
-			if(p.IsCurrentlyMoving == false){
+			if(p.IsInputLocked == false){
 				this.target = new Vector3(
 					p.transform.position.x+dx,
 					p.transform.position.y,
@@ -23,7 +23,7 @@ public class GameActionMove : GameAction {
 					Debug.DrawLine(p.transform.position, hit.transform.position,Color.red,0f);
 				} else {
 					Debug.DrawLine(p.transform.position, this.target,Color.green,0f);
-					p.IsCurrentlyMoving = true;
+					p.IsInputLocked = true;
 					p.StartCoroutine(Move());
 				}
 
@@ -40,11 +40,11 @@ public class GameActionMove : GameAction {
 				(p.transform.position - target).sqrMagnitude;
 			y += Time.deltaTime;
 			p.transform.position =
-				Vector3.Lerp(origin,target,y*3);
+				Vector3.Lerp(origin,target,y*2);
 			yield return null;
 		}
 		p.transform.position = target;
-		p.IsCurrentlyMoving = false;
+		p.IsInputLocked = false;
 	}
 }
 

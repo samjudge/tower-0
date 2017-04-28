@@ -10,7 +10,7 @@ public class GameActionAttackMove : GameAction {
 	public GameActionAttackMove (Player p, float dx, float dz){
 		this.p = p;
 		this.action = delegate(){
-			if(p.IsCurrentlyMoving == false){
+			if(p.IsInputLocked == false){
 				this.target = new Vector3(
 					p.transform.position.x+dx,
 					p.transform.position.y,
@@ -33,15 +33,15 @@ public class GameActionAttackMove : GameAction {
 							a = prop.ActionsManager.GetGameAction("PhysicalHit") as GameAction;
 							GameActionMeleeOpenDoor aOpen = prop.ActionsManager.GetGameAction("PhysicalHit") as GameActionMeleeOpenDoor;
 							if(aOpen.isOpen){
-								p.IsCurrentlyMoving = true;
+								p.IsInputLocked = true;
 								p.StartCoroutine(Move());
 							} else {
-								p.IsCurrentlyMoving = true;
+								p.IsInputLocked = true;
 								p.StartCoroutine(Attack());
 							}
 						} else {
 							a = e.ActionsManager.GetGameAction("PhysicalHit") as GameAction;
-							p.IsCurrentlyMoving = true;
+							p.IsInputLocked = true;
 							p.StartCoroutine(Attack());
 						}
 						if(a != null){
@@ -51,7 +51,7 @@ public class GameActionAttackMove : GameAction {
 						}
 					} else {
 						Debug.DrawLine(p.transform.position, this.target,Color.green,1f);
-						p.IsCurrentlyMoving = true;
+						p.IsInputLocked = true;
 						p.StartCoroutine(Move());
 					}
 				}
@@ -86,7 +86,7 @@ public class GameActionAttackMove : GameAction {
 			yield return null;
 		}
 		p.transform.position = target;
-		p.IsCurrentlyMoving = false;
+		p.IsInputLocked = false;
 	}
 
 	private IEnumerator Move(){
@@ -102,7 +102,7 @@ public class GameActionAttackMove : GameAction {
 			yield return null;
 		}
 		p.transform.position = target;
-		p.IsCurrentlyMoving = false;
+		p.IsInputLocked = false;
 	}
 }
 

@@ -27,15 +27,16 @@ public class ChickenEnemy : Enemy {
 		if (!renderer.material.HasProperty("_Color")){
 			renderer.material.SetColor("_Color", Color.white);
 		}
+		ATUsRemaining = 0;
 	}
 
-	public void Update(){
+	public override float ProcessTurn(){
 		if(this.CheckIsInLOSOf(GameManager.Player.GetComponent<Unit>() as Unit)){
 			ArrayList statuses = this.StatusManager.GetStatuses();
 			if(statuses.Count == 0){
 				this.ActionsManager.GetGameAction("Cast").action();
 			}
-			if(this.IsCurrentlyMoving == false){
+			if(this.IsInputLocked == false){
 				this.AI = new AStarPathfindNoWalls(this.GameManager.Player.transform.position,new Vector3(1,0,1));
 				AStarPathfind.Node n = new AStarPathfind.Node();
 				n.parent = null;
@@ -76,6 +77,7 @@ public class ChickenEnemy : Enemy {
 				this.ActionsManager.GetGameAction("Move").action();
 			}
 		};
+		return 1f;
 	}
 
 	override public void OnDeath(){
