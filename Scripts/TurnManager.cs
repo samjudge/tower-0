@@ -20,7 +20,7 @@ public class TurnManager {
 
 	public TurnManager (GameManager gm) {
 		this.Enemies = gm.enemies;
-		this.p = gm.Player.GetComponent<Player>();
+		this.p = gm.GetPlayer().GetComponent<Player>();
 	}
 
 	public void ProcessAllTurns(){

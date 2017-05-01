@@ -13,6 +13,7 @@ public class ImmolateSkill : PointTargetSkill {
 				this.PointTarget.y,
 				this.PointTarget.z
 			);
+			Debug.DrawLine(this.PointTarget, Caster.transform.position, Color.magenta, 5f);
 			//cast to see where it intersects
 			LayerMask mask = LayerMask.GetMask("Walls");
 			RaycastHit WallHit = new RaycastHit();
@@ -20,7 +21,6 @@ public class ImmolateSkill : PointTargetSkill {
 			mask = LayerMask.GetMask("Enemies");
 			RaycastHit EnemyHit = new RaycastHit();
 			Physics.Linecast(Caster.transform.position, target, out EnemyHit, mask);
-			Debug.DrawLine(target, Caster.transform.position, Color.magenta, 5f);
 			if(EnemyHit.transform != null){
 				float enemyDistance = (Caster.transform.position - EnemyHit.transform.position).sqrMagnitude;
 				if(WallHit.transform != null){

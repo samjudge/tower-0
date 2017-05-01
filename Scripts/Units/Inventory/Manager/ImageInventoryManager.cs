@@ -4,26 +4,23 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ImageInventoryManager
+public class ImageInventoryManager : MonoBehaviour
 {
-	public Inventory Inventory {get;set;}
-	public GUIImageFactory GuiFactory {get;set;}
+	private Inventory Inventory;
 
+	public GUIImageFactory GuiFactory;
+	public Image[] Placeholders;
 	public bool IsOpen = false;
-	public ArrayList Placeholders;
-	public Image InventoryOverlay;
+	public bool IsRunning = false;
 
-	public ImageInventoryManager(Inventory Inventory, GUIImageFactory GuiFactory, Image InventoryOverlay, Image[] InventoryImagePlaceholders){
-		this.Inventory = Inventory;
-		this.GuiFactory = GuiFactory;
-		this.Placeholders = new ArrayList(InventoryImagePlaceholders);
-		this.InventoryOverlay = InventoryOverlay;
-//		Color transparent = InventoryOverlay.color;
-//		transparent.a = 0;
-//		InventoryOverlay.color = transparent;
-//		foreach(Image c in this.Placeholders){
-//			c.color = transparent;
-//		}
+
+	public Inventory GetInventory(){
+		return this.Inventory;
+	}
+
+	public void SetInventoryAndInit(Inventory i){
+		this.Inventory = i;
+		this.IsRunning = true;
 	}
 	
 	private Image InitalizeItemImage(Item i, int index){
@@ -88,32 +85,25 @@ public class ImageInventoryManager
 
 	public void OpenInventory(){
 		if(CanOpenInventory()){
-			Animator animator = InventoryOverlay.GetComponent<Animator>() as Animator;
+			Animator animator = this.GetComponent<Animator>() as Animator;
 			animator.SetTrigger("Opening");
 			IsCurrentlyAnimating = true;
-			Inventory.Owner.StartCoroutine(SetIsOpenStatusOnAnimationEnd(InventoryOverlay,true));
+			Inventory.Owner.StartCoroutine(SetIsOpenStatusOnAnimationEnd(true));
 			Inventory.Owner.StartCoroutine(DrawInventory());
 		}
 	}
 
 	public void CloseInventory(){
 		if(CanCloseInventory()){
-			Animator animator = InventoryOverlay.GetComponent<Animator>() as Animator;
+			Animator animator = this.GetComponent<Animator>() as Animator;
 			animator.SetTrigger("Closing");
 			IsCurrentlyAnimating = true;
-			Inventory.Owner.StartCoroutine(SetIsOpenStatusOnAnimationEnd(InventoryOverlay,false));
+			Inventory.Owner.StartCoroutine(SetIsOpenStatusOnAnimationEnd(false));
 		}
 	}
 
 	private IEnumerator DrawInventory(){
-		//
-//		Color opaque = InventoryOverlay.color;
-//		opaque.a = 1f;
-//		InventoryOverlay.color = opaque;
-//		foreach(Image c in this.Placeholders){
-//			c.color = opaque;
-//		}
-		Animator animator = InventoryOverlay.GetComponent<Animator>() as Animator;
+		Animator animator = this.GetComponent<Animator>() as Animator;
 		while(IsCurrentlyAnimating){
 			//Debug.Log ("Still Animating");
 			yield return null;
@@ -127,6 +117,15 @@ public class ImageInventoryManager
 			items.Add(imk,i);
 		}
 		while(IsOpen){
+			//update held item position
+//			Debug.Log (Input.mousePosition);
+//			Debug.Log (Camera.main.ScreenToWorldPoint(Input.mousePosition));
+			if(this.HeldItemImage != null){
+//				Vector3 mousePosition = Input.mousePosition;
+//				mousePosition.z = 100;
+//				mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
+//				this.HeldItemImage.rectTransform.localPosition = new Vector3(mousePosition.x,mousePosition.z,mousePosition.y);
+			}
 			for(int x = 0; x < Inventory.Slots.Count; x++){
 				Item item = Inventory.Slots[x] as Item;
 				foreach(ItemMapKey imk in items.Keys){
@@ -154,9 +153,9 @@ public class ImageInventoryManager
 	}
 	
 	public Item GetItemRefAtVectorPos(Vector3 CastTo){
-		Debug.Log (CastTo);
+		//Debug.Log (CastTo);
 		bool HasHitSkill = false;
-		for(int x = 0; x < this.Placeholders.Count ; x++){
+		for(int x = 0; x < this.Placeholders.Length ; x++){
 			Image Placeholder = this.Placeholders[x] as Image;
 			if(RectTransformUtility.RectangleContainsScreenPoint(Placeholder.rectTransform,CastTo,Camera.main)){
 				HasHitSkill = true;
@@ -170,11 +169,28 @@ public class ImageInventoryManager
 		}
 		return null;
 	}
-	
+
+	private Item HeldItem = null;
+	private Image HeldItemImage = null;
+
+	public void SetHeldItem(Item i){
+		for(int x = Inventory.Slots.Count-1 ; x >= 0 ; x--){
+			Item thatItem = Inventory.Slots[x] as Item;
+			if(thatItem == i){
+				Inventory.Slots[x] = null;
+				this.HeldItem = i;
+				Image img = GuiFactory.CreateImage(i.Name,new Vector3(0f,0f,-6f));
+				(img.GetComponent<Animator>() as Animator).enabled = false;
+				img.transform.SetParent(this.Inventory.Owner.GameManager.Canvas.GetComponent<RectTransform>(), false);
+				this.HeldItemImage = img;
+			}
+		}
+	}
+
 	private bool IsCurrentlyAnimating = false;
 
-	private IEnumerator SetIsOpenStatusOnAnimationEnd(Image i, bool VisiblityState){
-		Animator a = i.GetComponent<Animator>() as Animator;
+	private IEnumerator SetIsOpenStatusOnAnimationEnd(bool VisiblityState){
+		Animator a = this.GetComponent<Animator>() as Animator;
 		while(a.GetCurrentAnimatorClipInfo(0).Length < 1){
 			yield return null;
 		}

@@ -12,7 +12,7 @@ public class PointTargetSkill : Skill{
 		LayerMask mask = LayerMask.GetMask("Walls","Floors");
 		RaycastHit Hit = new RaycastHit();
 		Ray ray = Camera.main.ScreenPointToRay(PointTarget);
-		Physics.Raycast(ray, out Hit);
+		Physics.Raycast(ray, out Hit, Mathf.Infinity, mask);
 		if(Hit.transform != null){
 			PointTarget = Hit.point;
 		} else {

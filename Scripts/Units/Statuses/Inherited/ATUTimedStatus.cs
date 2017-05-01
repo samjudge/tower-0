@@ -45,7 +45,6 @@ public class ATUTimedStatus : Status
 			yield return null;
 		}
 		if(EndEffect != null){
-			Debug.Log ("Destroying.. RD : " + RemainingDuration);
 			EndEffect();
 		}
 		yield return null;

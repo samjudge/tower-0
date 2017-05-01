@@ -11,23 +11,22 @@ public class GameManager : MonoBehaviour {
 	public GUIImageFactory GuiFactory;
 	public UnitFactory UnitFactory;
 	public GamePropFactory GamePropFactory;
-	public Canvas Canvas;
+
+	public Canvas Canvas; //for in-game ui (static)
 	public CanvasGroup CanvasStatuses;
-	public Canvas Overlay;
+
+	public Canvas Overlay; //for hp bars
 	
 	public ImageStatusManager ImageStatusManager;
-
-	public ImageSkillBarManager ImageSkillBarManager;
-	public Image[] SkillBarPlaceholders;
-	public Image SkillBarImage;
-
-	public ImageInventoryManager ImageInventoryManager;
-	public Image[] InventoryItemPlaceholders;
-	public Image InventoryOverlayImage;
+	
+	private ImageSkillBarManager ImageSkillBarManager;
+	public GameObject UISkillBar;
+	
+	private ImageInventoryManager ImageInventoryManager;
+	public GameObject UIInventory;
 
 	public GameObject PlayerPrefab;
-	public GameObject SkillSelector;
-	public GameObject Player;
+	private GameObject Player;
 
 	//0 = wall
 	//1 = floor
@@ -42,6 +41,18 @@ public class GameManager : MonoBehaviour {
 	public ArrayList enemies {get;set;}
 	public ArrayList gameobjects {get;set;}
 
+	public GameObject GetPlayer(){
+		return this.Player;
+	}
+
+	public ImageSkillBarManager GetImageSkillBarManager(){
+		return this.ImageSkillBarManager;
+	}
+
+	public ImageInventoryManager GetImageInventoryManager(){
+		return this.ImageInventoryManager;
+	}
+
 	private IEnumerator MapLoadCallback(){
 		DungeonGenerator dg = new DungeonGenerator();
 		while(DungeonGenerator.hasLoaded == false){
@@ -51,7 +62,6 @@ public class GameManager : MonoBehaviour {
 		for(int z = 0; z < mapHeight ; z++){
 			for(int x = 0; x < mapWidth; x++){
 				DungeonGenerator.Tile tileCode = map[x + z*mapWidth] as DungeonGenerator.Tile;
-				GameObject o;
 				switch(tileCode.tag){
 					case "Blackwall":
 						walls.Add(WallFactory.CreateWall("Blackwall",new Vector3(x,0,z)));
@@ -112,7 +122,8 @@ public class GameManager : MonoBehaviour {
 		floors = new ArrayList();
 		enemies = new ArrayList();
 		gameobjects = new ArrayList();
-		Canvas.overrideSorting = true;
+		this.ImageSkillBarManager = this.UISkillBar.GetComponent<ImageSkillBarManager>();
+		this.ImageInventoryManager = this.UIInventory.GetComponent<ImageInventoryManager>();
 		this.StartCoroutine(MapLoadCallback());
 	}
 
@@ -135,23 +146,15 @@ public class GameManager : MonoBehaviour {
 				GuiFactory
 			);
 		}
-		if(ImageInventoryManager == null && Player != null){
+		if(!ImageInventoryManager.IsRunning && Player != null){
 			Player p = Player.GetComponent<Player>() as Player;
-			ImageInventoryManager = new ImageInventoryManager(
-				p.Inventory,
-				GuiFactory,
-				InventoryOverlayImage,
-				InventoryItemPlaceholders
-			);
+			ImageInventoryManager.SetInventoryAndInit(p.Inventory);
 		}
-		if(ImageSkillBarManager == null && Player != null){
+		if(!ImageSkillBarManager.IsRunning && Player != null){
 			Player p = Player.GetComponent<Player>() as Player;
-			ImageSkillBarManager = new ImageSkillBarManager(
-				p.SkillManager,
-				GuiFactory,
-				SkillBarPlaceholders
-			);
-			(this.SkillSelector.GetComponent<RectTransform>() as RectTransform).localPosition = this.SkillBarPlaceholders[0].rectTransform.localPosition;
+			ImageSkillBarManager.SetSkillManagerAndInit(p.SkillManager);
+			(ImageSkillBarManager.SkillSelector.GetComponent<RectTransform>() as RectTransform).localPosition =
+				this.ImageSkillBarManager.Placeholders[0].rectTransform.localPosition;
 			p.SetCurrentSkillToIndex(0);
 
 		}

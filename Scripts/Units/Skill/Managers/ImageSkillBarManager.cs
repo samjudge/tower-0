@@ -4,19 +4,30 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
-public class ImageSkillBarManager
+public class ImageSkillBarManager : MonoBehaviour
 {
-	public SkillManager SkillManager {get;set;}
-	public GUIImageFactory GuiFactory {get;set;}
-	public bool IsRunning = true;
-	public Dictionary<SkillMapKey,Image> SkillMap;
-	public ArrayList Placeholders;
+	private SkillManager SkillManager;
 
-	public ImageSkillBarManager(SkillManager SkillManager,GUIImageFactory GuiFactory, Image[] SkillImagePlaceholders){
-		this.SkillManager = SkillManager;
-		this.GuiFactory = GuiFactory;
-		this.Placeholders = new ArrayList(SkillImagePlaceholders);
-		SkillManager.Owner.StartCoroutine(DrawSkills());
+	public GUIImageFactory GuiFactory;
+	public Image[] Placeholders;
+	public bool IsRunning = false;
+
+	public GameObject SkillSelector;
+
+	private Dictionary<SkillMapKey,Image> SkillMap;
+
+	public Dictionary<SkillMapKey,Image> GetSkillMap(){
+		return SkillMap;
+	}
+
+	public SkillManager GetSkillManager(){
+		return SkillManager;
+	}
+
+	public void SetSkillManagerAndInit(SkillManager s){
+		this.SkillManager = s;
+		this.IsRunning = true;
+		this.SkillManager.Owner.StartCoroutine(DrawSkills());
 	}
 	
 	private Image InitalizeSkill(SkillMapKey s){

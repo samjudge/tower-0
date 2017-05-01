@@ -16,11 +16,13 @@ public class ImageStatusManager
 		GuiFactory.StartCoroutine(DrawStatuses());
 	}
 
+	private const int STATUS_SIZE = 160;
+
 	private Image InitalizeImage(Status s){
 		Image i = GuiFactory.CreateImage(s.Name,new Vector3(0f,0f,-6f));
-		i.rectTransform.sizeDelta = new Vector3(45,49,3);
+		i.rectTransform.sizeDelta = new Vector3(STATUS_SIZE,STATUS_SIZE,3);
 		i.transform.SetParent(s.Owner.GameManager.CanvasStatuses.transform, false);
-		i.GetComponent<RectTransform>().localPosition = new Vector3((StatusManager.Statuses.Count*64),0,0);
+		i.GetComponent<RectTransform>().localPosition = new Vector3((StatusManager.Statuses.Count*STATUS_SIZE),0,0);
 		Animator a = i.GetComponent<Animator>() as Animator;
 		a.Play("StatusAnimationStart");
 		return i;
@@ -95,7 +97,7 @@ public class ImageStatusManager
 				StatusMapKey s = keys[x] as StatusMapKey;
 				Image i = StatusMap[s];
 				Animator a = i.GetComponent<Animator>() as Animator;
-				Vector3 targetPosition = new Vector3((s.index*64),0,1);
+				Vector3 targetPosition = new Vector3((s.index*STATUS_SIZE),0,1);
 				s.s.Owner.StartCoroutine(UpdatePosition(i,targetPosition));
 			}
 			yield return null;

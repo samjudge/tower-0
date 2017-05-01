@@ -29,7 +29,7 @@ public class DummyEnemy : Enemy {
 	}
 
 	public override float ProcessTurn(){
-		if(this.CheckIsInLOSOf(GameManager.Player.GetComponent<Unit>() as Unit)){
+		if(this.CheckIsInLOSOf(GameManager.GetPlayer().GetComponent<Unit>() as Unit)){
 //			ArrayList statuses = this.StatusManager.GetStatuses();
 //			if(statuses.Count == 0){
 //				this.ActionsManager.GetGameAction("Cast").action();

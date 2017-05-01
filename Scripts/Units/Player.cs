@@ -66,32 +66,34 @@ public class Player : Unit {
 
 	private bool IsInvintoryOpen = false;
 	private float ATUsUsed = 0;
+
 	public override float ProcessTurn(){
 		ATUsUsed = 0;
 		if(!IsInputLocked){
-			Vector3 MousePosition = Input.mousePosition;;
+			Vector3 MousePosition = Input.mousePosition;
 			if(IsInventoryOpen){
 				if(Input.GetKey(KeyCode.I)){
-					if(GameManager.ImageInventoryManager.IsInventoryOpen()){
+					if(GameManager.GetImageInventoryManager().IsInventoryOpen()){
 						Debug.Log("Close Inventory");
-						this.GameManager.ImageInventoryManager.ToggleInventory();
+						this.GameManager.GetImageInventoryManager().ToggleInventory();
 						this.IsInventoryOpen = false;
 					}
 				}
-				if(Input.GetMouseButtonDown(0)){
-					//Select Skill
-					Item i = this.GameManager.ImageInventoryManager.GetItemRefAtVectorPos(MousePosition);
-					if(i != null){
-						Debug.Log(i.Name);
-					} else {
-						Debug.Log("No Item At Pos");
-					}
-				}
+//				if(Input.GetMouseButtonDown(0)){
+//					//Hold Item
+//					Item i = this.GameManager.GetImageInventoryManager().GetItemRefAtVectorPos(MousePosition);
+//					if(i != null){
+//						this.GameManager.GetImageInventoryManager().SetHeldItem(i);
+//					} else {
+//						Debug.Log("No Item At Pos");
+//					}
+//				}
 			} else {
 				//inputs
-				CastTarget = MousePosition;
+				this.CastTarget = MousePosition;
 				if(Input.GetKey(KeyCode.W)){
 					GameAction a = ActionsManager.GetGameAction("Up");
+					Debug.Log("Up");
 					a.action();
 					ATUsUsed += 1;
 				}
@@ -112,24 +114,25 @@ public class Player : Unit {
 				}
 				if(Input.GetMouseButtonDown(0)){
 					//Select Skill
-					ImageSkillBarManager skillbar = this.GameManager.ImageSkillBarManager;
+					//ImageSkillBarManager skillbar = this.GameManager.GetImageSkillBarManager;
 					bool HasHitSkill = false;
-					foreach(Image SkillImage in skillbar.GetImages()){
-						if(RectTransformUtility.RectangleContainsScreenPoint(SkillImage.rectTransform,CastTarget,Camera.main)){
-							HasHitSkill = true;
-							foreach(ImageSkillBarManager.SkillMapKey k in skillbar.SkillMap.Keys){
-								if(skillbar.SkillMap[k] == SkillImage){
-									ActionsManager.AddGameAction(
-										"Cast",
-										new GameActionCastSkillByNameToPointTarget(k.s,this as Unit)
-									);
-									SetCurrentSkillToIndex(k.index);
-								}
-
-							}
-							break;
-						}
-					}
+//					foreach(Image SkillImage in skillbar.GetImages()){
+//						Debug.Log(RectTransformUtility.RectangleContainsScreenPoint(SkillImage.rectTransform,CastTarget,Camera.main));
+//						if(RectTransformUtility.RectangleContainsScreenPoint(SkillImage.rectTransform,CastTarget,Camera.main)){
+//							HasHitSkill = true;
+//							foreach(ImageSkillBarManager.SkillMapKey k in skillbar.SkillMap.Keys){
+//								if(skillbar.SkillMap[k] == SkillImage){
+//									ActionsManager.AddGameAction(
+//										"Cast",
+//										new GameActionCastSkillByNameToPointTarget(k.s,this as Unit)
+//									);
+//									SetCurrentSkillToIndex(k.index);
+//								}
+//
+//							}
+//							break;
+//						}
+//					}
 					//Cast Spell
 					if(HasHitSkill == false){
 						GameAction a = ActionsManager.GetGameAction("Cast");
@@ -155,9 +158,8 @@ public class Player : Unit {
 					SetCurrentSkillToIndex(4);
 				}
 				if(Input.GetKey(KeyCode.I)){
-					if(this.GameManager.ImageInventoryManager.IsInventoryClosed()){
-						Debug.Log("Open Inventory");
-						this.GameManager.ImageInventoryManager.ToggleInventory();
+					if(this.GameManager.GetImageInventoryManager().IsInventoryClosed()){
+						this.GameManager.GetImageInventoryManager().ToggleInventory();
 						this.IsInventoryOpen = true;
 					}
 				}
@@ -189,22 +191,22 @@ public class Player : Unit {
 	}
 
 	public void SetCurrentSkillToIndex(int i){
-		ImageSkillBarManager skillbar = this.GameManager.ImageSkillBarManager;
+		ImageSkillBarManager Skillbar = this.GameManager.UISkillBar.GetComponent<ImageSkillBarManager>();
 		ImageSkillBarManager.SkillMapKey[] SkillMapKeys =
-			new ImageSkillBarManager.SkillMapKey[skillbar.SkillMap.Keys.Count];
-		skillbar.SkillMap.Keys.CopyTo(SkillMapKeys,0);
+			new ImageSkillBarManager.SkillMapKey[Skillbar.GetSkillMap().Keys.Count];
+		Skillbar.GetSkillMap().Keys.CopyTo(SkillMapKeys,0);
 		foreach(ImageSkillBarManager.SkillMapKey k in SkillMapKeys){
 			if(k.index == i){
 				ActionsManager.AddGameAction(
 					"Cast",
 					new GameActionCastSkillByNameToPointTarget(k.s,this as Unit)
 				);
-				Vector3 t = GameManager.SkillBarPlaceholders[i].rectTransform.localPosition;
-				SkillSelector s = (GameManager.SkillSelector.GetComponent<SkillSelector>() as SkillSelector);
+				Vector3 target = Skillbar.Placeholders[i].rectTransform.localPosition;
+				SkillSelector s = (Skillbar.SkillSelector.GetComponent<SkillSelector>() as SkillSelector);
 				s.target = new Vector3(
-					t.x,
-					t.y,
-					t.z
+					target.x,
+					target.y,
+					target.z
 				);
 			}
 		}
