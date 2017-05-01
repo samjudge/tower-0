@@ -24,7 +24,12 @@ public class ImageInventoryManager : MonoBehaviour
 	}
 	
 	private Image InitalizeItemImage(Item i, int index){
-		Image img = GuiFactory.CreateImage(i.Name,new Vector3(0f,0f,-6f));
+		Image img = null;
+		if(i != null){
+			img = GuiFactory.CreateImage(i.Name,new Vector3(0f,0f,-6f));
+		} else {
+			img = GuiFactory.CreateImage("Placeholder",new Vector3(0f,0f,-6f));
+		}
 		Image placeholder = Placeholders[index] as Image;
 		(img.GetComponent<Animator>() as Animator).enabled = false;
 		img.transform.SetParent(placeholder.rectTransform, false);
@@ -109,33 +114,30 @@ public class ImageInventoryManager : MonoBehaviour
 			yield return null;
 		}
 		Dictionary<ItemMapKey, Image> items = new Dictionary<ItemMapKey, Image>();
-		for(int x = 0; x < Inventory.Slots.Count ; x++){
+		for(int x = 0; x < Inventory.GetMaxSlots() ; x++){
 			ItemMapKey imk = new ItemMapKey();
 			imk.index = x;
-			imk.i = Inventory.Slots[x] as Item;
+			imk.i = Inventory.GetItemFromInventory(x);
 			Image i = InitalizeItemImage(imk.i,imk.index);
 			items.Add(imk,i);
 		}
 		while(IsOpen){
 			//update held item position
-//			Debug.Log (Input.mousePosition);
-//			Debug.Log (Camera.main.ScreenToWorldPoint(Input.mousePosition));
 			if(this.HeldItemImage != null){
-//				Vector3 mousePosition = Input.mousePosition;
-//				mousePosition.z = 100;
-//				mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
-//				this.HeldItemImage.rectTransform.localPosition = new Vector3(mousePosition.x,mousePosition.z,mousePosition.y);
+				Vector3 mousePosition = Input.mousePosition;
+				//this.HeldItemImage.rectTransform.position = new Vector3(mousePosition.x,mousePosition.y,mousePosition.z);
 			}
-			for(int x = 0; x < Inventory.Slots.Count; x++){
-				Item item = Inventory.Slots[x] as Item;
-				foreach(ItemMapKey imk in items.Keys){
+			for(int x = 0; x < Inventory.GetMaxSlots(); x++){
+				Item item = Inventory.GetItemFromInventory(x);
+				ArrayList keys = new ArrayList(items.Keys);
+				foreach(ItemMapKey imk in keys){
 					if(imk.index == x){
 						if(imk.i == item){
 							//no problem
 						} else {
 							//item in slot has changed
 							imk.i = item;
-							MonoBehaviour.Destroy(items[imk]);
+							Destroy(items[imk]);
 							if(imk.i != null){
 								items[imk] = InitalizeItemImage(imk.i,imk.index);
 							}
@@ -146,7 +148,9 @@ public class ImageInventoryManager : MonoBehaviour
 			yield return null;
 		}
 		foreach(ItemMapKey imk in items.Keys){
-			MonoBehaviour.Destroy(items[imk].gameObject);
+			if(items[imk].gameObject != null){
+				Destroy(items[imk].gameObject);
+			}
 		}
 		yield return null;
 		
@@ -159,9 +163,9 @@ public class ImageInventoryManager : MonoBehaviour
 			Image Placeholder = this.Placeholders[x] as Image;
 			if(RectTransformUtility.RectangleContainsScreenPoint(Placeholder.rectTransform,CastTo,Camera.main)){
 				HasHitSkill = true;
-				if(x <= this.Inventory.Slots.Count){
-					if(this.Inventory.Slots[x] != null){
-						return this.Inventory.Slots[x] as Item;
+				if(x <= this.Inventory.GetMaxSlots()){
+					if(this.Inventory.GetItemFromInventory(x) != null){
+						return this.Inventory.GetItemFromInventory(x);
 					}
 				}
 				break;
@@ -172,18 +176,34 @@ public class ImageInventoryManager : MonoBehaviour
 
 	private Item HeldItem = null;
 	private Image HeldItemImage = null;
+	private int HeldItemLastIndex = 0;
 
-	public void SetHeldItem(Item i){
-		for(int x = Inventory.Slots.Count-1 ; x >= 0 ; x--){
-			Item thatItem = Inventory.Slots[x] as Item;
-			if(thatItem == i){
-				Inventory.Slots[x] = null;
-				this.HeldItem = i;
-				Image img = GuiFactory.CreateImage(i.Name,new Vector3(0f,0f,-6f));
-				(img.GetComponent<Animator>() as Animator).enabled = false;
-				img.transform.SetParent(this.Inventory.Owner.GameManager.Canvas.GetComponent<RectTransform>(), false);
-				this.HeldItemImage = img;
-			}
+	public int GetHeldItemLastOccupiedIndex(){
+		return this.HeldItemLastIndex;
+	}
+
+	public Item GetHeldItem(){
+		return this.HeldItem;
+	}
+
+	public void ReleaseHeldItem(){
+		this.HeldItem = null;
+		Destroy(this.HeldItemImage);
+		this.HeldItemImage = null;
+		this.HeldItemLastIndex = 0;
+	}
+
+	public void SetHeldItem(int x){
+		Item i = Inventory.GetItemFromInventory(x);
+		if(i != null){
+			Inventory.SetItemInInvenotry(null,x);
+			this.HeldItem = i;
+			this.HeldItemLastIndex = x;
+			Image img = GuiFactory.CreateImage(i.Name,new Vector3(0f,0f,-6f));
+			(img.GetComponent<Animator>() as Animator).enabled = false;
+			img.transform.SetParent(this.Inventory.Owner.GameManager.Canvas.GetComponent<RectTransform>(), false);
+			img.rectTransform.sizeDelta = new Vector2(96,96);
+			this.HeldItemImage = img;
 		}
 	}
 
