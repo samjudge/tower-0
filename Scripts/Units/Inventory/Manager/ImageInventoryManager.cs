@@ -148,8 +148,8 @@ public class ImageInventoryManager : MonoBehaviour
 			yield return null;
 		}
 		foreach(ItemMapKey imk in items.Keys){
-			if(items[imk].gameObject != null){
-				Destroy(items[imk].gameObject);
+			if(items[imk] != null){
+				Destroy(items[imk]);
 			}
 		}
 		yield return null;
