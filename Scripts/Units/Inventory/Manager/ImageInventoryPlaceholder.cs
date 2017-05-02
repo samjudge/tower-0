@@ -10,10 +10,19 @@ public class ImageInventoryPlaceholder : MonoBehaviour, IPointerClickHandler{
 	//callbacks
 
 	public void OnPointerClick(PointerEventData e){
-//		GameObject UIInventory = this.gameObject.transform.parent.gameObject;
-//		ImageInventoryManager im = UIInventory.GetComponent<ImageInventoryManager>();
-//		Inventory i = im.GetInventory();
-//		GameManager gm = i.Owner.GameManager;
+		ImageInventoryManager im = this.transform.parent.GetComponent<ImageInventoryManager>();
+		Item HeldItem = im.GetHeldItem();
+		if(HeldItem != null){
+			Item OccupyingItem = im.GetInventory().GetItemFromInventory(SlotIndex);
+			if(OccupyingItem != null){ //swap
+				int HeldItemLastIndex = im.GetHeldItemLastOccupiedIndex();
+				im.GetInventory().SetItemInInvenotry(im.GetInventory().GetItemFromInventory(SlotIndex),HeldItemLastIndex);
+			}
+			im.GetInventory().SetItemInInvenotry(HeldItem,SlotIndex); //place into new slot
+			im.ReleaseHeldItem();
+		} else {
+			im.SetHeldItem(this.SlotIndex);
+		}
 		Debug.Log("Item clicked, btw");
 	}
 

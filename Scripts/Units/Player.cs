@@ -59,8 +59,8 @@ public class Player : Unit {
 		if (!renderer.material.HasProperty("_Color")){
 			renderer.material.SetColor("_Color", Color.white);
 		}
-		this.Inventory.addItemToInventory(new Item("Immolate"));
-		this.Inventory.addItemToInventory(new Item("Immolate"));
+		this.Inventory.AddItemToInventory(new Item("Immolate"));
+		this.Inventory.AddItemToInventory(new Item("Immolate"));
 		this.StartCoroutine(MainCameraFollowPlayer());
 	}
 
@@ -111,36 +111,6 @@ public class Player : Unit {
 					GameAction a = ActionsManager.GetGameAction("Right");
 					a.action();
 					ATUsUsed += 1;
-				}
-				if(Input.GetMouseButtonDown(0)){
-					//Select Skill
-					//ImageSkillBarManager skillbar = this.GameManager.GetImageSkillBarManager;
-					bool HasHitSkill = false;
-//					foreach(Image SkillImage in skillbar.GetImages()){
-//						Debug.Log(RectTransformUtility.RectangleContainsScreenPoint(SkillImage.rectTransform,CastTarget,Camera.main));
-//						if(RectTransformUtility.RectangleContainsScreenPoint(SkillImage.rectTransform,CastTarget,Camera.main)){
-//							HasHitSkill = true;
-//							foreach(ImageSkillBarManager.SkillMapKey k in skillbar.SkillMap.Keys){
-//								if(skillbar.SkillMap[k] == SkillImage){
-//									ActionsManager.AddGameAction(
-//										"Cast",
-//										new GameActionCastSkillByNameToPointTarget(k.s,this as Unit)
-//									);
-//									SetCurrentSkillToIndex(k.index);
-//								}
-//
-//							}
-//							break;
-//						}
-//					}
-					//Cast Spell
-					if(HasHitSkill == false){
-						GameAction a = ActionsManager.GetGameAction("Cast");
-						ATUsUsed += 1;
-						if(a != null){
-							a.action();
-						}
-					}
 				}
 				if(Input.GetKey(KeyCode.Alpha1)){
 					SetCurrentSkillToIndex(0);
