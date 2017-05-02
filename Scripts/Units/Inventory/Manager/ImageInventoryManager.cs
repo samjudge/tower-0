@@ -93,6 +93,13 @@ public class ImageInventoryManager : MonoBehaviour
 			Animator animator = this.GetComponent<Animator>() as Animator;
 			animator.SetTrigger("Opening");
 			IsCurrentlyAnimating = true;
+			for(int x = 0; x < Inventory.GetMaxSlots() ; x++){
+				ItemMapKey imk = new ItemMapKey();
+				imk.index = x;
+				imk.i = Inventory.GetItemFromInventory(x);
+				Image i = InitalizeItemImage(imk.i,imk.index);
+				items.Add(imk,i);
+			}
 			Inventory.Owner.StartCoroutine(SetIsOpenStatusOnAnimationEnd(true));
 			Inventory.Owner.StartCoroutine(DrawInventory());
 		}
@@ -107,25 +114,19 @@ public class ImageInventoryManager : MonoBehaviour
 		}
 	}
 
+	Dictionary<ItemMapKey, Image> items = new Dictionary<ItemMapKey, Image>();
+
 	private IEnumerator DrawInventory(){
 		Animator animator = this.GetComponent<Animator>() as Animator;
 		while(IsCurrentlyAnimating){
 			//Debug.Log ("Still Animating");
 			yield return null;
 		}
-		Dictionary<ItemMapKey, Image> items = new Dictionary<ItemMapKey, Image>();
-		for(int x = 0; x < Inventory.GetMaxSlots() ; x++){
-			ItemMapKey imk = new ItemMapKey();
-			imk.index = x;
-			imk.i = Inventory.GetItemFromInventory(x);
-			Image i = InitalizeItemImage(imk.i,imk.index);
-			items.Add(imk,i);
-		}
 		while(IsOpen){
 			//update held item position
 			if(this.HeldItemImage != null){
 				Vector3 mousePosition = Input.mousePosition;
-				//this.HeldItemImage.rectTransform.position = new Vector3(mousePosition.x,mousePosition.y,mousePosition.z);
+				this.HeldItemImage.rectTransform.position = new Vector3(mousePosition.x,mousePosition.y,mousePosition.z);
 			}
 			for(int x = 0; x < Inventory.GetMaxSlots(); x++){
 				Item item = Inventory.GetItemFromInventory(x);
@@ -203,6 +204,8 @@ public class ImageInventoryManager : MonoBehaviour
 			(img.GetComponent<Animator>() as Animator).enabled = false;
 			img.transform.SetParent(this.Inventory.Owner.GameManager.Canvas.GetComponent<RectTransform>(), false);
 			img.rectTransform.sizeDelta = new Vector2(96,96);
+			CanvasGroup group = img.gameObject.AddComponent<CanvasGroup>() as CanvasGroup;
+			group.blocksRaycasts = false;
 			this.HeldItemImage = img;
 		}
 	}

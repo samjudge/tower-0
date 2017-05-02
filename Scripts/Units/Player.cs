@@ -112,36 +112,6 @@ public class Player : Unit {
 					a.action();
 					ATUsUsed += 1;
 				}
-				if(Input.GetMouseButtonDown(0)){
-					//Select Skill
-					//ImageSkillBarManager skillbar = this.GameManager.GetImageSkillBarManager;
-					bool HasHitSkill = false;
-//					foreach(Image SkillImage in skillbar.GetImages()){
-//						Debug.Log(RectTransformUtility.RectangleContainsScreenPoint(SkillImage.rectTransform,CastTarget,Camera.main));
-//						if(RectTransformUtility.RectangleContainsScreenPoint(SkillImage.rectTransform,CastTarget,Camera.main)){
-//							HasHitSkill = true;
-//							foreach(ImageSkillBarManager.SkillMapKey k in skillbar.SkillMap.Keys){
-//								if(skillbar.SkillMap[k] == SkillImage){
-//									ActionsManager.AddGameAction(
-//										"Cast",
-//										new GameActionCastSkillByNameToPointTarget(k.s,this as Unit)
-//									);
-//									SetCurrentSkillToIndex(k.index);
-//								}
-//
-//							}
-//							break;
-//						}
-//					}
-					//Cast Spell
-					if(HasHitSkill == false){
-						GameAction a = ActionsManager.GetGameAction("Cast");
-						ATUsUsed += 1;
-						if(a != null){
-							a.action();
-						}
-					}
-				}
 				if(Input.GetKey(KeyCode.Alpha1)){
 					SetCurrentSkillToIndex(0);
 				}
