@@ -31,7 +31,9 @@ public class ImageInventoryManager : MonoBehaviour
 			img = GuiFactory.CreateImage("Placeholder",new Vector3(0f,0f,-6f));
 		}
 		Image placeholder = Placeholders[index] as Image;
-		(img.GetComponent<Animator>() as Animator).enabled = false;
+		if(img.GetComponent<Animator>() != null){
+			(img.GetComponent<Animator>() as Animator).enabled = false;
+		}
 		img.transform.SetParent(placeholder.rectTransform, false);
 		img.GetComponent<RectTransform>().position = placeholder.transform.position;
 		return img;
@@ -93,6 +95,11 @@ public class ImageInventoryManager : MonoBehaviour
 			Animator animator = this.GetComponent<Animator>() as Animator;
 			animator.SetTrigger("Opening");
 			IsCurrentlyAnimating = true;
+			foreach(Image i in items.Values){
+				if(i != null){
+					MonoBehaviour.Destroy(i.gameObject);
+				}
+			}
 			for(int x = 0; x < Inventory.GetMaxSlots() ; x++){
 				ItemMapKey imk = new ItemMapKey();
 				imk.index = x;
@@ -138,10 +145,11 @@ public class ImageInventoryManager : MonoBehaviour
 						} else {
 							//item in slot has changed
 							imk.i = item;
-							Destroy(items[imk]);
-							if(imk.i != null){
-								items[imk] = InitalizeItemImage(imk.i,imk.index);
+							Image img = items[imk] as Image;
+							if(items[imk] != null){
+								Destroy(items[imk].gameObject);
 							}
+							items[imk] = InitalizeItemImage(imk.i,imk.index);
 						}
 					}
 				}
@@ -150,7 +158,7 @@ public class ImageInventoryManager : MonoBehaviour
 		}
 		foreach(ItemMapKey imk in items.Keys){
 			if(items[imk] != null){
-				Destroy(items[imk]);
+				Destroy(items[imk].gameObject);
 			}
 		}
 		yield return null;
@@ -201,7 +209,9 @@ public class ImageInventoryManager : MonoBehaviour
 			this.HeldItem = i;
 			this.HeldItemLastIndex = x;
 			Image img = GuiFactory.CreateImage(i.Name,new Vector3(0f,0f,-6f));
-			(img.GetComponent<Animator>() as Animator).enabled = false;
+			if(img.GetComponent<Animator>() != null){
+				(img.GetComponent<Animator>() as Animator).enabled = false;
+			}
 			img.transform.SetParent(this.Inventory.Owner.GameManager.Canvas.GetComponent<RectTransform>(), false);
 			img.rectTransform.sizeDelta = new Vector2(96,96);
 			CanvasGroup group = img.gameObject.AddComponent<CanvasGroup>() as CanvasGroup;

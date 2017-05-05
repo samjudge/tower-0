@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
 	public GUIImageFactory GuiFactory;
 	public UnitFactory UnitFactory;
 	public GamePropFactory GamePropFactory;
+	public ItemFactory ItemFactory;
 
 	public Canvas Canvas; //for in-game ui (static)
 	public CanvasGroup CanvasStatuses;
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour {
 	public ArrayList walls {get;set;}
 	public ArrayList floors {get;set;}
 	public ArrayList enemies {get;set;}
+	public ArrayList items {get;set;}
 	public ArrayList gameobjects {get;set;}
 
 	public GameObject GetPlayer(){
@@ -122,6 +124,7 @@ public class GameManager : MonoBehaviour {
 		floors = new ArrayList();
 		enemies = new ArrayList();
 		gameobjects = new ArrayList();
+		items = new ArrayList();
 		this.ImageSkillBarManager = this.UISkillBar.GetComponent<ImageSkillBarManager>();
 		this.ImageInventoryManager = this.UIInventory.GetComponent<ImageInventoryManager>();
 		this.StartCoroutine(MapLoadCallback());

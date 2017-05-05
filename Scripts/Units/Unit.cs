@@ -12,6 +12,7 @@ public abstract class Unit : MonoBehaviour{
 	abstract public float Hp {get;set;}
 	abstract public float MaxHp {get;set;}
 	public float AttackDamage {get;set;}
+	public Inventory Inventory {get;set;}
 
 	public abstract float ProcessTurn();
 

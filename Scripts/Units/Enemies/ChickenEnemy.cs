@@ -81,6 +81,8 @@ public class ChickenEnemy : Enemy {
 	}
 
 	override public void OnDeath(){
+		GameObject ChickenDrop = this.GameManager.ItemFactory.CreateItem("Chicken",this.transform.position);
+		this.GameManager.items.Add(ChickenDrop);
 		this.GameManager.RemoveEnemy(this);
 	}
 }

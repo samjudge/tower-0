@@ -19,7 +19,6 @@ public class Player : Unit {
 	public GameObject TorchLight;
 	public GameObject FloorLight;
 
-	public Inventory Inventory;
 	public bool IsInventoryOpen = false;
 
 	public void Start(){
@@ -45,6 +44,10 @@ public class Player : Unit {
 		ActionsManager.AddGameAction(
 			"Right",
 			new GameActionAttackMove(this,1,0)
+		);
+		ActionsManager.AddGameAction(
+			"Grab",
+			new GameActionPickUpGroundItem(this)
 		);
 		SkillManager.AddSkill(
 			"Immolate"
@@ -79,18 +82,19 @@ public class Player : Unit {
 						this.IsInventoryOpen = false;
 					}
 				}
-//				if(Input.GetMouseButtonDown(0)){
-//					//Hold Item
-//					Item i = this.GameManager.GetImageInventoryManager().GetItemRefAtVectorPos(MousePosition);
-//					if(i != null){
-//						this.GameManager.GetImageInventoryManager().SetHeldItem(i);
-//					} else {
-//						Debug.Log("No Item At Pos");
-//					}
-//				}
 			} else {
 				//inputs
 				this.CastTarget = MousePosition;
+				if(Input.GetMouseButtonDown(0)){
+					this.ActionsManager.GetGameAction("Cast").action();
+					ATUsUsed += 1;
+				}
+				if(Input.GetKey(KeyCode.G)){
+					GameAction a = ActionsManager.GetGameAction("Grab");
+					Debug.Log("Grabbing");
+					a.action();
+					ATUsUsed += 1;
+				}
 				if(Input.GetKey(KeyCode.W)){
 					GameAction a = ActionsManager.GetGameAction("Up");
 					Debug.Log("Up");
