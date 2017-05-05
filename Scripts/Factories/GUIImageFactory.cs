@@ -10,6 +10,7 @@ public class GUIImageFactory : MonoBehaviour{
 	public Image Green;
 	public Image Red;
 	public Image Placeholder;
+	public Image Chicken;
 
 	public Image CreateImage(String name, Vector3 position){
 		switch(name){
@@ -24,6 +25,9 @@ public class GUIImageFactory : MonoBehaviour{
 			break;
 		case "Green":
 			return Instantiate(Green, position, Quaternion.Euler(0,0,0)) as Image;
+			break;
+		case "Chicken":
+			return Instantiate(Chicken, position, Quaternion.Euler(0,0,0)) as Image;
 			break;
 		case "Red":
 			return Instantiate(Red, position, Quaternion.Euler(0,0,0)) as Image;
