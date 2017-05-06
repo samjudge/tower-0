@@ -62,8 +62,7 @@ public class Player : Unit {
 		if (!renderer.material.HasProperty("_Color")){
 			renderer.material.SetColor("_Color", Color.white);
 		}
-		this.Inventory.AddItemToInventory(new Item("Immolate"));
-		this.Inventory.AddItemToInventory(new Item("Immolate"));
+		this.Inventory.AddItemToInventory(new Item("Dagger"));
 		this.StartCoroutine(MainCameraFollowPlayer());
 	}
 
