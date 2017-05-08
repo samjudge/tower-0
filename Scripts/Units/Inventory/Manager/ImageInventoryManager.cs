@@ -4,12 +4,19 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
+[Serializable]
+public class NamedImage {
+	public String name;
+	public Image i;
+}
+
 public class ImageInventoryManager : MonoBehaviour
 {
 	private Inventory Inventory;
 
 	public GUIImageFactory GuiFactory;
 	public Image[] Placeholders;
+	public NamedImage[] EquipmentPlaceholders;
 	public bool IsOpen = false;
 	public bool IsRunning = false;
 
@@ -35,13 +42,40 @@ public class ImageInventoryManager : MonoBehaviour
 			(img.GetComponent<Animator>() as Animator).enabled = false;
 		}
 		img.transform.SetParent(placeholder.rectTransform, false);
+		img.GetComponent<RectTransform>().position = placeholder.rectTransform.position;
+		return img;
+	}
+
+	
+	private Image InitalizeItemImage(Item i, String NamedSlot){
+		Image img = null;
+		if(i != null){
+			img = GuiFactory.CreateImage(i.Name,new Vector3(0f,0f,-6f));
+		} else {
+			img = GuiFactory.CreateImage("Placeholder",new Vector3(0f,0f,-6f));
+		}
+		NamedImage target = null;
+		foreach(NamedImage namedimage in EquipmentPlaceholders){
+			if(NamedSlot == namedimage.name){
+				target = namedimage;
+			}
+		}
+		Image placeholder = target.i;
+		if(img.GetComponent<Animator>() != null){
+			(img.GetComponent<Animator>() as Animator).enabled = false;
+		}
+		img.transform.SetParent(placeholder.rectTransform, false);
 		img.GetComponent<RectTransform>().position = placeholder.transform.position;
 		return img;
 	}
+
+
 	
 	public class ItemMapKey {
 		public Item i;
 		public int index;
+		public String namedSlot = null;
+		public bool isInNamedSlot = false;
 	}
 
 	private bool CanOpenInventory(){
@@ -103,10 +137,40 @@ public class ImageInventoryManager : MonoBehaviour
 			for(int x = 0; x < Inventory.GetMaxSlots() ; x++){
 				ItemMapKey imk = new ItemMapKey();
 				imk.index = x;
-				imk.i = Inventory.GetItemFromInventory(x);
+				imk.i = Inventory.GetItemAtIndex(x);
 				Image i = InitalizeItemImage(imk.i,imk.index);
 				items.Add(imk,i);
 			}
+			ItemMapKey itemMapKey = new ItemMapKey();
+			itemMapKey.isInNamedSlot = true;
+			itemMapKey.i = Inventory.GetItemInNamedSlot("Head");
+			itemMapKey.namedSlot = "Head";
+			Image equipImage = InitalizeItemImage(itemMapKey.i,"Head");
+			items.Add(itemMapKey,equipImage);
+			itemMapKey = new ItemMapKey();
+			itemMapKey.isInNamedSlot = true;
+			itemMapKey.i = Inventory.GetItemInNamedSlot("Body");
+			itemMapKey.namedSlot = "Body";
+			equipImage = InitalizeItemImage(itemMapKey.i,"Body");
+			items.Add(itemMapKey,equipImage);
+			itemMapKey = new ItemMapKey();
+			itemMapKey.isInNamedSlot = true;
+			itemMapKey.i = Inventory.GetItemInNamedSlot("Feet");
+			itemMapKey.namedSlot = "Feet";
+			equipImage = InitalizeItemImage(itemMapKey.i,"Feet");
+			items.Add(itemMapKey,equipImage);
+			itemMapKey = new ItemMapKey();
+			itemMapKey.isInNamedSlot = true;
+			itemMapKey.i = Inventory.GetItemInNamedSlot("Left");
+			itemMapKey.namedSlot = "Left";
+			equipImage = InitalizeItemImage(itemMapKey.i,"Left");
+			items.Add(itemMapKey,equipImage);
+			itemMapKey = new ItemMapKey();
+			itemMapKey.isInNamedSlot = true;
+			itemMapKey.i = Inventory.GetItemInNamedSlot("Right");
+			itemMapKey.namedSlot = "Right";
+			equipImage = InitalizeItemImage(itemMapKey.i,"Right");
+			items.Add(itemMapKey,equipImage);
 			Inventory.Owner.StartCoroutine(SetIsOpenStatusOnAnimationEnd(true));
 			Inventory.Owner.StartCoroutine(DrawInventory());
 		}
@@ -135,21 +199,42 @@ public class ImageInventoryManager : MonoBehaviour
 				Vector3 mousePosition = Input.mousePosition;
 				this.HeldItemImage.rectTransform.position = new Vector3(mousePosition.x,mousePosition.y,mousePosition.z);
 			}
+			ArrayList keys = new ArrayList(items.Keys);
 			for(int x = 0; x < Inventory.GetMaxSlots(); x++){
-				Item item = Inventory.GetItemFromInventory(x);
-				ArrayList keys = new ArrayList(items.Keys);
+				Item item = Inventory.GetItemAtIndex(x);
 				foreach(ItemMapKey imk in keys){
-					if(imk.index == x){
-						if(imk.i == item){
-							//no problem
-						} else {
-							//item in slot has changed
-							imk.i = item;
-							Image img = items[imk] as Image;
-							if(items[imk] != null){
-								Destroy(items[imk].gameObject);
+					if(!imk.isInNamedSlot){
+						if(imk.index == x){
+							if(imk.i != item){
+								//item in slot has changed
+								imk.i = item;
+								Image img = items[imk] as Image;
+								if(items[imk] != null){
+									Destroy(items[imk].gameObject);
+								}
+								items[imk] = InitalizeItemImage(imk.i,imk.index);
 							}
-							items[imk] = InitalizeItemImage(imk.i,imk.index);
+						}
+					}
+				}
+			}
+			//equipment slots
+			String[] EquipSlotsToCheck = {"Head","Body","Feet","Left","Right"};
+			foreach(ItemMapKey imk in keys){
+				if(imk.isInNamedSlot){
+					foreach(String NamedSlot in EquipSlotsToCheck){
+						if(imk.namedSlot == NamedSlot){
+							Item i = Inventory.GetItemInNamedSlot(NamedSlot);
+							if(i != imk.i){
+								imk.i = i;
+								Image img = items[imk] as Image;
+								if(items[imk] != null){
+									Destroy(items[imk].gameObject);
+								}
+								items[imk] = InitalizeItemImage(imk.i,imk.namedSlot);
+								//item has changed, redraw
+							}
+							break;
 						}
 					}
 				}
@@ -173,8 +258,8 @@ public class ImageInventoryManager : MonoBehaviour
 			if(RectTransformUtility.RectangleContainsScreenPoint(Placeholder.rectTransform,CastTo,Camera.main)){
 				HasHitSkill = true;
 				if(x <= this.Inventory.GetMaxSlots()){
-					if(this.Inventory.GetItemFromInventory(x) != null){
-						return this.Inventory.GetItemFromInventory(x);
+					if(this.Inventory.GetItemAtIndex(x) != null){
+						return this.Inventory.GetItemAtIndex(x);
 					}
 				}
 				break;
@@ -186,9 +271,19 @@ public class ImageInventoryManager : MonoBehaviour
 	private Item HeldItem = null;
 	private Image HeldItemImage = null;
 	private int HeldItemLastIndex = 0;
+	private String HeldItemLastNamedSlot = null;
+	private bool LastHeldItemFromNamedSlot = false;
+
+	public bool WasLastItemFromNamedSlot(){
+		return this.LastHeldItemFromNamedSlot;
+	}
 
 	public int GetHeldItemLastOccupiedIndex(){
 		return this.HeldItemLastIndex;
+	}
+
+	public String GetHeldItemLastOccupiedNamedSlot(){
+		return this.HeldItemLastNamedSlot;
 	}
 
 	public Item GetHeldItem(){
@@ -200,24 +295,43 @@ public class ImageInventoryManager : MonoBehaviour
 		Destroy(this.HeldItemImage);
 		this.HeldItemImage = null;
 		this.HeldItemLastIndex = 0;
+		this.HeldItemLastNamedSlot = null;
+	}
+
+	public void SetHeldItem(String s){
+		Item i = Inventory.GetItemInNamedSlot(s);
+		if(i != null){
+			Inventory.EquipItemToNamedSlot(null,s);
+			this.LastHeldItemFromNamedSlot = true;
+			this.HeldItem = i;
+			this.HeldItemLastNamedSlot = s;
+			//
+			SetHeldItem(i);
+		}
 	}
 
 	public void SetHeldItem(int x){
-		Item i = Inventory.GetItemFromInventory(x);
+		Item i = Inventory.GetItemAtIndex(x);
 		if(i != null){
-			Inventory.SetItemInInvenotry(null,x);
-			this.HeldItem = i;
+			Inventory.SetItemAtIndex(null,x);
+			this.LastHeldItemFromNamedSlot = false;
 			this.HeldItemLastIndex = x;
-			Image img = GuiFactory.CreateImage(i.Name,new Vector3(0f,0f,-6f));
-			if(img.GetComponent<Animator>() != null){
-				(img.GetComponent<Animator>() as Animator).enabled = false;
-			}
-			img.transform.SetParent(this.Inventory.Owner.GameManager.Canvas.GetComponent<RectTransform>(), false);
-			img.rectTransform.sizeDelta = new Vector2(96,96);
-			CanvasGroup group = img.gameObject.AddComponent<CanvasGroup>() as CanvasGroup;
-			group.blocksRaycasts = false;
-			this.HeldItemImage = img;
+			//
+			SetHeldItem(i);
 		}
+	}
+
+	public void SetHeldItem(Item i){
+		this.HeldItem = i;
+		Image img = GuiFactory.CreateImage(i.Name,new Vector3(0f,0f,-6f));
+		if(img.GetComponent<Animator>() != null){
+			(img.GetComponent<Animator>() as Animator).enabled = false;
+		}
+		img.transform.SetParent(this.Inventory.Owner.GameManager.Canvas.GetComponent<RectTransform>(), false);
+		img.rectTransform.sizeDelta = new Vector2(img.rectTransform.rect.width*3,img.rectTransform.rect.height*3);
+		CanvasGroup group = img.gameObject.AddComponent<CanvasGroup>() as CanvasGroup;
+		group.blocksRaycasts = false;
+		this.HeldItemImage = img;
 	}
 
 	private bool IsCurrentlyAnimating = false;

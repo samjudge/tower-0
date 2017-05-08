@@ -11,6 +11,10 @@ public class Inventory { //An "ItemManager" type class
 
 	private int MaxInventorySlots = 16;
 
+	public int GetEquipedSlotsCount(){
+		return Equipped.Count;
+	}
+
 	public int GetMaxSlots(){
 		return MaxInventorySlots;
 	}
@@ -24,7 +28,7 @@ public class Inventory { //An "ItemManager" type class
 		}
 	}
 
-	public bool CanAddItemToInventory(){
+	public bool CanAddItem(){
 		if(Slots.Count <= MaxInventorySlots){
 			return true;
 		} else {
@@ -32,11 +36,32 @@ public class Inventory { //An "ItemManager" type class
 		}
 	}
 
-	public void SetItemInInvenotry(Item i, int index){
+	public void EquipItemToNamedSlot(Item i,String EquipmentSlot){
+		if(this.Equipped.ContainsKey(EquipmentSlot)){
+			this.Equipped.Remove(EquipmentSlot);
+		}
+		this.Equipped.Add(EquipmentSlot,i);
+	}
+
+	public void RemoveEquippedItemFromNamedSlot(String EquipmentSlot){
+		if(this.Equipped.ContainsKey(EquipmentSlot)){
+			this.Equipped.Remove(EquipmentSlot);
+		}
+	}
+
+	public Item GetItemInNamedSlot(String EquipmentSlot){
+		if(this.Equipped.ContainsKey(EquipmentSlot)){
+			return this.Equipped[EquipmentSlot];
+		} else {
+			return null;
+		}
+	}
+
+	public void SetItemAtIndex(Item i, int index){
 		this.Slots[index] = i;
 	}
 
-	public Item GetItemFromInventory(int ItemIndex){
+	public Item GetItemAtIndex(int ItemIndex){
 		if(ItemIndex > this.MaxInventorySlots){
 			throw new Exception("Slot Out Of Range Of Max");
 		}
@@ -44,7 +69,7 @@ public class Inventory { //An "ItemManager" type class
 		return i;
 	}
 
-	public void AddItemToInventory(Item i){
+	public void AddItem(Item i){
 		for(int x = 0; x < this.MaxInventorySlots; x++){
 			if(this.Slots[x] == null){
 				this.Slots[x] = i;

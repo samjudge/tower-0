@@ -17,7 +17,7 @@ public class GameActionPickUpGroundItem : GameAction {
 							(t.transform.gameObject.GetComponent<ItemGameObject>() as ItemGameObject).GetItem().Name
 						);
 						if(i != null){
-							this.p.Inventory.AddItemToInventory(i);
+							this.p.Inventory.AddItem(i);
 						}
 						p.GameManager.items.Remove(t);
 						MonoBehaviour.Destroy(t.transform.gameObject);
