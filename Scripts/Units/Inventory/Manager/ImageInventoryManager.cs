@@ -301,11 +301,9 @@ public class ImageInventoryManager : MonoBehaviour
 	public void SetHeldItem(String s){
 		Item i = Inventory.GetItemInNamedSlot(s);
 		if(i != null){
-			Inventory.EquipItemToNamedSlot(null,s);
+			Inventory.UnequipItemFromNamedSlot(s);
 			this.LastHeldItemFromNamedSlot = true;
-			this.HeldItem = i;
 			this.HeldItemLastNamedSlot = s;
-			//
 			SetHeldItem(i);
 		}
 	}
@@ -313,10 +311,9 @@ public class ImageInventoryManager : MonoBehaviour
 	public void SetHeldItem(int x){
 		Item i = Inventory.GetItemAtIndex(x);
 		if(i != null){
-			Inventory.SetItemAtIndex(null,x);
+			Inventory.EmptyItemAtIndex(x);
 			this.LastHeldItemFromNamedSlot = false;
 			this.HeldItemLastIndex = x;
-			//
 			SetHeldItem(i);
 		}
 	}

@@ -32,7 +32,6 @@ public class StatusManager
 		while(s.RemainingDuration >= 0){
 			yield return null;
 			if(s.RemainingDuration <= 0){
-				Debug.Log ("Removing from manager");
 				Statuses.Remove(s);
 			}
 		}

@@ -62,7 +62,12 @@ public class Player : Unit {
 		if (!renderer.material.HasProperty("_Color")){
 			renderer.material.SetColor("_Color", Color.white);
 		}
-		this.Inventory.AddItem(new Item("Dagger"));
+		//An inital item in the inventory
+		EquipmentEffect[] effects = {
+			new EquipmentStatusModifierEffect(1,0,0,0)
+		};
+		Item dagger = new EquipableItem("Dagger",new String[]{"Left","Right"},effects);
+		this.Inventory.AddItem(dagger);
 		this.StartCoroutine(MainCameraFollowPlayer());
 	}
 
@@ -76,7 +81,6 @@ public class Player : Unit {
 			if(IsInventoryOpen){
 				if(Input.GetKey(KeyCode.I)){
 					if(GameManager.GetImageInventoryManager().IsInventoryOpen()){
-						Debug.Log("Close Inventory");
 						this.GameManager.GetImageInventoryManager().ToggleInventory();
 						this.IsInventoryOpen = false;
 					}
@@ -90,13 +94,11 @@ public class Player : Unit {
 				}
 				if(Input.GetKey(KeyCode.G)){
 					GameAction a = ActionsManager.GetGameAction("Grab");
-					Debug.Log("Grabbing");
 					a.action();
 					ATUsUsed += 1;
 				}
 				if(Input.GetKey(KeyCode.W)){
 					GameAction a = ActionsManager.GetGameAction("Up");
-					Debug.Log("Up");
 					a.action();
 					ATUsUsed += 1;
 				}
@@ -138,7 +140,7 @@ public class Player : Unit {
 				}
 			}
 		}
-
+		Debug.Log(this.BonusStrength);
 		return ATUsUsed;
 	}
 

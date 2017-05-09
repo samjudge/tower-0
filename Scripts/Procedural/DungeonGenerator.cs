@@ -92,7 +92,6 @@ public class DungeonGenerator {
 				}
 			}
 			while(open.Count > 32){
-				Debug.Log("Carving Dungeon...");
 				float roll = (float)(r.Next(0,100))/100f;
 				if(roll >= 0.5){
 					if(planar_accelerationX != 0){

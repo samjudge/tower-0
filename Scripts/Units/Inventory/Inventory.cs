@@ -36,17 +36,40 @@ public class Inventory { //An "ItemManager" type class
 		}
 	}
 
-	public void EquipItemToNamedSlot(Item i,String EquipmentSlot){
-		if(this.Equipped.ContainsKey(EquipmentSlot)){
-			this.Equipped.Remove(EquipmentSlot);
+	public bool CanEquipToNamedSlot(Item i, String NamedSlot){
+		if(i is EquipableItem){
+			EquipableItem ei = (EquipableItem) i;
+			foreach(String CanEquipToSlot in ei.EquipableTo){
+				if(CanEquipToSlot == NamedSlot){
+					return true;
+				}
+			}
 		}
-		this.Equipped.Add(EquipmentSlot,i);
+		return false;
 	}
 
-	public void RemoveEquippedItemFromNamedSlot(String EquipmentSlot){
+	public void EquipItemToNamedSlot(Item i, String EquipmentSlot){
+		if(CanEquipToNamedSlot(i,EquipmentSlot)){
+			EquipableItem ei = (EquipableItem) i;
+			foreach(EquipmentEffect eff in ei.EquipmentEffects){
+				eff.GetOnEquipEffect()(this.Owner);
+			}
+			if(this.Equipped.ContainsKey(EquipmentSlot)){
+				this.Equipped.Remove(EquipmentSlot);
+			}
+			this.Equipped.Add(EquipmentSlot,i);
+		}
+	}
+
+	public void UnequipItemFromNamedSlot(String EquipmentSlot){
 		if(this.Equipped.ContainsKey(EquipmentSlot)){
+			EquipableItem ei = (EquipableItem) this.Equipped[EquipmentSlot];
+			foreach(EquipmentEffect eff in ei.EquipmentEffects){
+				eff.GetOnUnequipEffect()(this.Owner);
+			}
 			this.Equipped.Remove(EquipmentSlot);
 		}
+		this.Equipped.Add(EquipmentSlot,null);
 	}
 
 	public Item GetItemInNamedSlot(String EquipmentSlot){
@@ -55,6 +78,10 @@ public class Inventory { //An "ItemManager" type class
 		} else {
 			return null;
 		}
+	}
+
+	public void EmptyItemAtIndex(int index){
+		SetItemAtIndex(null, index);
 	}
 
 	public void SetItemAtIndex(Item i, int index){
@@ -76,9 +103,5 @@ public class Inventory { //An "ItemManager" type class
 				break;
 			}
 		}
-	}
-
-	public void EquipItemTo(Item i, String slot){
-		this.Equipped.Add(slot,i);
 	}
 }
