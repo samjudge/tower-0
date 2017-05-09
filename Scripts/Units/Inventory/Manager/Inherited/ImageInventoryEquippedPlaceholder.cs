@@ -14,17 +14,19 @@ public class ImageInventoryEquippedPlaceholder : ImageInventoryPlaceholder,IPoin
 		Item HeldItem = im.GetHeldItem();
 		if(HeldItem != null){
 			Item OccupyingItem = im.GetInventory().GetItemInNamedSlot(SlotName);
-			if(OccupyingItem != null){ //swap
-				if(im.WasLastItemFromNamedSlot()){
-					String HeldItemLastName = im.GetHeldItemLastOccupiedNamedSlot();
-					im.GetInventory().EquipItemToNamedSlot(im.GetInventory().GetItemInNamedSlot(SlotName),HeldItemLastName);
-				} else {
-					int HeldItemLastIndex = im.GetHeldItemLastOccupiedIndex();
-					im.GetInventory().SetItemAtIndex(im.GetInventory().GetItemInNamedSlot(SlotName),HeldItemLastIndex);
+			if(im.GetInventory().CanEquipToNamedSlot(HeldItem,SlotName)){
+				if(OccupyingItem != null){ //swap
+					if(im.WasLastItemFromNamedSlot()){
+						String HeldItemLastName = im.GetHeldItemLastOccupiedNamedSlot();
+						im.GetInventory().EquipItemToNamedSlot(im.GetInventory().GetItemInNamedSlot(SlotName),HeldItemLastName);
+					} else {
+						int HeldItemLastIndex = im.GetHeldItemLastOccupiedIndex();
+						im.GetInventory().SetItemAtIndex(im.GetInventory().GetItemInNamedSlot(SlotName),HeldItemLastIndex);
+					}
 				}
+				im.GetInventory().EquipItemToNamedSlot(HeldItem,SlotName); //place into new slot
+				im.ReleaseHeldItem();
 			}
-			im.GetInventory().EquipItemToNamedSlot(HeldItem,SlotName); //place into new slot
-			im.ReleaseHeldItem();
 		} else {
 			im.SetHeldItem(this.SlotName);
 		}

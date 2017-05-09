@@ -1,11 +1,12 @@
 
 using UnityEngine;
+using System;
 
 public class Item {
 
-	public string Name;
+	public String Name;
 
-	public Item (string Name){
+	public Item (String Name){
 		this.Name = Name;
 	}
 }

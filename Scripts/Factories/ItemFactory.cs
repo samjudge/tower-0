@@ -18,8 +18,11 @@ public class ItemFactory : MonoBehaviour{
 			return Item;
 			break;
 		case "Dagger":
-			Item = Instantiate(ChickenItem, position, Quaternion.Euler(15,180,0)) as GameObject;
-			i = new Item("Dagger");
+			Item = Instantiate(DaggerItem, position, Quaternion.Euler(15,180,0)) as GameObject;
+			EquipmentEffect[] effects = {
+				new EquipmentStatusModifierEffect(1,0,0,0)
+			};
+			i = new EquipableItem("Dagger",new String[]{"Left","Right"},effects);
 			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
 			return Item;
 			break;

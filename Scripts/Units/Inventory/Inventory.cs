@@ -36,11 +36,32 @@ public class Inventory { //An "ItemManager" type class
 		}
 	}
 
-	public void EquipItemToNamedSlot(Item i,String EquipmentSlot){
+	public bool CanEquipToNamedSlot(Item i, String NamedSlot){
+		if(i is EquipableItem){
+			EquipableItem ei = (EquipableItem) i;
+			foreach(String CanEquipToSlot in ei.EquipableTo){
+				if(CanEquipToSlot == NamedSlot){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public void EmptyItemFromNamedSlot(String EquipmentSlot){
 		if(this.Equipped.ContainsKey(EquipmentSlot)){
 			this.Equipped.Remove(EquipmentSlot);
 		}
-		this.Equipped.Add(EquipmentSlot,i);
+		this.Equipped.Add(EquipmentSlot,null);
+	}
+
+	public void EquipItemToNamedSlot(Item i, String EquipmentSlot){
+		if(CanEquipToNamedSlot(i,EquipmentSlot)){
+			if(this.Equipped.ContainsKey(EquipmentSlot)){
+				this.Equipped.Remove(EquipmentSlot);
+			}
+			this.Equipped.Add(EquipmentSlot,i);
+		}
 	}
 
 	public void RemoveEquippedItemFromNamedSlot(String EquipmentSlot){
@@ -55,6 +76,10 @@ public class Inventory { //An "ItemManager" type class
 		} else {
 			return null;
 		}
+	}
+
+	public void EmptyItemAtIndex(int index){
+		SetItemAtIndex(null, index);
 	}
 
 	public void SetItemAtIndex(Item i, int index){

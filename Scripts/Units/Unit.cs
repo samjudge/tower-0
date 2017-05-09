@@ -14,6 +14,18 @@ public abstract class Unit : MonoBehaviour{
 	public float AttackDamage {get;set;}
 	public Inventory Inventory {get;set;}
 
+	public float BaseStrength {get; set;}
+	public float BonusStrength {get; set;}
+
+	public float BaseLuck {get; set;}
+	public float BonusLuck {get; set;}
+
+	public float BaseIntelligence {get; set;}
+	public float BonusIntelligence {get; set;}
+
+	public float BaseDexterity {get; set;}
+	public float BonusDexterity {get; set;}
+
 	public abstract float ProcessTurn();
 
 }
