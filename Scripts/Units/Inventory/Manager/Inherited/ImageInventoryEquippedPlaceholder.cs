@@ -15,7 +15,7 @@ public class ImageInventoryEquippedPlaceholder : ImageInventoryPlaceholder,IPoin
 		if(HeldItem != null){
 			Item OccupyingItem = im.GetInventory().GetItemInNamedSlot(SlotName);
 			if(im.GetInventory().CanEquipToNamedSlot(HeldItem,SlotName)){
-				if(OccupyingItem != null){ //swap
+				if(OccupyingItem != null){
 					if(im.WasLastItemFromNamedSlot()){
 						String HeldItemLastName = im.GetHeldItemLastOccupiedNamedSlot();
 						im.GetInventory().EquipItemToNamedSlot(im.GetInventory().GetItemInNamedSlot(SlotName),HeldItemLastName);
