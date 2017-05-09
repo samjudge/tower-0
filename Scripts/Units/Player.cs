@@ -140,7 +140,7 @@ public class Player : Unit {
 				}
 			}
 		}
-
+		Debug.Log(this.BonusStrength);
 		return ATUsUsed;
 	}
 

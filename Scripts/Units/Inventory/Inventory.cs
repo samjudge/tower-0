@@ -48,15 +48,12 @@ public class Inventory { //An "ItemManager" type class
 		return false;
 	}
 
-	public void EmptyItemFromNamedSlot(String EquipmentSlot){
-		if(this.Equipped.ContainsKey(EquipmentSlot)){
-			this.Equipped.Remove(EquipmentSlot);
-		}
-		this.Equipped.Add(EquipmentSlot,null);
-	}
-
 	public void EquipItemToNamedSlot(Item i, String EquipmentSlot){
 		if(CanEquipToNamedSlot(i,EquipmentSlot)){
+			EquipableItem ei = (EquipableItem) i;
+			foreach(EquipmentEffect eff in ei.EquipmentEffects){
+				eff.GetOnEquipEffect()(this.Owner);
+			}
 			if(this.Equipped.ContainsKey(EquipmentSlot)){
 				this.Equipped.Remove(EquipmentSlot);
 			}
@@ -64,10 +61,15 @@ public class Inventory { //An "ItemManager" type class
 		}
 	}
 
-	public void RemoveEquippedItemFromNamedSlot(String EquipmentSlot){
+	public void UnequipItemFromNamedSlot(String EquipmentSlot){
 		if(this.Equipped.ContainsKey(EquipmentSlot)){
+			EquipableItem ei = (EquipableItem) this.Equipped[EquipmentSlot];
+			foreach(EquipmentEffect eff in ei.EquipmentEffects){
+				eff.GetOnUnequipEffect()(this.Owner);
+			}
 			this.Equipped.Remove(EquipmentSlot);
 		}
+		this.Equipped.Add(EquipmentSlot,null);
 	}
 
 	public Item GetItemInNamedSlot(String EquipmentSlot){
@@ -101,9 +103,5 @@ public class Inventory { //An "ItemManager" type class
 				break;
 			}
 		}
-	}
-
-	public void EquipItemTo(Item i, String slot){
-		this.Equipped.Add(slot,i);
 	}
 }

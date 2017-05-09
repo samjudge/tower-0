@@ -301,7 +301,7 @@ public class ImageInventoryManager : MonoBehaviour
 	public void SetHeldItem(String s){
 		Item i = Inventory.GetItemInNamedSlot(s);
 		if(i != null){
-			Inventory.EmptyItemFromNamedSlot(s);
+			Inventory.UnequipItemFromNamedSlot(s);
 			this.LastHeldItemFromNamedSlot = true;
 			this.HeldItemLastNamedSlot = s;
 			SetHeldItem(i);
