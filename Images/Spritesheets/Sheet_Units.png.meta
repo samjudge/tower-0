@@ -1,0 +1,194 @@
+fileFormatVersion: 2
+guid: ddd46b809de1c574aa6d6682b4a39cc9
+timeCreated: 1494075251
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: floor_stone
+    21300002: wall_black
+    21300004: player_down
+    21300006: Status_Immolate
+    21300008: dummy
+    21300010: chicken_down
+    21300012: Status_Heal
+    21300014: Status_Placeholder
+    21300016: SkillBoxUI
+    21300018: SkillBar
+    21300020: chicken_left
+    21300022: player_up
+    21300024: Status_Sight
+    21300026: GUI_Placeholder
+    21300028: Status_Blink
+    21300030: Status_Magic_Missile
+    21300032: Status_Invisible
+    21300034: Status_Fear
+    21300036: green
+    21300038: snake
+    21300040: chicken_up
+    21300042: chicken_right
+    21300044: gibs
+    21300046: player_left
+    21300048: player_right
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 32
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings:
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -3
+    compressionQuality: 50
+  spriteSheet:
+    sprites:
+    - name: player_down
+      rect:
+        serializedVersion: 2
+        x: 65
+        y: 115
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: dummy
+      rect:
+        serializedVersion: 2
+        x: 127
+        y: 148
+        width: 32
+        height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: chicken_down
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 179
+        width: 25
+        height: 30
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: chicken_left
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 179
+        width: 27
+        height: 30
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: player_up
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 115
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: snake
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 210
+        width: 24
+        height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: chicken_up
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 179
+        width: 23
+        height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: chicken_right
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 179
+        width: 27
+        height: 30
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gibs
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 151
+        width: 30
+        height: 16
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: player_left
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 115
+        width: 13
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: player_right
+      rect:
+        serializedVersion: 2
+        x: 106
+        y: 115
+        width: 13
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
