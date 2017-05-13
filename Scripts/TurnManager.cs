@@ -24,7 +24,6 @@ public class TurnManager {
 	}
 
 	public void ProcessAllTurns(){
-		//Debug.Log("Total ATUS : " + this.TotalATUsConsumed);
 		this.Phase = TurnPhase.Start;
 		this.Phase = TurnPhase.Player;
 		foreach(GameObject eObj in Enemies){
@@ -36,12 +35,12 @@ public class TurnManager {
 			}
 		}
 		float ATUs = this.p.ProcessTurn();
-		//Debug.Log("User ATUs : " + ATUs);
 		this.Phase = TurnPhase.Enemies;
 		foreach(GameObject eObj in Enemies){
 			Enemy e = eObj.GetComponent<Enemy>();
 			float ATUsConsumed = -e.ATUsRemaining;
-			if(ATUsConsumed > 0){ // their last action spilled into this turn, so their current turn is skipped
+			if(ATUsConsumed > 0){
+				// their last action spilled into this turn, so their current turn is skipped
 				e.ATUsRemaining += ATUs;
 				continue;
 			}

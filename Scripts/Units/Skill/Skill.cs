@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public abstract class Skill{
+public abstract class Skill {
 	
 	public Skill(Unit Caster){
 		this.Caster = Caster;
@@ -11,5 +11,7 @@ public abstract class Skill{
 	public delegate void Action();
 	public Action action;
 	public String Name;
+	public float MPCost = 0;
+
 }
 

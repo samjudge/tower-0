@@ -61,7 +61,6 @@ public class ImageSkillBarManager : MonoBehaviour
 			SkillMap.Add(newKey,i);
 			keyCount++;
 		}
-		float drawFrom = SkillMap.Keys.Count;
 		while(IsRunning){
 			SkillMapKey[] kArra = new SkillMapKey[SkillMap.Keys.Count];
 			SkillMap.Keys.CopyTo(kArra,0);

@@ -6,15 +6,30 @@ using UnityEngine.UI;
 
 public class Player : Unit {
 
+	private float cHp = 100;
+
 	public override float Hp {
-		get{ return 100;}
+		get{ return cHp;}
 		set {}
 	}
 	
 	public override float MaxHp {
 		get{ return 100;}
+		set { cHp = value;}
+	}
+
+	private float cMp = 10;
+
+	public override float Mp {
+		get{ return cMp;}
+		set { cMp = value; }
+	}
+	
+	public override float MaxMp {
+		get{ return 10;}
 		set {}
 	}
+
 
 	public GameObject TorchLight;
 	public GameObject FloorLight;
@@ -71,8 +86,12 @@ public class Player : Unit {
 		this.StartCoroutine(MainCameraFollowPlayer());
 	}
 
-	private bool IsInvintoryOpen = false;
 	private float ATUsUsed = 0;
+
+	public void Update(){
+		this.GameManager.GetOnScreenHPBar().UpdateBar(this.Hp,this.MaxHp);
+		this.GameManager.GetOnScreenMPBar().UpdateBar(this.Mp,this.MaxMp);
+	}
 
 	public override float ProcessTurn(){
 		ATUsUsed = 0;

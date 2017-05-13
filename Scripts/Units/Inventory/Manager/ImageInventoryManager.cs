@@ -188,9 +188,7 @@ public class ImageInventoryManager : MonoBehaviour
 	Dictionary<ItemMapKey, Image> items = new Dictionary<ItemMapKey, Image>();
 
 	private IEnumerator DrawInventory(){
-		Animator animator = this.GetComponent<Animator>() as Animator;
 		while(IsCurrentlyAnimating){
-			//Debug.Log ("Still Animating");
 			yield return null;
 		}
 		while(IsOpen){
@@ -208,7 +206,7 @@ public class ImageInventoryManager : MonoBehaviour
 							if(imk.i != item){
 								//item in slot has changed
 								imk.i = item;
-								Image img = items[imk] as Image;
+								//Image img = items[imk] as Image; //hmm
 								if(items[imk] != null){
 									Destroy(items[imk].gameObject);
 								}
@@ -227,7 +225,8 @@ public class ImageInventoryManager : MonoBehaviour
 							Item i = Inventory.GetItemInNamedSlot(NamedSlot);
 							if(i != imk.i){
 								imk.i = i;
-								Image img = items[imk] as Image;
+								//Image img = items[imk] as Image;  //hmm again. not removing.
+																	//might be useful for destruction
 								if(items[imk] != null){
 									Destroy(items[imk].gameObject);
 								}
@@ -251,12 +250,9 @@ public class ImageInventoryManager : MonoBehaviour
 	}
 	
 	public Item GetItemRefAtVectorPos(Vector3 CastTo){
-		//Debug.Log (CastTo);
-		bool HasHitSkill = false;
 		for(int x = 0; x < this.Placeholders.Length ; x++){
 			Image Placeholder = this.Placeholders[x] as Image;
 			if(RectTransformUtility.RectangleContainsScreenPoint(Placeholder.rectTransform,CastTo,Camera.main)){
-				HasHitSkill = true;
 				if(x <= this.Inventory.GetMaxSlots()){
 					if(this.Inventory.GetItemAtIndex(x) != null){
 						return this.Inventory.GetItemAtIndex(x);
@@ -338,7 +334,6 @@ public class ImageInventoryManager : MonoBehaviour
 		while(a.GetCurrentAnimatorClipInfo(0).Length < 1){
 			yield return null;
 		}
-		AnimatorStateInfo state = a.GetCurrentAnimatorStateInfo(0);
 		AnimatorClipInfo clip = a.GetCurrentAnimatorClipInfo(0)[0];
 		float current_time = 0;
 		float length = clip.clip.length;

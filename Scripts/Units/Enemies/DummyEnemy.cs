@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class DummyEnemy : Enemy {
 
 	public float cHp = 10;
+	public float cMp = 10;
 
 	public override float Hp {
 		get{ return cHp;}
@@ -16,7 +17,17 @@ public class DummyEnemy : Enemy {
 		get{ return 10;}
 		set {}
 	}
+
+	public override float Mp {
+		get{ return cMp;}
+		set {cMp = value;}
+	}
 	
+	public override float MaxMp {
+		get{ return 0;}
+		set {}
+	}
+
 	public void Start(){
 		base.Start();
 		this.CastTarget = new Vector3(0f,0f,0f);

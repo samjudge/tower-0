@@ -52,7 +52,7 @@ public abstract class Enemy : Unit {
 			Vector3[] targetPoints =
 				{boundPoint1,boundPoint2,boundPoint3,boundPoint4,boundPoint5,boundPoint6,boundPoint7,boundPoint8};
 			foreach(Vector3 origin in originPoints){
-				foreach(Vector3 target in originPoints){
+				foreach(Vector3 target in targetPoints){
 					RaycastHit hit = new RaycastHit();
 					bool isHit = Physics.Linecast(
 						this.transform.TransformPoint(origin),

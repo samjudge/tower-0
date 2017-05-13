@@ -26,6 +26,12 @@ public class GameManager : MonoBehaviour {
 	private ImageInventoryManager ImageInventoryManager;
 	public GameObject UIInventory;
 
+	private UIHorizontalFillBar HPBar;
+	public GameObject UIHealthBar;
+
+	private UIHorizontalFillBar MPBar;
+	public GameObject UIManaBar;
+
 	public GameObject PlayerPrefab;
 	private GameObject Player;
 
@@ -42,6 +48,14 @@ public class GameManager : MonoBehaviour {
 	public ArrayList enemies {get;set;}
 	public ArrayList items {get;set;}
 	public ArrayList gameobjects {get;set;}
+
+	public UIHorizontalFillBar GetOnScreenHPBar(){
+		return this.HPBar;
+	}
+
+	public UIHorizontalFillBar GetOnScreenMPBar(){
+		return this.MPBar;
+	}
 
 	public GameObject GetPlayer(){
 		return this.Player;
@@ -115,6 +129,8 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 		}
+		this.HPBar = UIHealthBar.GetComponent<UIHorizontalFillBar>();
+		this.MPBar = UIHealthBar.GetComponent<UIHorizontalFillBar>();
 	}
 
 	void Start () {

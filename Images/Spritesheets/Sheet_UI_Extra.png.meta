@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: cb8c25e93cd03824d86c315f17f861f1
-timeCreated: 1494075617
+timeCreated: 1494687345
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -8,6 +8,7 @@ TextureImporter:
     21300002: skillbar
     21300004: green
     21300006: red
+    21300008: blue
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -73,7 +74,7 @@ TextureImporter:
         x: 0
         y: 0
         width: 320
-        height: 48
+        height: 66
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -94,6 +95,16 @@ TextureImporter:
         y: 176
         width: 32
         height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: blue
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 144
+        width: 32
+        height: 31
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}

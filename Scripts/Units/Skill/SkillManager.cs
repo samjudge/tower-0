@@ -2,8 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections;
 
-public class SkillManager
-{
+public class SkillManager {
 
 	public Unit Owner;
 

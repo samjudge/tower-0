@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class HealSkill : PointTargetSkill {
 
-	public String Name = "Heal";
+	public new String Name = "Heal";
 
  	public HealSkill (Unit Caster, Vector3 PointTarget) : base(Caster, PointTarget)
 	{
+		this.MPCost = 1;
 		this.action = delegate(){
 			ATUTimedStatus status = new ATUTimedStatus("Heal",5f,Caster.GameManager.TurnManager,Caster);
 			status.StartEffect = delegate(){

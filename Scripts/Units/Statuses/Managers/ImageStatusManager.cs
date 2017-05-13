@@ -44,7 +44,6 @@ public class ImageStatusManager
 			StatusMap.Add(newKey,i);
 			keyCount++;
 		}
-		float drawFrom = StatusMap.Keys.Count;
 		while(IsRunning){
 			StatusMapKey[] kArra = new StatusMapKey[StatusMap.Keys.Count];
 			StatusMap.Keys.CopyTo(kArra,0);
@@ -96,7 +95,6 @@ public class ImageStatusManager
 			for(int x = 0; x < keys.Count ; x++){
 				StatusMapKey s = keys[x] as StatusMapKey;
 				Image i = StatusMap[s];
-				Animator a = i.GetComponent<Animator>() as Animator;
 				Vector3 targetPosition = new Vector3((s.index*STATUS_SIZE),0,1);
 				s.s.Owner.StartCoroutine(UpdatePosition(i,targetPosition));
 			}
@@ -109,7 +107,6 @@ public class ImageStatusManager
 		while(a.GetCurrentAnimatorClipInfo(0).Length < 1){
 			yield return null;
 		}
-		AnimatorStateInfo state = a.GetCurrentAnimatorStateInfo(0);
 		AnimatorClipInfo clip = a.GetCurrentAnimatorClipInfo(0)[0];
 		float current_time = 0;
 		float length = clip.clip.length;

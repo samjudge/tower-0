@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PointTargetSkill : Skill{
+public class PointTargetSkill : Skill {
 
 	public PointTargetSkill(Unit Caster, Vector3 PointTarget) : base(Caster){
 		this.PointTarget = PointTarget;
@@ -22,6 +22,5 @@ public class PointTargetSkill : Skill{
 	}
 
 	public Vector3 PointTarget;
-	public Unit Caster;
 }
 

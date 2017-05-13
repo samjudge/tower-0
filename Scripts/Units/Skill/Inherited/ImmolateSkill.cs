@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class ImmolateSkill : PointTargetSkill {
 
-	public String Name = "Immolate";
+	public new String Name = "Immolate";
 
 	public ImmolateSkill (Unit Caster, Vector3 PointTarget) : base(Caster, PointTarget){
+		this.MPCost = 1;
 		this.action = delegate(){
 			this.PointTarget = GetPointTarget(ref PointTarget);
 			Vector3 target = new Vector3(

@@ -7,12 +7,21 @@ public abstract class Unit : MonoBehaviour{
 	public ActionsManager ActionsManager {get;set;}
 	public StatusManager StatusManager {get;set;}
 	public SkillManager SkillManager {get;set;}
-	public bool IsInputLocked;
-	public Vector3 CastTarget;
+
+	//while true, unit cannot recieve additional inputs (UP vs UP,UP,UP... during a single update).
+	public bool IsInputLocked = false; 
+
+	//The Target for actions (i.e. -Casting- a Skill, but could be used by any Skill/Spell delegate that needs a target)
+	//TODO: interface to a <<Caster>> class
+	public Vector3 CastTarget; 
+
+	public Inventory Inventory {get;set;}
+
 	abstract public float Hp {get;set;}
 	abstract public float MaxHp {get;set;}
-	public float AttackDamage {get;set;}
-	public Inventory Inventory {get;set;}
+
+	abstract public float Mp {get;set;}
+	abstract public float MaxMp {get;set;}
 
 	public float BaseStrength {get; set;}
 	public float BonusStrength {get; set;}
