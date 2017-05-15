@@ -25,22 +25,15 @@ public abstract class Enemy : Unit {
 	}
 
 	public bool CheckIsInLOSOf(Unit u){
-		if((u.transform.position - this.transform.position).sqrMagnitude < 40f){
+		if((u.transform.position - this.transform.position).sqrMagnitude < 10f){
 			int mask = LayerMask.GetMask("Walls");
 			//shitty names, im trying to go from point to point on the plane
-//			Vector3 boundPoint1 = this.GetComponent<MeshFilter>().mesh.bounds.min;
-//			boundPoint1 = new Vector3(boundPoint1.x,0.5f,boundPoint1.z);
-//			Vector3 boundPoint2 = this.GetComponent<MeshFilter>().mesh.bounds.max;
-//			boundPoint2 = new Vector3(boundPoint2.x,0.5f,boundPoint2.z);
-//			Vector3 boundPoint3 = new Vector3(boundPoint1.x, 0.5f, boundPoint2.z);
-//			Vector3 boundPoint4 = new Vector3(boundPoint1.x, 0.5f, boundPoint1.z);
-//			Vector3 boundPoint5 = new Vector3(boundPoint2.x, 0.5f, boundPoint1.z);
-//			Vector3 boundPoint6 = new Vector3(boundPoint1.x, 0.5f, boundPoint2.z);
-//			Vector3 boundPoint7 = new Vector3(boundPoint2.x, 0.5f, boundPoint2.z);
-//			Vector3 boundPoint8 = new Vector3(boundPoint2.x, 0.5f, boundPoint1.z);
-			//Vector3 boundPoint9 = new Vector3(u.transform.position.x, u.transform.position.y, u.transform.position.z);
 			Vector3[] originPoints =
-				{new Vector3(this.transform.position.x,this.transform.position.y,this.transform.position.z)};
+				{
+				new Vector3(this.transform.position.x,this.transform.position.y,this.transform.position.z),
+				new Vector3(this.transform.position.x+0.25f,this.transform.position.y,this.transform.position.z),
+				new Vector3(this.transform.position.x-0.25f,this.transform.position.y,this.transform.position.z),
+			}; // from the sides of the center also (for corners)
 			Vector3 boundPoint11 = u.GetComponent<MeshFilter>().mesh.bounds.min;
 			boundPoint11 = new Vector3(boundPoint11.x,0.5f,boundPoint11.z);
 			Vector3 boundPoint21 = u.GetComponent<MeshFilter>().mesh.bounds.max;
