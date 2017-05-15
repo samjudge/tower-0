@@ -25,42 +25,47 @@ public abstract class Enemy : Unit {
 	}
 
 	public bool CheckIsInLOSOf(Unit u){
-		if((u.transform.position - this.transform.position).sqrMagnitude < 10f){
+		if((u.transform.position - this.transform.position).sqrMagnitude < 40f){
 			int mask = LayerMask.GetMask("Walls");
-			Vector3 boundPoint1 = this.GetComponent<MeshFilter>().mesh.bounds.min;
-			boundPoint1 = new Vector3(boundPoint1.x,0.5f,boundPoint1.z);
-			Vector3 boundPoint2 = this.GetComponent<MeshFilter>().mesh.bounds.max;
-			boundPoint2 = new Vector3(boundPoint2.x,0.5f,boundPoint2.z);
-			Vector3 boundPoint3 = new Vector3(boundPoint1.x, 0.5f, boundPoint2.z);
-			Vector3 boundPoint4 = new Vector3(boundPoint1.x, 0.5f, boundPoint1.z);
-			Vector3 boundPoint5 = new Vector3(boundPoint2.x, 0.5f, boundPoint1.z);
-			Vector3 boundPoint6 = new Vector3(boundPoint1.x, 0.5f, boundPoint2.z);
-			Vector3 boundPoint7 = new Vector3(boundPoint2.x, 0.5f, boundPoint2.z);
-			Vector3 boundPoint8 = new Vector3(boundPoint2.x, 0.5f, boundPoint1.z);
+			//shitty names, im trying to go from point to point on the plane
+//			Vector3 boundPoint1 = this.GetComponent<MeshFilter>().mesh.bounds.min;
+//			boundPoint1 = new Vector3(boundPoint1.x,0.5f,boundPoint1.z);
+//			Vector3 boundPoint2 = this.GetComponent<MeshFilter>().mesh.bounds.max;
+//			boundPoint2 = new Vector3(boundPoint2.x,0.5f,boundPoint2.z);
+//			Vector3 boundPoint3 = new Vector3(boundPoint1.x, 0.5f, boundPoint2.z);
+//			Vector3 boundPoint4 = new Vector3(boundPoint1.x, 0.5f, boundPoint1.z);
+//			Vector3 boundPoint5 = new Vector3(boundPoint2.x, 0.5f, boundPoint1.z);
+//			Vector3 boundPoint6 = new Vector3(boundPoint1.x, 0.5f, boundPoint2.z);
+//			Vector3 boundPoint7 = new Vector3(boundPoint2.x, 0.5f, boundPoint2.z);
+//			Vector3 boundPoint8 = new Vector3(boundPoint2.x, 0.5f, boundPoint1.z);
+			//Vector3 boundPoint9 = new Vector3(u.transform.position.x, u.transform.position.y, u.transform.position.z);
 			Vector3[] originPoints =
-				{boundPoint1,boundPoint2,boundPoint3,boundPoint4,boundPoint5,boundPoint6,boundPoint7,boundPoint8};
-			boundPoint1 = u.GetComponent<MeshFilter>().mesh.bounds.min;
-			boundPoint1 = new Vector3(boundPoint1.x,0.5f,boundPoint1.z);
-			boundPoint2 = u.GetComponent<MeshFilter>().mesh.bounds.max;
-			boundPoint2 = new Vector3(boundPoint2.x,0.5f,boundPoint2.z);
-			boundPoint3 = new Vector3(boundPoint1.x, 0.5f, boundPoint2.z);
-			boundPoint4 = new Vector3(boundPoint1.x, 0.5f, boundPoint1.z);
-			boundPoint5 = new Vector3(boundPoint2.x, 0.5f, boundPoint1.z);
-			boundPoint6 = new Vector3(boundPoint1.x, 0.5f, boundPoint2.z);
-			boundPoint7 = new Vector3(boundPoint2.x, 0.5f, boundPoint2.z);
-			boundPoint8 = new Vector3(boundPoint2.x, 0.5f, boundPoint1.z);
+				{new Vector3(this.transform.position.x,this.transform.position.y,this.transform.position.z)};
+			Vector3 boundPoint11 = u.GetComponent<MeshFilter>().mesh.bounds.min;
+			boundPoint11 = new Vector3(boundPoint11.x,0.5f,boundPoint11.z);
+			Vector3 boundPoint21 = u.GetComponent<MeshFilter>().mesh.bounds.max;
+			boundPoint21 = new Vector3(boundPoint21.x,0.5f,boundPoint21.z);
+			Vector3 boundPoint31 = new Vector3(boundPoint11.x, 0.5f, boundPoint21.z);
+			Vector3 boundPoint41 = new Vector3(boundPoint11.x, 0.5f, boundPoint11.z);
+			Vector3 boundPoint51 = new Vector3(boundPoint21.x, 0.5f, boundPoint11.z);
+			Vector3 boundPoint61 = new Vector3(boundPoint11.x, 0.5f, boundPoint21.z);
+			Vector3 boundPoint71 = new Vector3(boundPoint21.x, 0.5f, boundPoint21.z);
+			Vector3 boundPoint81 = new Vector3(boundPoint21.x, 0.5f, boundPoint11.z);
+			Vector3 boundPoint91 = Camera.main.WorldToViewportPoint(new Vector3(u.transform.position.x, u.transform.position.y, u.transform.position.z));
 			Vector3[] targetPoints =
-				{boundPoint1,boundPoint2,boundPoint3,boundPoint4,boundPoint5,boundPoint6,boundPoint7,boundPoint8};
+				{boundPoint11,boundPoint21,boundPoint31,boundPoint41,boundPoint51,boundPoint61,boundPoint71,boundPoint81,boundPoint91};
 			foreach(Vector3 origin in originPoints){
 				foreach(Vector3 target in targetPoints){
 					RaycastHit hit = new RaycastHit();
 					bool isHit = Physics.Linecast(
-						this.transform.TransformPoint(origin),
+						origin,
 						u.transform.TransformPoint(target),
 						out hit,
 						mask
 					);
+					Debug.DrawLine(origin, u.transform.TransformPoint(target),Color.green, 5f);
 					if(!isHit){
+						Debug.DrawLine(origin, u.transform.TransformPoint(target),Color.red, 5f);
 						return true;
 					}
 				}
