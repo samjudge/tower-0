@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 		this.HPBar = UIHealthBar.GetComponent<UIHorizontalFillBar>();
-		this.MPBar = UIHealthBar.GetComponent<UIHorizontalFillBar>();
+		this.MPBar = UIManaBar.GetComponent<UIHorizontalFillBar>();
 	}
 
 	void Start () {
