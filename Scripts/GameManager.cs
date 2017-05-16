@@ -186,7 +186,9 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 		if(TurnManager != null){
-			TurnManager.ProcessAllTurns();
+			if(TurnManager.Phase == TurnManager.TurnPhase.End){
+				this.StartCoroutine(TurnManager.ProcessAllTurns());
+			}
 		}
 	}
 }

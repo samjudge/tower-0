@@ -21,20 +21,25 @@ public class TurnManager {
 	public TurnManager (GameManager gm) {
 		this.Enemies = gm.enemies;
 		this.p = gm.GetPlayer().GetComponent<Player>();
+		this.Phase = TurnPhase.End;
 	}
 
-	public void ProcessAllTurns(){
+	public IEnumerator ProcessAllTurns(){
 		this.Phase = TurnPhase.Start;
-		this.Phase = TurnPhase.Player;
 		foreach(GameObject eObj in Enemies){
 			//wait for all enemy inputs to become unlocked before proceding.. If they're locked it's because they
 			//are in the middle of an animation and have not completed it yet
 			Enemy e = eObj.GetComponent<Enemy>();
-			if(e.IsInputLocked){
-				return; //exit early
+			while(e.IsInputLocked){
+				this.Phase = TurnPhase.End;
+				return false; //exit early
 			}
 		}
+		this.Phase = TurnPhase.Player;
 		float ATUs = this.p.ProcessTurn();
+		while(p.IsInputLocked){
+			yield return null;
+		}
 		this.Phase = TurnPhase.Enemies;
 		foreach(GameObject eObj in Enemies){
 			Enemy e = eObj.GetComponent<Enemy>();

@@ -17,11 +17,11 @@ public abstract class Unit : MonoBehaviour{
 
 	public Inventory Inventory {get;set;}
 
-	abstract public float Hp {get;set;}
-	abstract public float MaxHp {get;set;}
+	public float Hp {get;set;}
+	public float MaxHp {get;set;}
 
-	abstract public float Mp {get;set;}
-	abstract public float MaxMp {get;set;}
+	public float Mp {get;set;}
+	public float MaxMp {get;set;}
 
 	public float BaseStrength {get; set;}
 	public float BonusStrength {get; set;}

@@ -6,11 +6,13 @@ using UnityEngine.UI;
 public abstract class Enemy : Unit {
 
 	public void Start(){
+		this.Hp = 1;
+		this.Mp = 1;
 		StartCoroutine(HPWatcher());
 		this.ActionsManager = new ActionsManager();
 		this.StatusManager = new StatusManager();
 		this.SkillManager = new SkillManager(this);
-		this.ActionsManager.AddGameAction("PhysicalHit",new GameActionMeleeHit(this));
+		this.BaseStrength = 1;
 	}
 
 	public abstract void OnDeath();
@@ -18,6 +20,17 @@ public abstract class Enemy : Unit {
 
 	protected IEnumerator HPWatcher(){
 		while(this.Hp > 0){
+			yield return null;
+		}
+		foreach(GameObject eObj in GameManager.GetEnemies()){
+			//wait for all enemy inputs to become unlocked before proceding.. If they're locked it's because they
+			//are in the middle of an animation and have not completed it yet
+			Enemy e = eObj.GetComponent<Enemy>();
+			while(e.IsInputLocked){
+				yield return null; //exit early
+			}
+		}
+		while(this.IsInputLocked){
 			yield return null;
 		}
 		OnDeath();

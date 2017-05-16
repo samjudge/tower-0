@@ -6,17 +6,17 @@ public class GameActionMeleeHit : GameAction {
 
 	//a test update
 
-	public Unit attacker;
 	public Unit target;
 
-	public GameActionMeleeHit (Unit target){
+	public GameActionMeleeHit (Unit target, Unit attacker){
 		this.target = target;
 		this.action = delegate(){
-			TakeDamage(3);
+			TakeDamage(attacker.BaseStrength + attacker.BonusStrength + 1);
 		};
 	}
 	
 	private void TakeDamage(float d){
+		Debug.Log ("Damge taken");
 		this.target.Hp -= d;
 	}
 }
