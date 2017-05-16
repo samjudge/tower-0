@@ -6,37 +6,17 @@ using UnityEngine.UI;
 
 public class Player : Unit {
 
-	private float cHp = 100;
-
-	public override float Hp {
-		get{ return cHp;}
-		set {}
-	}
-	
-	public override float MaxHp {
-		get{ return 100;}
-		set { cHp = value;}
-	}
-
-	private float cMp = 10;
-
-	public override float Mp {
-		get{ return cMp;}
-		set { cMp = value; }
-	}
-	
-	public override float MaxMp {
-		get{ return 10;}
-		set {}
-	}
-
-
 	public GameObject TorchLight;
 	public GameObject FloorLight;
 
 	public bool IsInventoryOpen = false;
 
 	public void Start(){
+		this.BaseStrength = 1;
+		this.Mp = 100;
+		this.MaxMp = 100;
+		this.Hp = 100;
+		this.MaxHp = 100;
 		this.Inventory = new Inventory(this);
 		this.IsInputLocked = false;
 		this.ActionsManager = new ActionsManager();
@@ -70,7 +50,6 @@ public class Player : Unit {
 		SkillManager.AddSkill(
 			"Heal"
 		);
-		this.ActionsManager.AddGameAction("PhysicalHit",new GameActionMeleeHit(this));
 		//Sight Status Passive
 		//(Because Skill Factory not created yet - see todo @ GameActionCastSkillByNameToPointTarget.cs)
 		new SightPassive(this);

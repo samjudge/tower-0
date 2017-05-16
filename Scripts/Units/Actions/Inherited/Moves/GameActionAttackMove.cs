@@ -28,7 +28,7 @@ public class GameActionAttackMove : GameAction {
 					if(hit.transform != null){
 						GameAction a = null;
 						Unit e = hit.transform.gameObject.GetComponent<Unit>() as Unit;
-						if(e == null){
+						if(e == null){ // not unit, must be prop (and thus a door)
 							GameProp prop = hit.transform.gameObject.GetComponent<GameProp>() as GameProp;
 							a = prop.ActionsManager.GetGameAction("PhysicalHit") as GameAction;
 							GameActionMeleeOpenDoor aOpen = prop.ActionsManager.GetGameAction("PhysicalHit") as GameActionMeleeOpenDoor;
@@ -40,6 +40,7 @@ public class GameActionAttackMove : GameAction {
 								p.StartCoroutine(Attack());
 							}
 						} else {
+							e.ActionsManager.AddGameAction("PhysicalHit", new GameActionMeleeHit(e,p));
 							a = e.ActionsManager.GetGameAction("PhysicalHit") as GameAction;
 							p.IsInputLocked = true;
 							p.StartCoroutine(Attack());

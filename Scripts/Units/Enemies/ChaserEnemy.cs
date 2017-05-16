@@ -7,32 +7,13 @@ public class ChaserEnemy : Enemy {
 
 	private AStarPathfindNoWalls AI;
 
-	public float cHp = 10;
-	public float cMp = 10;
-
-	public override float Hp {
-		get{ return cHp;}
-		set {cHp = value;}
-	}
-
-	public override float MaxHp {
-		get{ return 10;}
-		set {}
-	}
-
-	
-	public override float Mp {
-		get{ return cMp;}
-		set {cMp = value;}
-	}
-	
-	public override float MaxMp {
-		get{ return 0;}
-		set {}
-	}
-
 	public void Start(){
 		base.Start();
+		this.BaseStrength = 1;
+		this.Mp = 10;
+		this.MaxMp = 10;
+		this.Hp = 10;
+		this.MaxHp = 10;
 		this.CastTarget = new Vector3(0f,0f,0f);
 		this.AI = new AStarPathfindNoWalls(this.GameManager.GetPlayer().transform.position,new Vector3(1,0,1));
 		ActionsManager.AddGameAction("Cast", new GameActionCastSkillByNameToPointTarget("Heal",this as Unit));

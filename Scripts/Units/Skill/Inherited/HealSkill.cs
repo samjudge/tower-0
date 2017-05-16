@@ -14,6 +14,13 @@ public class HealSkill : PointTargetSkill {
 				Renderer render = Caster.gameObject.GetComponent<Renderer>() as Renderer;
 				render.material.color = new Color(render.material.color.r-0.2f,render.material.color.g-0.2f,render.material.color.b);
 			};
+			status.TickEffect = delegate(){
+				if((Caster.Hp + 2) < Caster.MaxHp){
+					Caster.Hp += 2;
+				} else {
+					Caster.Hp = Caster.MaxHp;
+				}
+			};
 			status.EndEffect = delegate(){
 				Renderer render = Caster.gameObject.GetComponent<Renderer>() as Renderer;
 				render.material.color = new Color(render.material.color.r+0.2f,render.material.color.g+0.2f,render.material.color.b);
