@@ -9,8 +9,7 @@ public class GameActionMeleeHit : GameAction {
 	public Unit attacker;
 	public Unit target;
 
-	public GameActionMeleeHit (Unit attacker, Unit target){
-		this.attacker = attacker;
+	public GameActionMeleeHit (Unit target){
 		this.target = target;
 		this.action = delegate(){
 			TakeDamage(3);

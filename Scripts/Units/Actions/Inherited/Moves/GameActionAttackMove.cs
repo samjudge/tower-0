@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GameActionAttackMove : GameAction {
 
-	public Player p;
+	public Unit p;
 	public Vector3 target;
 
-	public GameActionAttackMove (Player p, float dx, float dz){
+	public GameActionAttackMove (Unit p, float dx, float dz, string AttackMask){
 		this.p = p;
 		this.action = delegate(){
 			if(p.IsInputLocked == false){
@@ -23,11 +23,11 @@ public class GameActionAttackMove : GameAction {
 					Debug.DrawLine(p.transform.position, hit.transform.position,Color.red,1f);
 
 				} else {
-					int enemyLayerMask = LayerMask.GetMask("Enemies");
+					int enemyLayerMask = LayerMask.GetMask(AttackMask);
 					Physics.Linecast(p.transform.position,this.target,out hit,enemyLayerMask);
 					if(hit.transform != null){
 						GameAction a = null;
-						Enemy e = hit.transform.gameObject.GetComponent<Enemy>() as Enemy;
+						Unit e = hit.transform.gameObject.GetComponent<Unit>() as Unit;
 						if(e == null){
 							GameProp prop = hit.transform.gameObject.GetComponent<GameProp>() as GameProp;
 							a = prop.ActionsManager.GetGameAction("PhysicalHit") as GameAction;

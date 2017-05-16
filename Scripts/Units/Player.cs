@@ -46,19 +46,19 @@ public class Player : Unit {
 		this.FloorLight = Instantiate(TorchLight, this.transform.position, Quaternion.Euler(90,0,0)) as GameObject;
 		ActionsManager.AddGameAction(
 			"Up",
-		    new GameActionAttackMove(this,0,1)
+			new GameActionAttackMove(this,0,1,"Enemies")
 		);
 		ActionsManager.AddGameAction(
 			"Down",
-			new GameActionAttackMove(this,0,-1)
+			new GameActionAttackMove(this,0,-1,"Enemies")
 		);
 		ActionsManager.AddGameAction(
 			"Left",
-			new GameActionAttackMove(this,-1,0)
+			new GameActionAttackMove(this,-1,0,"Enemies")
 		);
 		ActionsManager.AddGameAction(
 			"Right",
-			new GameActionAttackMove(this,1,0)
+			new GameActionAttackMove(this,1,0,"Enemies")
 		);
 		ActionsManager.AddGameAction(
 			"Grab",
@@ -70,6 +70,7 @@ public class Player : Unit {
 		SkillManager.AddSkill(
 			"Heal"
 		);
+		this.ActionsManager.AddGameAction("PhysicalHit",new GameActionMeleeHit(this));
 		//Sight Status Passive
 		//(Because Skill Factory not created yet - see todo @ GameActionCastSkillByNameToPointTarget.cs)
 		new SightPassive(this);
