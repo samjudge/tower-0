@@ -13,9 +13,7 @@ public class GameActionPickUpGroundItem : GameAction {
 				ArrayList ItemClones = new ArrayList(p.GameManager.items);
 				foreach(GameObject t in ItemClones){
 					if((t.GetComponent<BoxCollider>() as BoxCollider).bounds.Contains(p.transform.position)){
-						Item i = new Item(
-							(t.transform.gameObject.GetComponent<ItemGameObject>() as ItemGameObject).GetItem().Name
-						);
+						Item i = (t.transform.gameObject.GetComponent<ItemGameObject>() as ItemGameObject).GetItem();
 						if(i != null){
 							this.p.Inventory.AddItem(i);
 						}

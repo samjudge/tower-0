@@ -13,16 +13,19 @@ public class ItemFactory : MonoBehaviour{
 		switch(name){
 		case "Chicken":
 			Item = Instantiate(ChickenItem, position, Quaternion.Euler(15,180,0)) as GameObject;
-			i = new Item("Chicken");
+			ConsumableEffect[] chickenEffects = {
+				new ConsumeHPModifier(25)
+			};
+			i = new ConsumableItem("Chicken",chickenEffects);
 			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
 			return Item;
 			break;
 		case "Dagger":
 			Item = Instantiate(DaggerItem, position, Quaternion.Euler(15,180,0)) as GameObject;
-			EquipmentEffect[] effects = {
+			EquipmentEffect[] daggerEffects = {
 				new EquipmentStatusModifierEffect(1,0,0,0)
 			};
-			i = new EquipableItem("Dagger",new String[]{"Left","Right"},effects);
+			i = new EquipableItem("Dagger",new String[]{"Left","Right"},daggerEffects);
 			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
 			return Item;
 			break;
@@ -32,4 +35,3 @@ public class ItemFactory : MonoBehaviour{
 		}
 	}
 }
-
