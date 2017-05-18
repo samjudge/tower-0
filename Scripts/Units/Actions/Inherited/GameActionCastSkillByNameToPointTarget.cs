@@ -11,14 +11,11 @@ public class GameActionCastSkillByNameToPointTarget: GameAction {
 			//Just replace it with anything that works really
 			//Currently, you cannot cast passive skills, using this action :(
 			PointTargetSkill skill = Activator.CreateInstance(Type.GetType(SkillName+"Skill"),Caster, Caster.CastTarget) as PointTargetSkill;
-			Debug.Log(Caster.Mp);
-			Debug.Log(skill.MPCost);
 			if(Caster.Mp < skill.MPCost){
 				return; //not enough mana
 			} else {
 				Caster.Mp = Caster.Mp - skill.MPCost;
 			}
-			Debug.Log(Caster.Mp);
 			skill.action();
 		};
 	}

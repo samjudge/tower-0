@@ -32,7 +32,6 @@ public class ImageInventorySlotPlaceholder : ImageInventoryPlaceholder,IPointerC
 		} else if (e.button == PointerEventData.InputButton.Right){
 			ImageInventoryManager im = this.transform.parent.GetComponent<ImageInventoryManager>();
 			Item ItemAtSlot = im.GetInventory().GetItemAtIndex(SlotIndex);
-			Debug.Log(ItemAtSlot);
 			if(ItemAtSlot != null){
 				if(ItemAtSlot.GetType() == typeof(ConsumableItem)){
 					ConsumableItem Consumable = (ConsumableItem) ItemAtSlot;

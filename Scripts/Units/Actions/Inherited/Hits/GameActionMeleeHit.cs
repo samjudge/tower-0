@@ -16,7 +16,6 @@ public class GameActionMeleeHit : GameAction {
 	}
 	
 	private void TakeDamage(float d){
-		Debug.Log ("Damge taken");
 		this.target.Hp -= d;
 	}
 }
