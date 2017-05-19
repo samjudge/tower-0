@@ -30,13 +30,13 @@ public class SightPassive : PassiveSkill {
 		this.action = delegate(){
 			PersistantStatus Sight = new PersistantStatus("Sight", Caster);
 			Sight.StartEffect = delegate(){
-				ArrayList Enemies = Caster.GameManager.GetEnemies();
+				ArrayList Enemies = Caster.GameManager.level.GetEnemies();
 				foreach(GameObject e in Enemies){
 					IntalizeHPBar(e);
 				}
 			};
 			Sight.TickEffect = delegate(){
-				ArrayList Enemies = Caster.GameManager.GetEnemies();
+				ArrayList Enemies = Caster.GameManager.level.GetEnemies();
 				foreach(GameObject e in Enemies){
 					Enemy enemy = e.GetComponent<Enemy>() as Enemy;
 					if(enemy.CheckIsInLOSOf(Caster)){

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DungeonGenerator {
 
+	private static LevelManager Owner;
+
 	public static bool hasLoaded = false;
 
 	public class Tile {
@@ -36,7 +38,7 @@ public class DungeonGenerator {
 			this.open = new ArrayList();
 			this.m = m;
 			this.activePosition = new Position(10,10);
-			GameManager.instance.StartCoroutine(Dig());
+			Dig();
 		}
 
 		private int indexOfNode(float x,float y){
@@ -84,7 +86,7 @@ public class DungeonGenerator {
 
 		public Position activePosition;
 
-		public IEnumerator Dig(){
+		public void Dig(){
 			System.Random r = new System.Random();
 			foreach(Tile t in m.tiles){
 				if(t.x > 0 && t.x < m.width && t.z > 0 && t.z < m.height){
@@ -144,7 +146,6 @@ public class DungeonGenerator {
 				}
 				//Position op = this.open[indexOfNode(activePosition.x,activePosition.y)] as Position;
 				//this.open.Remove(op);
-				yield return null;
 			}
 			for(int x = 0; x < 3; x++){
 				int sX = r.Next(6,m.width-6);
@@ -252,6 +253,8 @@ public class DungeonGenerator {
 			}
 		}
 
+		int step = 0;
+		System.Random r = new System.Random();
 
 		private void carveTile(Position openPosition){
 			Tile t = m.GetTile((int)openPosition.x,(int)openPosition.y);
@@ -261,8 +264,7 @@ public class DungeonGenerator {
 				this.open.Remove(openPosition);
 				return;
 			}
-			System.Random r = new System.Random();
-			int n = r.Next(0,10);
+			int n = this.r.Next(0,10); //(++step)%10;
 			if(n < 1){
 				this.history.Add(openPosition);
 				this.open.Remove(openPosition);
@@ -298,8 +300,6 @@ public class DungeonGenerator {
 				this.open.Remove(openPosition);
 				return;
 			}
-
-
 		}
 	}
 
@@ -358,7 +358,8 @@ public class DungeonGenerator {
 
 	public Map m;
 
-	public DungeonGenerator () {
+	public DungeonGenerator (LevelManager Owner) {
+		DungeonGenerator.Owner = Owner;
 		this.m = new Map();
 		Digger d = new Digger(this.m);
 	}

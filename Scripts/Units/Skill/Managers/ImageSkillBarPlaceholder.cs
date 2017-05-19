@@ -12,6 +12,6 @@ public class ImageSkillBarPlaceholder : MonoBehaviour, IPointerClickHandler {
 		ImageSkillBarManager SkillBar = UISkillBar.GetComponent<ImageSkillBarManager>();
 		SkillManager skills = SkillBar.GetSkillManager();
 		GameManager gm = skills.Owner.GameManager;
-		gm.GetPlayer().GetComponent<Player>().SetCurrentSkillToIndex(SlotIndex);
+		gm.Player.GetComponent<Player>().SetCurrentSkillToIndex(SlotIndex);
 	}
 }
