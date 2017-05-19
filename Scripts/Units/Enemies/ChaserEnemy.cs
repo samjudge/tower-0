@@ -75,10 +75,8 @@ public class ChaserEnemy : Enemy {
 		return 1f;
 	}
 
-	override public void OnDeath(){
-		GameObject ChickenDrop = this.GameManager.ItemFactory.CreateItem("Chicken",this.transform.position);
-		this.GameManager.level.items.Add(ChickenDrop);
-		this.GameManager.level.RemoveEnemy(this);
+	override public void Die(){
+		this.DeathAction();
 	}
 }
 

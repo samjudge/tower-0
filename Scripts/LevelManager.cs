@@ -57,16 +57,23 @@ public class LevelManager {
 					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 					break;
 				case "Chicken":
-					GameObject e = gm.UnitFactory.CreateUnit("Chicken",new Vector3(x,-0.25f,z)) as GameObject;
-					enemies.Add(e);
-					Enemy enemy = (e.GetComponent<Enemy>() as Enemy);
+					GameObject chickenEnemy = gm.UnitFactory.CreateUnit("Chicken",new Vector3(x,-0.25f,z)) as GameObject;
+					enemies.Add(chickenEnemy);
+					Enemy enemy = (chickenEnemy.GetComponent<Enemy>() as Enemy);
 					(enemy.GetComponent<Enemy>() as Enemy).GameManager = gm;
 					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 					break;
+				case "Skeleton":
+					GameObject skeletonEnemy = gm.UnitFactory.CreateUnit("Skeleton",new Vector3(x,-0.25f,z)) as GameObject;
+					enemies.Add(skeletonEnemy);
+					Enemy skeleton = (skeletonEnemy.GetComponent<Enemy>() as Enemy);
+					(skeletonEnemy.GetComponent<Enemy>() as Enemy).GameManager = gm;
+					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+					break;
 				case "Dummy":
-					GameObject chickenEnemy = gm.UnitFactory.CreateUnit("Dummy",new Vector3(x,-0.25f,z)) as GameObject;
-					enemies.Add(chickenEnemy);
-					(chickenEnemy.GetComponent<Enemy>() as Enemy).GameManager = gm;
+					GameObject dummyEnemy = gm.UnitFactory.CreateUnit("Dummy",new Vector3(x,-0.25f,z)) as GameObject;
+					enemies.Add(dummyEnemy);
+					(dummyEnemy.GetComponent<Enemy>() as Enemy).GameManager = gm;
 					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 					break;
 				case "Door":
