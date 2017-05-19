@@ -6,6 +6,7 @@ public class ItemFactory : MonoBehaviour{
 	
 	public GameObject ChickenItem;
 	public GameObject DaggerItem;
+	public GameObject SwordItem;
 	
 	public GameObject CreateItem(String name, Vector3 position){
 		GameObject Item = null;
@@ -26,6 +27,15 @@ public class ItemFactory : MonoBehaviour{
 				new EquipmentStatusModifierEffect(1,0,0,0)
 			};
 			i = new EquipableItem("Dagger",new String[]{"Left","Right"},daggerEffects);
+			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
+			return Item;
+			break;
+		case "Sword":
+			Item = Instantiate(SwordItem, position, Quaternion.Euler(15,180,0)) as GameObject;
+			EquipmentEffect[] swordEffects = {
+				new EquipmentStatusModifierEffect(4,0,0,0)
+			};
+			i = new EquipableItem("Sword",new String[]{"Left","Right"},swordEffects);
 			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
 			return Item;
 			break;

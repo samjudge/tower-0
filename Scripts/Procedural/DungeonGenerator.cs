@@ -93,7 +93,7 @@ public class DungeonGenerator {
 					this.open.Add (new Position(t.x,t.z));
 				}
 			}
-			while(open.Count > 32){
+			while(open.Count > 128){
 				float roll = (float)(r.Next(0,100))/100f;
 				if(roll >= 0.5){
 					if(planar_accelerationX != 0){
@@ -264,7 +264,7 @@ public class DungeonGenerator {
 				this.open.Remove(openPosition);
 				return;
 			}
-			int n = this.r.Next(0,10); //(++step)%10;
+			int n = this.r.Next(0,10); //;
 			if(n < 1){
 				this.history.Add(openPosition);
 				this.open.Remove(openPosition);
@@ -285,7 +285,12 @@ public class DungeonGenerator {
 				}
 
 			} else if (n < 2){
-				t.tag = "Chicken";
+				int turnToSkeleOnZero = (++step)%3;
+				if(turnToSkeleOnZero == 0){
+					t.tag = "Skeleton";
+				} else {
+					t.tag = "Chicken";
+				}
 				this.history.Add(openPosition);
 				this.open.Remove(openPosition);
 				return;

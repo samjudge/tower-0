@@ -13,9 +13,17 @@ public abstract class Enemy : Unit {
 		this.StatusManager = new StatusManager();
 		this.SkillManager = new SkillManager(this);
 		this.BaseStrength = 1;
+		if(this.DeathAction == null){
+			this.DeathAction = delegate(){
+				this.GameManager.level.RemoveEnemy(this);
+			};
+		}
 	}
 
-	public abstract void OnDeath();
+	public delegate void OnDeath();
+	public abstract void Die();
+	public OnDeath DeathAction;
+
 	public float ATUsRemaining = 0f;
 
 	protected IEnumerator HPWatcher(){
@@ -33,7 +41,7 @@ public abstract class Enemy : Unit {
 		while(this.IsInputLocked){
 			yield return null;
 		}
-		OnDeath();
+		Die();
 		yield return null;
 	}
 

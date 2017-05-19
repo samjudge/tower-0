@@ -30,8 +30,8 @@ public class DummyEnemy : Enemy {
 		return 1f;
 	}
 
-	override public void OnDeath(){
-		this.GameManager.level.RemoveEnemy(this);
+	override public void Die(){
+		this.DeathAction();
 	}
 }
 
