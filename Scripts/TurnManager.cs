@@ -19,8 +19,8 @@ public class TurnManager {
 	public float TotalATUsConsumed = 0f;
 
 	public TurnManager (GameManager gm) {
-		this.Enemies = gm.enemies;
-		this.p = gm.GetPlayer().GetComponent<Player>();
+		this.Enemies = gm.level.enemies;
+		this.p = gm.Player.GetComponent<Player>();
 		this.Phase = TurnPhase.End;
 	}
 

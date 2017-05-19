@@ -10,14 +10,14 @@ public class GameActionPickUpGroundItem : GameAction {
 		this.p = p;
 		this.action = delegate(){
 			if(p.IsInputLocked == false){
-				ArrayList ItemClones = new ArrayList(p.GameManager.items);
+				ArrayList ItemClones = new ArrayList(p.GameManager.level.items);
 				foreach(GameObject t in ItemClones){
 					if((t.GetComponent<BoxCollider>() as BoxCollider).bounds.Contains(p.transform.position)){
 						Item i = (t.transform.gameObject.GetComponent<ItemGameObject>() as ItemGameObject).GetItem();
 						if(i != null){
 							this.p.Inventory.AddItem(i);
 						}
-						p.GameManager.items.Remove(t);
+						p.GameManager.level.items.Remove(t);
 						MonoBehaviour.Destroy(t.transform.gameObject);
 					} 
 				}

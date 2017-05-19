@@ -22,7 +22,7 @@ public abstract class Enemy : Unit {
 		while(this.Hp > 0){
 			yield return null;
 		}
-		foreach(GameObject eObj in GameManager.GetEnemies()){
+		foreach(GameObject eObj in GameManager.level.GetEnemies()){
 			//wait for all enemy inputs to become unlocked before proceding.. If they're locked it's because they
 			//are in the middle of an animation and have not completed it yet
 			Enemy e = eObj.GetComponent<Enemy>();

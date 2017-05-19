@@ -10,7 +10,6 @@ public class GameProp : MonoBehaviour {
 	public void Start(){
 		this.ActionsManager = new ActionsManager();
 		this.ActionsManager.AddGameAction("PhysicalHit",new GameActionMeleeOpenDoor(this.gameObject));
-		Animator a = this.GetComponent<Animator>() as Animator;
 	}
 }
 
