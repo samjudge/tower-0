@@ -76,6 +76,16 @@ public class LevelManager {
 					(dummyEnemy.GetComponent<Enemy>() as Enemy).GameManager = gm;
 					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 					break;
+				case "HealthPotion" :
+					GameObject healthPotion = gm.ItemFactory.CreateItem("HealthPotion",new Vector3(x,-0.25f,z)) as GameObject;
+					items.Add(healthPotion);
+					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+					break;
+				case "ManaPotion" :
+					GameObject manaPotion = gm.ItemFactory.CreateItem("ManaPotion",new Vector3(x,-0.25f,z)) as GameObject;
+					items.Add(manaPotion);
+					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+					break;
 				case "Door":
 					GameObject d = null;
 					GameObject sW = null;

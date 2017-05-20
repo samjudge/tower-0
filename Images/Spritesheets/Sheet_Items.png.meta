@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c4f1278bd9eb7c94aa28b1799d959b7f
-timeCreated: 1494281763
+timeCreated: 1495272198
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -10,6 +10,10 @@ TextureImporter:
     21300006: Chicken
     21300008: Dagger
     21300010: Sword
+    21300012: manapot
+    21300014: healthpot
+    21300016: cloak
+    21300018: orgon_cloak
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -86,6 +90,46 @@ TextureImporter:
         y: 210
         width: 26
         height: 26
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: manapot
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 213
+        width: 16
+        height: 18
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: healthpot
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 213
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: cloak
+      rect:
+        serializedVersion: 2
+        x: 38
+        y: 177
+        width: 20
+        height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: orgon_cloak
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 177
+        width: 20
+        height: 29
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
