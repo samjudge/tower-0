@@ -16,9 +16,7 @@ public class UnitFactory : MonoBehaviour{
 		case "Chicken":
 			GameObject nChickenEnemey = Instantiate(ChickenEnemy, position, Quaternion.Euler(15,180,0)) as GameObject;
 			ChaserEnemy nChickenEnemeyScript = nChickenEnemey.GetComponent<ChaserEnemy>() as ChaserEnemy;
-			Debug.Log ("storage");
 			nChickenEnemeyScript.DeathAction = delegate(){
-				Debug.Log ("dead chicken");
 				GameObject ChickenDrop = nChickenEnemeyScript
 					.GameManager
 					.ItemFactory
@@ -34,17 +32,19 @@ public class UnitFactory : MonoBehaviour{
 		case "Skeleton":
 			GameObject nSkeletonEnemey = Instantiate(SkeletonEnemy, position, Quaternion.Euler(15,180,0)) as GameObject;
 			ChaserEnemy nSkeletonEnemeyScript = nSkeletonEnemey.GetComponent<ChaserEnemy>() as ChaserEnemy;
-			Debug.Log ("storage");
 			nSkeletonEnemeyScript.DeathAction = delegate(){
-				Debug.Log ("dead nigger storage");
-				GameObject SwordDrop = nSkeletonEnemeyScript
-				.GameManager
-				.ItemFactory
-				.CreateItem(
-					"Sword",
-					nSkeletonEnemeyScript.transform.position
-					);
-				nSkeletonEnemeyScript.GameManager.level.items.Add(SwordDrop);
+				System.Random r = new System.Random();
+				float rNum = r.Next(0,100);
+				if(rNum < 12.5f){
+					GameObject SwordDrop = nSkeletonEnemeyScript
+						.GameManager
+							.ItemFactory
+							.CreateItem(
+								"Sword",
+								nSkeletonEnemeyScript.transform.position
+								);
+					nSkeletonEnemeyScript.GameManager.level.items.Add(SwordDrop);
+				}
 				nSkeletonEnemeyScript.GameManager.level.RemoveEnemy(nSkeletonEnemeyScript);
 			};
 			return nSkeletonEnemey;

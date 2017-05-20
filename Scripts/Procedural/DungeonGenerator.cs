@@ -283,6 +283,7 @@ public class DungeonGenerator {
 				} else {
 					t.tag = "Stonefloor";
 				}
+				return;
 
 			} else if (n < 2){
 				int turnToSkeleOnZero = (++step)%3;
@@ -291,20 +292,21 @@ public class DungeonGenerator {
 				} else {
 					t.tag = "Chicken";
 				}
-				this.history.Add(openPosition);
-				this.open.Remove(openPosition);
-				return;
 			} else if (n < 3){
 				t.tag = "Dummy";
-				this.history.Add(openPosition);
-				this.open.Remove(openPosition);
-				return;
-			} else {
+			} else if(n < 4){
+				float potionTypeRoll = this.r.Next(0,10);
+				if(potionTypeRoll < 5){
+					t.tag = "HealthPotion";
+				} else {
+					t.tag = "ManaPotion";
+				}
+			} else{
 				t.tag = "Stonefloor";
-				this.history.Add(openPosition);
-				this.open.Remove(openPosition);
-				return;
 			}
+			this.history.Add(openPosition);
+			this.open.Remove(openPosition);
+			return;
 		}
 	}
 
