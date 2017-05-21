@@ -96,6 +96,11 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 		}
+		if(this.level.markedForReset == true){
+			this.StopAllCoroutines();
+			this.level.GenerateDungeonLevel();
+			TurnManager.Phase = TurnManager.TurnPhase.End;
+		}
 		if(TurnManager != null){
 			if(TurnManager.Phase == TurnManager.TurnPhase.End){
 				this.StartCoroutine(TurnManager.ProcessAllTurns());

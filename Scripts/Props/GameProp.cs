@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class GameProp : MonoBehaviour {
 	public GameManager GameManager {get;set;}
-	public ActionsManager ActionsManager;
+	public ActionsManager ActionsManager = new ActionsManager();
+
+	public String Name;
 
 	public void Start(){
-		this.ActionsManager = new ActionsManager();
-		this.ActionsManager.AddGameAction("PhysicalHit",new GameActionMeleeOpenDoor(this.gameObject));
 	}
 }
 

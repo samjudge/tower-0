@@ -10,10 +10,8 @@ public class WallFactory : MonoBehaviour{
 		switch(wallname){
 			case "Blackwall":
 				return Instantiate(BlackWall, position, Quaternion.Euler(0,180,0)) as GameObject;
-				break;
 			default:
 				return Instantiate(BlackWall, position, Quaternion.Euler(0,180,0)) as GameObject;
-				break;
 		}
 	}
 

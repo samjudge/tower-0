@@ -77,9 +77,9 @@ public abstract class Enemy : Unit {
 						out hit,
 						mask
 					);
-					//Debug.DrawLine(origin, u.transform.TransformPoint(target),Color.green, 5f);
+//					Debug.DrawLine(origin, u.transform.TransformPoint(target),Color.green, 5f);
 					if(!isHit){
-					//	Debug.DrawLine(origin, u.transform.TransformPoint(target),Color.red, 5f);
+//						Debug.DrawLine(origin, u.transform.TransformPoint(target),Color.red, 5f);
 						return true;
 					}
 				}

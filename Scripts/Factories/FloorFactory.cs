@@ -9,10 +9,8 @@ public class FloorFactory : MonoBehaviour{
 		switch(floorname){
 			case "Stonefloor":
 				return Instantiate(StoneFloor, position, Quaternion.Euler(0,180,0)) as GameObject;
-				break;
 			default:
 				return Instantiate(StoneFloor, position, Quaternion.Euler(018,0,0)) as GameObject;
-				break;
 		}
 	}
 }
