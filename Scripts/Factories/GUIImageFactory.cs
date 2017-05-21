@@ -25,40 +25,28 @@ public class GUIImageFactory : MonoBehaviour{
 		switch(name){
 		case "Immolate":
 			return Instantiate(Immolate, position, Quaternion.Euler(0,0,0)) as Image;
-			break;
 		case "Heal":
 			return Instantiate(Heal, position, Quaternion.Euler(0,0,0)) as Image;
-			break;
 		case "Sight":
 			return Instantiate(Sight, position, Quaternion.Euler(0,0,0)) as Image;
-			break;
 		case "Green":
 			return Instantiate(Green, position, Quaternion.Euler(0,0,0)) as Image;
-			break;
 		case "Chicken":
 			return Instantiate(Chicken, position, Quaternion.Euler(0,0,0)) as Image;
-			break;
 		case "Dagger":
 			return Instantiate(Dagger, position, Quaternion.Euler(0,0,0)) as Image;
-			break;
 		case "Sword":
 			return Instantiate(Sword, position, Quaternion.Euler(0,0,0)) as Image;
-			break;
 		case "HealthPotion":
 			return Instantiate(HealthPotion, position, Quaternion.Euler(0,0,0)) as Image;
-			break;
 		case "ManaPotion":
 			return Instantiate(ManaPotion, position, Quaternion.Euler(0,0,0)) as Image;
-			break;
 		case "Red":
 			return Instantiate(Red, position, Quaternion.Euler(0,0,0)) as Image;
-			break;
 		case "Placeholder":
 			return Instantiate(Placeholder, position, Quaternion.Euler(0,0,0)) as Image;
-			break;
 		default:
 			return Instantiate(Placeholder, position, Quaternion.Euler(0,0,0)) as Image;
-			break;
 		}
 	}
 }

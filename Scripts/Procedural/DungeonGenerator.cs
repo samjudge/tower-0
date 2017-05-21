@@ -159,9 +159,15 @@ public class DungeonGenerator {
 					}
 				}
 			}
+			carveExit(this.activePosition.x,this.activePosition.y);
 			hasLoaded = true;
 			Tile tile = m.GetTile(10,10);
 			tile.tag = "Player";
+		}
+
+		public void carveExit(float x, float y){
+			Tile t = m.GetTile((int)x,(int)y);
+			t.tag = "StairsDown";
 		}
 
 		private bool canCarve(float x, float y){

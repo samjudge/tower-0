@@ -44,6 +44,10 @@ public class Player : Unit {
 			"Grab",
 			new GameActionPickUpGroundItem(this)
 		);
+		ActionsManager.AddGameAction(
+			"UseStairs",
+			new GameActionUseStairs(this)
+		);
 		SkillManager.AddSkill(
 			"Immolate"
 		);
@@ -93,6 +97,11 @@ public class Player : Unit {
 				}
 				if(Input.GetKey(KeyCode.G)){
 					GameAction a = ActionsManager.GetGameAction("Grab");
+					a.action();
+					ATUsUsed += 1;
+				}
+				if(Input.GetKey(KeyCode.N)){
+					GameAction a = ActionsManager.GetGameAction("UseStairs");
 					a.action();
 					ATUsUsed += 1;
 				}

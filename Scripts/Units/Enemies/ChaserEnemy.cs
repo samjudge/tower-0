@@ -16,7 +16,6 @@ public class ChaserEnemy : Enemy {
 		this.MaxHp = 10;
 		this.CastTarget = new Vector3(0f,0f,0f);
 		this.AI = new AStarPathfindNoWalls(this.GameManager.Player.transform.position,new Vector3(1,0,1));
-		ActionsManager.AddGameAction("Cast", new GameActionCastSkillByNameToPointTarget("Heal",this as Unit));
 		Renderer renderer = this.GetComponentInParent<Renderer>() as Renderer;
 		if (!renderer.material.HasProperty("_Color")){
 			renderer.material.SetColor("_Color", Color.white);
@@ -26,10 +25,6 @@ public class ChaserEnemy : Enemy {
 
 	public override float ProcessTurn(){
 		if(this.CheckIsInLOSOf(GameManager.Player.GetComponent<Unit>() as Unit)){
-			ArrayList statuses = this.StatusManager.GetStatuses();
-			if(statuses.Count == 0){
-				this.ActionsManager.GetGameAction("Cast").action();
-			}
 			if(this.IsInputLocked == false){
 				this.AI = new AStarPathfindNoWalls(this.GameManager.Player.transform.position,new Vector3(1,0,1));
 				AStarPathfind.Node n = new AStarPathfind.Node();

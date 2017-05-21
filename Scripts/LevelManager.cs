@@ -19,6 +19,8 @@ public class LevelManager {
 	public ArrayList items {get;set;}
 	public ArrayList gameobjects {get;set;}
 
+	public bool markedForReset = false;
+
 	public LevelManager (string levelName, GameManager gm) {
 		walls = new ArrayList();
 		floors = new ArrayList();
@@ -37,7 +39,34 @@ public class LevelManager {
 		return this.levelName;
 	}
 
+	public void ResetLevel(){
+		//delete old refs
+		foreach(GameObject w in walls){
+			GameObject.Destroy(w);
+		}
+		walls = new ArrayList();
+		foreach(GameObject f in floors){
+			GameObject.Destroy(f);
+		}
+		floors = new ArrayList();
+		foreach(GameObject e in enemies){
+			GameObject.Destroy(e);
+		}
+		enemies = new ArrayList();
+		foreach(GameObject p in gameobjects){
+			GameObject.Destroy(p);
+		}
+		gameobjects = new ArrayList();
+		foreach(GameObject i in items){
+			GameObject.Destroy(i);
+		}
+		items = new ArrayList();
+		this.markedForReset = true;
+	}
+
 	public void GenerateDungeonLevel(){
+		//generate new dungeon
+		this.markedForReset = false;
 		DungeonGenerator dg = new DungeonGenerator(this);
 		this.map = dg.m.tiles;
 		for(int z = 0; z < mapHeight ; z++){
@@ -51,9 +80,18 @@ public class LevelManager {
 				case "Stonefloor":
 					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 					break;
+				case "StairsDown":
+					GameObject stairDown = gm.GamePropFactory.CreateProp("StairsDown",new Vector3(x,-0.5f,z));
+					GameProp stairDownProp = stairDown.GetComponent<GameProp>() as GameProp;
+					this.gameobjects.Add(stairDown);
+					break;
 				case "Player":
-					gm.Player = GameObject.Instantiate(gm.PlayerPrefab,new Vector3(x,-0.25f,z),Quaternion.Euler(15,180,0)) as GameObject;
-					(gm.Player.GetComponent<Player>() as Player).GameManager = gm;
+					if(gm.Player == null){
+						gm.Player = GameObject.Instantiate(gm.PlayerPrefab,new Vector3(x,-0.25f,z),Quaternion.Euler(15,180,0)) as GameObject;
+						(gm.Player.GetComponent<Player>() as Player).GameManager = gm;
+					} else {
+						gm.Player.transform.position = new Vector3(x,-0.25f,z);
+					}
 					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 					break;
 				case "Chicken":
@@ -101,9 +139,14 @@ public class LevelManager {
 						sW.transform.rotation = Quaternion.Euler(0,0,0);
 					}
 					d.transform.rotation = tileCode.rotation;
-					gameobjects.Add(d);
 					GameProp door = (d.GetComponent<GameProp>() as GameProp);
-					(door.GetComponent<GameProp>() as GameProp).GameManager = gm;
+					door.GameManager = gm;
+					door.ActionsManager
+						.AddGameAction(
+							"PhysicalHit",
+							new GameActionMeleeOpenDoor(d)
+					);
+					gameobjects.Add(d);
 					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
 					walls.Add(sW);
 					break;

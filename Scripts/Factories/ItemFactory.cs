@@ -22,7 +22,6 @@ public class ItemFactory : MonoBehaviour{
 			i = new ConsumableItem("Chicken",chickenEffects);
 			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
 			return Item;
-			break;
 		case "Dagger":
 			Item = Instantiate(DaggerItem, position, Quaternion.Euler(15,180,0)) as GameObject;
 			EquipmentEffect[] daggerEffects = {
@@ -31,7 +30,6 @@ public class ItemFactory : MonoBehaviour{
 			i = new EquipableItem("Dagger",new String[]{"Left","Right"},daggerEffects);
 			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
 			return Item;
-			break;
 		case "Sword":
 			Item = Instantiate(SwordItem, position, Quaternion.Euler(15,180,0)) as GameObject;
 			EquipmentEffect[] swordEffects = {
@@ -40,7 +38,6 @@ public class ItemFactory : MonoBehaviour{
 			i = new EquipableItem("Sword",new String[]{"Left","Right"},swordEffects);
 			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
 			return Item;
-			break;
 		case "HealthPotion":
 			Item = Instantiate(HpPotItem, position, Quaternion.Euler(15,180,0)) as GameObject;
 			ConsumeHPModifier[] hpPotEffects = {
@@ -49,7 +46,6 @@ public class ItemFactory : MonoBehaviour{
 			i = new ConsumableItem("HealthPotion",hpPotEffects);
 			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
 			return Item;
-			break;
 		case "ManaPotion":
 			Item = Instantiate(ManaPotItem, position, Quaternion.Euler(15,180,0)) as GameObject;
 			ConsumableEffect[] manaPotEffects = {
@@ -58,10 +54,8 @@ public class ItemFactory : MonoBehaviour{
 			i = new ConsumableItem("ManaPotion",manaPotEffects);
 			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
 			return Item;
-			break;
 		default:
 			return Instantiate(ChickenItem, position, Quaternion.Euler(15,180,0)) as GameObject;
-			break;
 		}
 	}
 }
