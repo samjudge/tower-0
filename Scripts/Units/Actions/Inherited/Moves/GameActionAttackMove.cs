@@ -7,7 +7,7 @@ public class GameActionAttackMove : GameAction {
 	public Unit p;
 	public Vector3 target;
 
-	public GameActionAttackMove (Unit p, float dx, float dz, string AttackMask){
+	public GameActionAttackMove (Unit p, float dx, float dz, string AttackMask, string BlockerMask){
 		this.p = p;
 		this.action = delegate(){
 			if(p.IsInputLocked == false){
@@ -51,12 +51,17 @@ public class GameActionAttackMove : GameAction {
 
 						}
 					} else {
-						Debug.DrawLine(p.transform.position, this.target,Color.green,1f);
-						p.IsInputLocked = true;
-						p.StartCoroutine(Move());
+						int friendlyLayerMask = LayerMask.GetMask(BlockerMask);
+						Physics.Linecast(p.transform.position,this.target,out hit,friendlyLayerMask);
+						if(hit.transform == null){  // no friendly has been hit
+							Debug.DrawLine(p.transform.position, this.target,Color.green,1f);
+							p.IsInputLocked = true;
+							p.StartCoroutine(Move());
+						} else {
+							//a friendly is blocking the way
+						}
 					}
 				}
-
 			}
 		};
 	}

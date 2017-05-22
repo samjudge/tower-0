@@ -57,6 +57,9 @@ public class TurnManager {
 				while(ATUsConsumed < ATUs){
 					ATUsConsumed += e.ProcessTurn();
 				}
+				while(e.IsInputLocked){ //so they move 1 at a time
+					yield return null;
+				}
 				//calculate remainder
 				float remainingATUs = ATUs - ATUsConsumed;
 				e.ATUsRemaining = remainingATUs;

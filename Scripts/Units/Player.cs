@@ -26,19 +26,19 @@ public class Player : Unit {
 		this.FloorLight = Instantiate(TorchLight, this.transform.position, Quaternion.Euler(90,0,0)) as GameObject;
 		ActionsManager.AddGameAction(
 			"Up",
-			new GameActionAttackMove(this,0,1,"Enemies")
+			new GameActionAttackMove(this,0,1,"Enemies","Player")
 		);
 		ActionsManager.AddGameAction(
 			"Down",
-			new GameActionAttackMove(this,0,-1,"Enemies")
+			new GameActionAttackMove(this,0,-1,"Enemies","Player")
 		);
 		ActionsManager.AddGameAction(
 			"Left",
-			new GameActionAttackMove(this,-1,0,"Enemies")
+			new GameActionAttackMove(this,-1,0,"Enemies","Player")
 		);
 		ActionsManager.AddGameAction(
 			"Right",
-			new GameActionAttackMove(this,1,0,"Enemies")
+			new GameActionAttackMove(this,1,0,"Enemies","Player")
 		);
 		ActionsManager.AddGameAction(
 			"Grab",

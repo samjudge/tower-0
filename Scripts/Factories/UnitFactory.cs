@@ -35,7 +35,7 @@ public class UnitFactory : MonoBehaviour{
 				nSkeletonEnemeyScript.DeathAction = delegate(){
 					System.Random r = new System.Random();
 					float rNum = r.Next(0,100);
-					if(rNum < 12.5f){
+					if(rNum < 100f){
 						GameObject SwordDrop = nSkeletonEnemeyScript
 							.GameManager
 								.ItemFactory

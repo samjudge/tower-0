@@ -61,7 +61,8 @@ public class ChaserEnemy : Enemy {
 					this,
 					targetX,
 					targetY,
-					"Player"
+					"Player",
+					"Enemies"
 					)
 				);
 				this.ActionsManager.GetGameAction("Move").action();

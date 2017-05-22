@@ -33,8 +33,6 @@ public class GameManager : MonoBehaviour {
 	public GameObject PlayerPrefab;
 	public GameObject Player;
 
-
-
 	public UIHorizontalFillBar GetOnScreenHPBar(){
 		return this.HPBar;
 	}
