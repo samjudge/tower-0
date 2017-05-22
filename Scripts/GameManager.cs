@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour {
 	private UIHorizontalFillBar MPBar;
 	public GameObject UIManaBar;
 
+	private UIHorizontalFillBar ExperienceBar;
+	public GameObject UIExperienceBar;
+
 	public GameObject PlayerPrefab;
 	public GameObject Player;
 
@@ -39,6 +42,10 @@ public class GameManager : MonoBehaviour {
 
 	public UIHorizontalFillBar GetOnScreenMPBar(){
 		return this.MPBar;
+	}
+
+	public UIHorizontalFillBar GetOnScreenExperienceBar(){
+		return this.ExperienceBar;
 	}
 
 	public ImageSkillBarManager GetImageSkillBarManager(){
@@ -59,6 +66,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		this.HPBar = UIHealthBar.GetComponent<UIHorizontalFillBar>();
 		this.MPBar = UIManaBar.GetComponent<UIHorizontalFillBar>();
+		this.ExperienceBar = UIExperienceBar.GetComponent<UIHorizontalFillBar>();
 		this.ImageSkillBarManager = this.UISkillBar.GetComponent<ImageSkillBarManager>();
 		this.ImageInventoryManager = this.UIInventory.GetComponent<ImageInventoryManager>();
 		this.LoadNewLevel("Dungeon");

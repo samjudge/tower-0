@@ -17,6 +17,9 @@ public abstract class Unit : MonoBehaviour{
 
 	public Inventory Inventory {get;set;}
 
+	public int level = 1;
+	public float Experience = 0;
+
 	public float Hp {get;set;}
 	public float MaxHp {get;set;}
 
@@ -36,6 +39,18 @@ public abstract class Unit : MonoBehaviour{
 	public float BonusDexterity {get; set;}
 
 	public abstract float ProcessTurn();
+
+	public bool CanLevelUp(){
+		float requiredExperience = CalculateRequiredExpForLevelUp();
+		if(this.Experience > requiredExperience){
+			return true;
+		}
+		return false;
+	}
+
+	public float CalculateRequiredExpForLevelUp(){
+		return (this.level * 5)^2;
+	}
 
 }
 

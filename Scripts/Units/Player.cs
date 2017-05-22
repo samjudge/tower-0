@@ -11,6 +11,12 @@ public class Player : Unit {
 
 	public bool IsInventoryOpen = false;
 
+	public int FreeSLIDPoints = 0;
+
+	public void LevelUp(){
+		this.FreeSLIDPoints += 1;
+	}
+
 	public void Start(){
 		this.BaseStrength = 1;
 		this.Mp = 100;
@@ -73,8 +79,10 @@ public class Player : Unit {
 	private float ATUsUsed = 0;
 
 	public void Update(){
+
 		this.GameManager.GetOnScreenHPBar().UpdateBar(this.Hp,this.MaxHp);
 		this.GameManager.GetOnScreenMPBar().UpdateBar(this.Mp,this.MaxMp);
+		this.GameManager.GetOnScreenExperienceBar().UpdateBar(this.Experience,this.CalculateRequiredExpForLevelUp());
 	}
 
 	public override float ProcessTurn(){
@@ -193,7 +201,6 @@ public class Player : Unit {
 			}
 		}
 	}
-
 
 }
 

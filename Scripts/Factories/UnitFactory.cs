@@ -17,6 +17,13 @@ public class UnitFactory : MonoBehaviour{
 				GameObject nChickenEnemey = Instantiate(ChickenEnemy, position, Quaternion.Euler(15,180,0)) as GameObject;
 				ChaserEnemy nChickenEnemeyScript = nChickenEnemey.GetComponent<ChaserEnemy>() as ChaserEnemy;
 				nChickenEnemeyScript.DeathAction = delegate(){
+				Player p = nChickenEnemeyScript.GameManager.Player.GetComponent<Player>() as Player;
+					p.Experience += 1;
+					if(p.CanLevelUp()){
+						p.Experience -= p.CalculateRequiredExpForLevelUp();
+						p.level += 1;
+						p.LevelUp();
+					}
 					GameObject ChickenDrop = nChickenEnemeyScript
 						.GameManager
 						.ItemFactory
@@ -33,6 +40,13 @@ public class UnitFactory : MonoBehaviour{
 				GameObject nSkeletonEnemey = Instantiate(SkeletonEnemy, position, Quaternion.Euler(15,180,0)) as GameObject;
 				ChaserEnemy nSkeletonEnemeyScript = nSkeletonEnemey.GetComponent<ChaserEnemy>() as ChaserEnemy;
 				nSkeletonEnemeyScript.DeathAction = delegate(){
+					Player p = nSkeletonEnemeyScript.GameManager.Player.GetComponent<Player>() as Player;
+					p.Experience += 3;
+					if(p.CanLevelUp()){
+						p.Experience -= p.CalculateRequiredExpForLevelUp();
+						p.level += 1;
+						p.LevelUp();
+					}
 					System.Random r = new System.Random();
 					float rNum = r.Next(0,100);
 					if(rNum < 100f){
