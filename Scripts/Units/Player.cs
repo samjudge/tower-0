@@ -10,7 +10,7 @@ public class Player : Unit {
 	public GameObject FloorLight;
 
 	public bool IsInventoryOpen = false;
-
+	public bool IsStatsViewOpen = false;
 	public int FreeSLIDPoints = 0;
 
 	public void LevelUp(){
@@ -79,7 +79,7 @@ public class Player : Unit {
 	private float ATUsUsed = 0;
 
 	public void Update(){
-
+		Debug.Log(this.FreeSLIDPoints);
 		this.GameManager.GetOnScreenHPBar().UpdateBar(this.Hp,this.MaxHp);
 		this.GameManager.GetOnScreenMPBar().UpdateBar(this.Mp,this.MaxMp);
 		this.GameManager.GetOnScreenExperienceBar().UpdateBar(this.Experience,this.CalculateRequiredExpForLevelUp());
@@ -152,6 +152,12 @@ public class Player : Unit {
 					if(this.GameManager.GetImageInventoryManager().IsInventoryClosed()){
 						this.GameManager.GetImageInventoryManager().ToggleInventory();
 						this.IsInventoryOpen = true;
+					}
+				}
+				if(Input.GetKey(KeyCode.P)){
+					if(this.GameManager.GetImageStatsManager()){
+						this.GameManager.GetImageStatsManager().Toggle();
+						this.IsStatsViewOpen = true;
 					}
 				}
 			}

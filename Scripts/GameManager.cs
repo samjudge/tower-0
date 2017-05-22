@@ -24,6 +24,9 @@ public class GameManager : MonoBehaviour {
 	private ImageInventoryManager ImageInventoryManager;
 	public GameObject UIInventory;
 
+	private PlayerStatsManager ImagePlayerStatsManager;
+	public GameObject UIPlayerStats;
+
 	private UIHorizontalFillBar HPBar;
 	public GameObject UIHealthBar;
 
@@ -35,6 +38,8 @@ public class GameManager : MonoBehaviour {
 
 	public GameObject PlayerPrefab;
 	public GameObject Player;
+
+	public LevelManager level;
 
 	public UIHorizontalFillBar GetOnScreenHPBar(){
 		return this.HPBar;
@@ -56,7 +61,9 @@ public class GameManager : MonoBehaviour {
 		return this.ImageInventoryManager;
 	}
 
-	public LevelManager level;
+	public PlayerStatsManager GetImageStatsManager(){
+		return this.ImagePlayerStatsManager;
+	}
 
 	private void LoadNewLevel(string levelName){
 		level = new LevelManager(levelName,this);
@@ -69,6 +76,7 @@ public class GameManager : MonoBehaviour {
 		this.ExperienceBar = UIExperienceBar.GetComponent<UIHorizontalFillBar>();
 		this.ImageSkillBarManager = this.UISkillBar.GetComponent<ImageSkillBarManager>();
 		this.ImageInventoryManager = this.UIInventory.GetComponent<ImageInventoryManager>();
+		this.ImagePlayerStatsManager = this.UIPlayerStats.GetComponent<PlayerStatsManager>();
 		this.LoadNewLevel("Dungeon");
 	}
 
@@ -81,6 +89,10 @@ public class GameManager : MonoBehaviour {
 				p.StatusManager,
 				GuiFactory
 			);
+		}
+		if(!ImagePlayerStatsManager.IsRunning && Player != null){
+			Player p = Player.GetComponent<Player>() as Player;
+			ImagePlayerStatsManager.SetOwner(p);
 		}
 		if(!ImageInventoryManager.IsRunning && Player != null){
 			Player p = Player.GetComponent<Player>() as Player;
