@@ -93,12 +93,12 @@ public class Player : Unit {
 				if(Input.GetKey(KeyCode.I)){
 					if(GameManager.GetImageInventoryManager().IsInventoryOpen()){
 						this.GameManager.GetImageInventoryManager().ToggleInventory();
-						this.IsInventoryOpen = false;
+						IsInventoryOpen = false;
 					}
 				}
 			} else if(IsStatsViewOpen) {
 				Debug.Log("madamada");
-				if(IsStatsViewOpen){
+				if(this.IsStatsViewOpen){
 					if(Input.GetKey(KeyCode.P)){
 						if(GameManager.GetImageStatsManager().IsOpen()){
 							this.GameManager.GetImageStatsManager().Toggle();
@@ -166,7 +166,7 @@ public class Player : Unit {
 					}
 				}
 				if(Input.GetKey(KeyCode.P)){
-					if(this.GameManager.GetImageStatsManager()){
+					if(this.GameManager.GetImageStatsManager().IsClosed()){
 						this.GameManager.GetImageStatsManager().Toggle();
 						this.IsStatsViewOpen = true;
 					}
