@@ -96,7 +96,18 @@ public class Player : Unit {
 						this.IsInventoryOpen = false;
 					}
 				}
+			} else if(IsStatsViewOpen) {
+				Debug.Log("madamada");
+				if(IsStatsViewOpen){
+					if(Input.GetKey(KeyCode.P)){
+						if(GameManager.GetImageStatsManager().IsOpen()){
+							this.GameManager.GetImageStatsManager().Toggle();
+							this.IsStatsViewOpen = false;
+						}
+					}
+				}
 			} else {
+				Debug.Log("regular input");
 				//inputs
 				this.CastTarget = MousePosition;
 				if(Input.GetMouseButtonDown(0)){

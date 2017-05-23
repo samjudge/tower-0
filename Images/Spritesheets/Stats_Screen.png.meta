@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: ff0465487e10a17439f46b0ed31d0345
-timeCreated: 1495489407
+timeCreated: 1495559380
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: stats_menu
+    21300002: plus_button
+    21300004: plus_button_pressed
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -57,6 +59,26 @@ TextureImporter:
         y: 49
         width: 136
         height: 158
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: plus_button
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 177
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: plus_button_pressed
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 162
+        width: 13
+        height: 13
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
