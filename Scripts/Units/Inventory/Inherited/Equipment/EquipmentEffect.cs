@@ -1,10 +1,10 @@
 using System;
 
-public abstract class EquipmentEffect {
+public abstract class EquipmentEffect : ItemEffect{
 
-	public delegate void EquipmentModifier(Unit u);
+	public String[] EquipableTo;
 
-	public abstract EquipmentEffect.EquipmentModifier GetOnEquipEffect();
-	public abstract EquipmentEffect.EquipmentModifier GetOnUnequipEffect();
+	public abstract ItemEffect.Modifier GetOnEquipEffect();
+	public abstract ItemEffect.Modifier GetOnUnequipEffect();
 }
 

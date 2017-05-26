@@ -9,11 +9,6 @@ public class ChaserEnemy : Enemy {
 
 	public void Start(){
 		base.Start();
-		this.BaseStrength = 1;
-		this.Mp = 10;
-		this.MaxMp = 10;
-		this.Hp = 10;
-		this.MaxHp = 10;
 		this.CastTarget = new Vector3(0f,0f,0f);
 		this.AI = new AStarPathfindNoWalls(this.GameManager.Player.transform.position,new Vector3(1,0,1));
 		Renderer renderer = this.GetComponentInParent<Renderer>() as Renderer;

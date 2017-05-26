@@ -20,23 +20,23 @@ public abstract class Unit : MonoBehaviour{
 	public int level = 1;
 	public float Experience = 0;
 
-	public float Hp {get;set;}
-	public float MaxHp {get;set;}
+	public float Hp;
+	public float MaxHp;
 
-	public float Mp {get;set;}
-	public float MaxMp {get;set;}
+	public float Mp;
+	public float MaxMp;
 
-	public float BaseStrength {get; set;}
-	public float BonusStrength {get; set;}
+	public float BaseStrength;
+	public float BonusStrength;
 
-	public float BaseLuck {get; set;}
-	public float BonusLuck {get; set;}
+	public float BaseLuck;
+	public float BonusLuck;
 
-	public float BaseIntelligence {get; set;}
-	public float BonusIntelligence {get; set;}
+	public float BaseIntelligence;
+	public float BonusIntelligence;
 
-	public float BaseDexterity {get; set;}
-	public float BonusDexterity {get; set;}
+	public float BaseDexterity;
+	public float BonusDexterity;
 
 	public abstract float ProcessTurn();
 

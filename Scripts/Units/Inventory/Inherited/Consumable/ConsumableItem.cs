@@ -8,6 +8,7 @@ public class ConsumableItem : Item {
 	private int charges = 1;
 
 	public ConsumableItem (String name, ConsumableEffect[] OnConsumeEffects) : base(name){
+		Debug.Log(OnConsumeEffects.Length);
 		this.OnConsumeEffects = OnConsumeEffects;
 	}
 

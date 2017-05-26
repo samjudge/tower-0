@@ -37,7 +37,7 @@ public class ImageInventorySlotPlaceholder : ImageInventoryPlaceholder,IPointerC
 					ConsumableItem Consumable = (ConsumableItem) ItemAtSlot;
 					ConsumableEffect[] effects = Consumable.OnConsumeEffects;
 					foreach(ConsumableEffect effect in effects){
-						ConsumableEffect.ConsumeAction cEffect = effect.GetOnConsumeEffect();
+						ConsumableEffect.Modifier cEffect = effect.GetOnConsumeEffect();
 						cEffect(im.GetInventory().Owner);
 					}
 					Consumable.SetCharges(Consumable.GetCharges() - 1);

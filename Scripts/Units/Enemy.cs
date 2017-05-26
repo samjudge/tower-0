@@ -6,13 +6,10 @@ using UnityEngine.UI;
 public abstract class Enemy : Unit {
 
 	public void Start(){
-		this.Hp = 1;
-		this.Mp = 1;
 		StartCoroutine(HPWatcher());
 		this.ActionsManager = new ActionsManager();
 		this.StatusManager = new StatusManager();
 		this.SkillManager = new SkillManager(this);
-		this.BaseStrength = 1;
 		if(this.DeathAction == null){
 			this.DeathAction = delegate(){
 				this.GameManager.level.RemoveEnemy(this);
@@ -23,6 +20,8 @@ public abstract class Enemy : Unit {
 	public delegate void OnDeath();
 	public abstract void Die();
 	public OnDeath DeathAction;
+	public String DeathActionName;
+	public String[] Drops;
 
 	public float ATUsRemaining = 0f;
 

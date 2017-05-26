@@ -1,9 +1,6 @@
 using System;
 
-public abstract class ConsumableEffect {
-	
-	public delegate void ConsumeAction(Unit u);
-	
-	public abstract ConsumableEffect.ConsumeAction GetOnConsumeEffect();
+public abstract class ConsumableEffect : ItemEffect{
+	public abstract ItemEffect.Modifier GetOnConsumeEffect();
 }
 
