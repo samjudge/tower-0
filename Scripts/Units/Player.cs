@@ -69,7 +69,7 @@ public class Player : Unit {
 		}
 		//An inital item in the inventory
 		EquipmentEffect[] effects = {
-			new EquipmentStatusModifierEffect(1,0,0,0)
+			new EquipmentStatusModifierEffect()
 		};
 		Item dagger = new EquipableItem("Dagger",new String[]{"Left","Right"},effects);
 		this.Inventory.AddItem(dagger);

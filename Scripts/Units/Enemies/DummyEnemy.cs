@@ -7,10 +7,6 @@ public class DummyEnemy : Enemy {
 
 	public void Start(){
 		base.Start();
-		this.Mp = 1;
-		this.MaxMp = 1;
-		this.Hp = 10;
-		this.MaxHp = 10;
 		this.CastTarget = new Vector3(0f,0f,0f);
 		ActionsManager.AddGameAction("Cast", new GameActionCastSkillByNameToPointTarget("Heal",this as Unit));
 		Renderer renderer = this.GetComponentInParent<Renderer>() as Renderer;

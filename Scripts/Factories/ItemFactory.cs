@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,55 +8,39 @@ public class ItemFactory : MonoBehaviour{
 	public GameObject ChickenItem;
 	public GameObject DaggerItem;
 	public GameObject SwordItem;
-	public GameObject ManaPotItem;
-	public GameObject HpPotItem;
+	public GameObject ManaPotionItem;
+	public GameObject HealthPotionItem;
 
 	public GameObject CreateItem(String name, Vector3 position){
-		GameObject Item = null;
-		Item i = null;
-		switch(name){
-		case "Chicken":
-			Item = Instantiate(ChickenItem, position, Quaternion.Euler(15,180,0)) as GameObject;
-			ConsumableEffect[] chickenEffects = {
-				new ConsumeHPModifier(25)
-			};
-			i = new ConsumableItem("Chicken",chickenEffects);
-			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
-			return Item;
-		case "Dagger":
-			Item = Instantiate(DaggerItem, position, Quaternion.Euler(15,180,0)) as GameObject;
-			EquipmentEffect[] daggerEffects = {
-				new EquipmentStatusModifierEffect(1,0,0,0)
-			};
-			i = new EquipableItem("Dagger",new String[]{"Left","Right"},daggerEffects);
-			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
-			return Item;
-		case "Sword":
-			Item = Instantiate(SwordItem, position, Quaternion.Euler(15,180,0)) as GameObject;
-			EquipmentEffect[] swordEffects = {
-				new EquipmentStatusModifierEffect(4,0,0,0)
-			};
-			i = new EquipableItem("Sword",new String[]{"Left","Right"},swordEffects);
-			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
-			return Item;
-		case "HealthPotion":
-			Item = Instantiate(HpPotItem, position, Quaternion.Euler(15,180,0)) as GameObject;
-			ConsumeHPModifier[] hpPotEffects = {
-				new ConsumeHPModifier(100)
-			};
-			i = new ConsumableItem("HealthPotion",hpPotEffects);
-			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
-			return Item;
-		case "ManaPotion":
-			Item = Instantiate(ManaPotItem, position, Quaternion.Euler(15,180,0)) as GameObject;
-			ConsumableEffect[] manaPotEffects = {
-				new ConsumeMPModifier(50)
-			};
-			i = new ConsumableItem("ManaPotion",manaPotEffects);
-			(Item.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
-			return Item;
-		default:
-			return Instantiate(ChickenItem, position, Quaternion.Euler(15,180,0)) as GameObject;
+		FieldInfo Property = this.GetType().GetField(name + "Item");
+		GameObject ItemPrefab = Property.GetValue(this) as GameObject;
+		GameObject nEnemey = Instantiate(ItemPrefab, position, Quaternion.Euler(15,180,0)) as GameObject;
+		ItemEffect[] ItemEffects = nEnemey.GetComponents<ItemEffect>() as ItemEffect[];
+		Debug.Log(ItemEffects.Length);
+		String TypeName = ItemEffects[0].ItemTypeName;
+		Item i;
+		int Tracker = 0;
+		switch(TypeName){
+			case "Consumable":
+				ConsumableEffect[] ConsumableEffects = new ConsumableEffect[ItemEffects.Length];
+				foreach(ItemEffect ConsumableEffect in ItemEffects){
+					ConsumableEffects[Tracker] = ConsumableEffect as ConsumableEffect;
+	              	Tracker++;
+				}
+				i = new ConsumableItem(name,ConsumableEffects);
+				break;
+			case "Equipable":
+				EquipmentEffect[] EquipmentEffects = new EquipmentEffect[ItemEffects.Length];
+				foreach(ItemEffect EquipmentEffect in ItemEffects){
+					EquipmentEffects[Tracker] = EquipmentEffect as  EquipmentEffect;
+					Tracker++;
+				}
+				i = new EquipableItem(name,EquipmentEffects[0].EquipableTo,EquipmentEffects);
+				break;
+			default:
+				throw new Exception("Item Type does not exist : " + TypeName);
 		}
+		(nEnemey.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
+		return nEnemey;
 	}
 }
