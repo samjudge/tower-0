@@ -327,7 +327,7 @@ public class DungeonGenerator {
 			for(int x = 0; x < height ; x++){
 				for(int y = 0; y < width ; y++){
 					Tile t = new Tile(x,0,y);
-					t.tag = "Blackwall";
+					t.tag = "BlackWall";
 					this.tiles.Add(t);
 				}
 			}

@@ -73,7 +73,7 @@ public class LevelManager {
 			for(int x = 0; x < mapWidth; x++){
 				DungeonGenerator.Tile tileCode = map[x + z*mapWidth] as DungeonGenerator.Tile;
 				switch(tileCode.tag){
-				case "Blackwall":
+				case "BlackWall":
 					walls.Add(gm.WallFactory.CreateWall("BlackWall",new Vector3(x,0,z)));
 					walls.Add(gm.WallFactory.CreateShadowBlocker(new Vector3(x,0f,z)) as GameObject);
 					break;
