@@ -68,8 +68,10 @@ public class Player : Unit {
 			renderer.material.SetColor("_Color", Color.white);
 		}
 		//An inital item in the inventory
+		EquipmentStatusModifierEffect daggerStatMod = new EquipmentStatusModifierEffect();
+		daggerStatMod.StrMod = 10;
 		EquipmentEffect[] effects = {
-			new EquipmentStatusModifierEffect()
+			daggerStatMod
 		};
 		Item dagger = new EquipableItem("Dagger",new String[]{"Left","Right"},effects);
 		this.Inventory.AddItem(dagger);
@@ -97,7 +99,6 @@ public class Player : Unit {
 					}
 				}
 			} else if(IsStatsViewOpen) {
-				Debug.Log("madamada");
 				if(this.IsStatsViewOpen){
 					if(Input.GetKey(KeyCode.P)){
 						if(GameManager.GetImageStatsManager().IsOpen()){
@@ -107,7 +108,6 @@ public class Player : Unit {
 					}
 				}
 			} else {
-				Debug.Log("regular input");
 				//inputs
 				this.CastTarget = MousePosition;
 				if(Input.GetMouseButtonDown(0)){

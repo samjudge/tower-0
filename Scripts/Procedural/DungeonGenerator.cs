@@ -155,7 +155,7 @@ public class DungeonGenerator {
 				for(int nx = 0; nx < w ; nx++){
 					for(int ny = 0; ny < h ; ny++){
 						Tile roomtile = m.GetTile(sX + nx, sY + ny);
-						roomtile.tag = "Stonefloor";
+						roomtile.tag = "StoneFloor";
 					}
 				}
 			}
@@ -287,7 +287,7 @@ public class DungeonGenerator {
 					par.tag = "Door";
 					par.rotation = Quaternion.Euler(new Vector3(0,90,0));
 				} else {
-					t.tag = "Stonefloor";
+					t.tag = "StoneFloor";
 				}
 				return;
 
@@ -308,7 +308,7 @@ public class DungeonGenerator {
 					t.tag = "ManaPotion";
 				}
 			} else{
-				t.tag = "Stonefloor";
+				t.tag = "StoneFloor";
 			}
 			this.history.Add(openPosition);
 			this.open.Remove(openPosition);
@@ -356,7 +356,7 @@ public class DungeonGenerator {
 				case "Blackwall":
 					s += "/";
 					break;
-				case "Stonefloor" :
+				case "StoneFloor" :
 					s += "\\";
 					break;
 				default :

@@ -12,7 +12,7 @@ public class UnitFactory : MonoBehaviour{
 	public GameObject ChickenEnemy;
 	public GameObject SkeletonEnemy;
 
-	public TextAsset Config;
+	System.Random RandomGen = new System.Random();
 
 	public GameObject CreateUnit(string name, Vector3 position){
 		FieldInfo property = this.GetType().GetField(name + "Enemy");
@@ -23,7 +23,7 @@ public class UnitFactory : MonoBehaviour{
 		switch(DeathActionName){
 			case "BasicEnemyDeathAction":
 				nEnemeyScript.DeathAction = delegate(){
-					String[] Drops = nEnemeyScript.Drops;
+					Drop[] Drops = nEnemeyScript.Drops;
 					Player p = nEnemeyScript.GameManager.Player.GetComponent<Player>() as Player;
 					p.Experience += nEnemeyScript.Experience;
 					if(p.CanLevelUp()){
@@ -31,15 +31,18 @@ public class UnitFactory : MonoBehaviour{
 						p.level += 1;
 						p.LevelUp();
 					}
-					foreach(String DropName in Drops){
-						GameObject Drop = nEnemeyScript
-							.GameManager
-							.ItemFactory
-							.CreateItem(
-								DropName,
-								nEnemeyScript.transform.position
+					foreach(Drop DropInfo in Drops){
+						double roll = RandomGen.NextDouble();
+						if(roll < DropInfo.chance){
+							GameObject Drop = nEnemeyScript
+								.GameManager
+								.ItemFactory
+								.CreateItem(
+									DropInfo.name,
+									nEnemeyScript.transform.position
 							);
-						nEnemeyScript.GameManager.level.items.Add(Drop);
+							nEnemeyScript.GameManager.level.items.Add(Drop);
+						}
 					}
 					nEnemeyScript.GameManager.level.RemoveEnemy(nEnemeyScript);
 				};

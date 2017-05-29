@@ -12,9 +12,11 @@ public class ImageInventoryEquippedPlaceholder : ImageInventoryPlaceholder,IPoin
 	public void OnPointerClick(PointerEventData e){
 		ImageInventoryManager im = this.transform.parent.GetComponent<ImageInventoryManager>();
 		Item HeldItem = im.GetHeldItem();
+		Debug.Log(HeldItem);
 		if(HeldItem != null){
 			Item OccupyingItem = im.GetInventory().GetItemInNamedSlot(SlotName);
 			if(im.GetInventory().CanEquipToNamedSlot(HeldItem,SlotName)){
+				Debug.Log("Can Equp TO Slot");
 				if(OccupyingItem != null){
 					if(im.WasLastItemFromNamedSlot()){
 						String HeldItemLastName = im.GetHeldItemLastOccupiedNamedSlot();

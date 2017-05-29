@@ -3,6 +3,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Serializable]
+public class Drop {
+	public String name;
+	public float chance;
+}
+
+
 public abstract class Enemy : Unit {
 
 	public void Start(){
@@ -21,7 +28,7 @@ public abstract class Enemy : Unit {
 	public abstract void Die();
 	public OnDeath DeathAction;
 	public String DeathActionName;
-	public String[] Drops;
+	public Drop[] Drops;
 
 	public float ATUsRemaining = 0f;
 
