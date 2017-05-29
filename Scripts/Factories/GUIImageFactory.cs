@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,32 +23,11 @@ public class GUIImageFactory : MonoBehaviour{
 	public Image ManaPotion;
 
 	public Image CreateImage(String name, Vector3 position){
-		switch(name){
-		case "Immolate":
-			return Instantiate(Immolate, position, Quaternion.Euler(0,0,0)) as Image;
-		case "Heal":
-			return Instantiate(Heal, position, Quaternion.Euler(0,0,0)) as Image;
-		case "Sight":
-			return Instantiate(Sight, position, Quaternion.Euler(0,0,0)) as Image;
-		case "Green":
-			return Instantiate(Green, position, Quaternion.Euler(0,0,0)) as Image;
-		case "Chicken":
-			return Instantiate(Chicken, position, Quaternion.Euler(0,0,0)) as Image;
-		case "Dagger":
-			return Instantiate(Dagger, position, Quaternion.Euler(0,0,0)) as Image;
-		case "Sword":
-			return Instantiate(Sword, position, Quaternion.Euler(0,0,0)) as Image;
-		case "HealthPotion":
-			return Instantiate(HealthPotion, position, Quaternion.Euler(0,0,0)) as Image;
-		case "ManaPotion":
-			return Instantiate(ManaPotion, position, Quaternion.Euler(0,0,0)) as Image;
-		case "Red":
-			return Instantiate(Red, position, Quaternion.Euler(0,0,0)) as Image;
-		case "Placeholder":
-			return Instantiate(Placeholder, position, Quaternion.Euler(0,0,0)) as Image;
-		default:
-			return Instantiate(Placeholder, position, Quaternion.Euler(0,0,0)) as Image;
-		}
+		FieldInfo Property = this.GetType().GetField(name);
+		Image GUIPrefab = Property.GetValue(this) as Image;
+		Image nImage = Instantiate(GUIPrefab, position, Quaternion.Euler(0,180,0)) as Image;
+		nImage.transform.localScale = new Vector3(0.8f,0.8f,0.8f);
+		return nImage;
 	}
 }
 

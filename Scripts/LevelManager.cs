@@ -74,11 +74,11 @@ public class LevelManager {
 				DungeonGenerator.Tile tileCode = map[x + z*mapWidth] as DungeonGenerator.Tile;
 				switch(tileCode.tag){
 				case "Blackwall":
-					walls.Add(gm.WallFactory.CreateWall("Blackwall",new Vector3(x,0,z)));
+					walls.Add(gm.WallFactory.CreateWall("BlackWall",new Vector3(x,0,z)));
 					walls.Add(gm.WallFactory.CreateShadowBlocker(new Vector3(x,0f,z)) as GameObject);
 					break;
-				case "Stonefloor":
-					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+				case "StoneFloor":
+					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					break;
 				case "StairsDown":
 					GameObject stairDown = gm.GamePropFactory.CreateProp("StairsDown",new Vector3(x,-0.5f,z));
@@ -92,37 +92,37 @@ public class LevelManager {
 					} else {
 						gm.Player.transform.position = new Vector3(x,-0.25f,z);
 					}
-					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					break;
 				case "Chicken":
 					GameObject chickenEnemy = gm.UnitFactory.CreateUnit("Chicken",new Vector3(x,-0.25f,z)) as GameObject;
 					enemies.Add(chickenEnemy);
 					Enemy enemy = (chickenEnemy.GetComponent<Enemy>() as Enemy);
 					(enemy.GetComponent<Enemy>() as Enemy).GameManager = gm;
-					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					break;
 				case "Skeleton":
 					GameObject skeletonEnemy = gm.UnitFactory.CreateUnit("Skeleton",new Vector3(x,-0.25f,z)) as GameObject;
 					enemies.Add(skeletonEnemy);
 					Enemy skeleton = (skeletonEnemy.GetComponent<Enemy>() as Enemy);
 					(skeletonEnemy.GetComponent<Enemy>() as Enemy).GameManager = gm;
-					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					break;
 				case "Dummy":
 					GameObject dummyEnemy = gm.UnitFactory.CreateUnit("Dummy",new Vector3(x,-0.25f,z)) as GameObject;
 					enemies.Add(dummyEnemy);
 					(dummyEnemy.GetComponent<Enemy>() as Enemy).GameManager = gm;
-					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					break;
 				case "HealthPotion" :
 					GameObject healthPotion = gm.ItemFactory.CreateItem("HealthPotion",new Vector3(x,-0.25f,z)) as GameObject;
 					items.Add(healthPotion);
-					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					break;
 				case "ManaPotion" :
 					GameObject manaPotion = gm.ItemFactory.CreateItem("ManaPotion",new Vector3(x,-0.25f,z)) as GameObject;
 					items.Add(manaPotion);
-					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					break;
 				case "Door":
 					GameObject d = null;
@@ -147,7 +147,7 @@ public class LevelManager {
 							new GameActionMeleeOpenDoor(d)
 					);
 					gameobjects.Add(d);
-					floors.Add(gm.FloorFactory.CreateFloor("Stonefloor",new Vector3(x,-0.5f,z)));
+					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					walls.Add(sW);
 					break;
 				}

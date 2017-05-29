@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Inventory { //An "ItemManager" type class
 
@@ -40,6 +41,7 @@ public class Inventory { //An "ItemManager" type class
 		if(i is EquipableItem){
 			EquipableItem ei = (EquipableItem) i;
 			foreach(String CanEquipToSlot in ei.EquipableTo){
+				Debug.Log(CanEquipToSlot + " == " + NamedSlot);
 				if(CanEquipToSlot == NamedSlot){
 					return true;
 				}

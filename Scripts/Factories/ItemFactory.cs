@@ -14,8 +14,8 @@ public class ItemFactory : MonoBehaviour{
 	public GameObject CreateItem(String name, Vector3 position){
 		FieldInfo Property = this.GetType().GetField(name + "Item");
 		GameObject ItemPrefab = Property.GetValue(this) as GameObject;
-		GameObject nEnemey = Instantiate(ItemPrefab, position, Quaternion.Euler(15,180,0)) as GameObject;
-		ItemEffect[] ItemEffects = nEnemey.GetComponents<ItemEffect>() as ItemEffect[];
+		GameObject nItem = Instantiate(ItemPrefab, position, Quaternion.Euler(15,180,0)) as GameObject;
+		ItemEffect[] ItemEffects = nItem.GetComponents<ItemEffect>() as ItemEffect[];
 		Debug.Log(ItemEffects.Length);
 		String TypeName = ItemEffects[0].ItemTypeName;
 		Item i;
@@ -35,12 +35,13 @@ public class ItemFactory : MonoBehaviour{
 					EquipmentEffects[Tracker] = EquipmentEffect as  EquipmentEffect;
 					Tracker++;
 				}
+				Debug.Log(EquipmentEffects[0].EquipableTo[0]);
 				i = new EquipableItem(name,EquipmentEffects[0].EquipableTo,EquipmentEffects);
 				break;
 			default:
 				throw new Exception("Item Type does not exist : " + TypeName);
 		}
-		(nEnemey.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
-		return nEnemey;
+		(nItem.GetComponent<ItemGameObject>() as ItemGameObject).SetItem(i);
+		return nItem;
 	}
 }
