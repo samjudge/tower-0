@@ -270,8 +270,8 @@ public class DungeonGenerator {
 				this.open.Remove(openPosition);
 				return;
 			}
-			int n = this.r.Next(0,10); //;
-			if(n < 1){
+			int n = this.r.Next(0,100); //;
+			if(n < 10){
 				this.history.Add(openPosition);
 				this.open.Remove(openPosition);
 				int up = indexOfNode(this.activePosition.x,this.activePosition.y+1);
@@ -291,14 +291,16 @@ public class DungeonGenerator {
 				}
 				return;
 
-			} else if (n < 2){
-				int turnToSkeleOnZero = (++step)%3;
-				if(turnToSkeleOnZero == 0){
+			} else if (n < 20){
+				float enemyTypeRoll = this.r.Next(0,10);
+				if(enemyTypeRoll <= 3){
 					t.tag = "Skeleton";
-				} else {
+				} else if (enemyTypeRoll <= 6){
+					t.tag = "Ghost";
+				} else if(enemyTypeRoll <= 10){
 					t.tag = "Chicken";
 				}
-			} else if (n < 3){
+			} else if (n < 30){
 				t.tag = "Dummy";
 			} else if(n < 4){
 				float potionTypeRoll = this.r.Next(0,10);

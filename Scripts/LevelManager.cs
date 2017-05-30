@@ -94,11 +94,18 @@ public class LevelManager {
 					}
 					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					break;
+				case "Ghost":
+					GameObject ghostEnemy = gm.UnitFactory.CreateUnit("Ghost",new Vector3(x,-0.25f,z)) as GameObject;
+					enemies.Add(ghostEnemy);
+					Enemy ghost = (ghostEnemy.GetComponent<Enemy>() as Enemy);
+					(ghost.GetComponent<Enemy>() as Enemy).GameManager = gm;
+					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
+					break;
 				case "Chicken":
 					GameObject chickenEnemy = gm.UnitFactory.CreateUnit("Chicken",new Vector3(x,-0.25f,z)) as GameObject;
 					enemies.Add(chickenEnemy);
-					Enemy enemy = (chickenEnemy.GetComponent<Enemy>() as Enemy);
-					(enemy.GetComponent<Enemy>() as Enemy).GameManager = gm;
+					Enemy chicken = (chickenEnemy.GetComponent<Enemy>() as Enemy);
+					(chicken.GetComponent<Enemy>() as Enemy).GameManager = gm;
 					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					break;
 				case "Skeleton":

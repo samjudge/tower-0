@@ -11,6 +11,7 @@ public class UnitFactory : MonoBehaviour{
 	public GameObject DummyEnemy;
 	public GameObject ChickenEnemy;
 	public GameObject SkeletonEnemy;
+	public GameObject GhostEnemy;
 
 	System.Random RandomGen = new System.Random();
 
