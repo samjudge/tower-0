@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: ddd46b809de1c574aa6d6682b4a39cc9
-timeCreated: 1495229713
+timeCreated: 1496507688
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -30,6 +30,33 @@ TextureImporter:
     21300046: player_left
     21300048: player_right
     21300050: skeleton
+    21300052: snake
+    21300054: orc_knight
+    21300056: Sheet_Units_2
+    21300058: Sheet_Units_3
+    21300060: Sheet_Units_4
+    21300062: Sheet_Units_5
+    21300064: dummy
+    21300066: skeleton
+    21300068: chicken
+    21300070: brigand
+    21300072: Sheet_Units_10
+    21300074: Sheet_Units_11
+    21300076: Sheet_Units_12
+    21300078: player
+    21300080: goblin
+    21300082: goblin_alpha_shaman
+    21300084: ghost
+    21300086: Sheet_Units_17
+    21300088: goblin_spearman
+    21300090: goblin_alpha_spearman
+    21300092: orc_warlock
+    21300094: rat
+    21300096: crab
+    21300098: snail
+    21300100: crocosnake
+    21300102: yunero
+    21300104: orc_miner
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -79,56 +106,6 @@ TextureImporter:
     compressionQuality: 50
   spriteSheet:
     sprites:
-    - name: player_down
-      rect:
-        serializedVersion: 2
-        x: 65
-        y: 115
-        width: 28
-        height: 32
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: dummy
-      rect:
-        serializedVersion: 2
-        x: 127
-        y: 148
-        width: 32
-        height: 29
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: chicken_down
-      rect:
-        serializedVersion: 2
-        x: 67
-        y: 179
-        width: 25
-        height: 30
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: chicken_left
-      rect:
-        serializedVersion: 2
-        x: 98
-        y: 179
-        width: 27
-        height: 30
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: player_up
-      rect:
-        serializedVersion: 2
-        x: 1
-        y: 115
-        width: 28
-        height: 32
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
     - name: snake
       rect:
         serializedVersion: 2
@@ -139,62 +116,182 @@ TextureImporter:
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: chicken_up
+    - name: dummy
       rect:
         serializedVersion: 2
-        x: 4
-        y: 179
-        width: 23
+        x: 127
+        y: 146
+        width: 32
         height: 29
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: chicken_right
-      rect:
-        serializedVersion: 2
-        x: 33
-        y: 179
-        width: 27
-        height: 30
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: gibs
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 151
-        width: 30
-        height: 16
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: player_left
-      rect:
-        serializedVersion: 2
-        x: 38
-        y: 115
-        width: 13
-        height: 32
-      alignment: 0
-      pivot: {x: .5, y: .5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-    - name: player_right
-      rect:
-        serializedVersion: 2
-        x: 106
-        y: 115
-        width: 13
-        height: 32
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: skeleton
       rect:
         serializedVersion: 2
-        x: 193
-        y: 176
+        x: 161
+        y: 145
         width: 27
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: chicken
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 145
+        width: 25
+        height: 30
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: brigand
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 144
+        width: 25
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: player
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 112
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: goblin
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 113
+        width: 19
+        height: 25
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: goblin_alpha_shaman
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 112
+        width: 30
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: ghost
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 112
+        width: 30
+        height: 31
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: goblin_spearman
+      rect:
+        serializedVersion: 2
+        x: 102
+        y: 80
+        width: 20
+        height: 31
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: goblin_alpha_spearman
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 80
+        width: 26
+        height: 31
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: orc_warlock
+      rect:
+        serializedVersion: 2
+        x: 224
+        y: 80
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: rat
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 56
+        width: 28
+        height: 15
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: crab
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 57
+        width: 18
+        height: 12
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: snail
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 54
+        width: 25
+        height: 16
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: crocosnake
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 50
+        width: 32
+        height: 28
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: yunero
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 48
+        width: 28
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: orc_miner
+      rect:
+        serializedVersion: 2
+        x: 161
+        y: 80
+        width: 29
+        height: 32
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: orc_knight
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 80
+        width: 29
         height: 32
       alignment: 0
       pivot: {x: .5, y: .5}
