@@ -292,15 +292,41 @@ public class DungeonGenerator {
 				return;
 
 			} else if (n < 20){
-				float enemyTypeRoll = this.r.Next(0,10);
+				float enemyTypeRoll = this.r.Next(0,12);
 				if(enemyTypeRoll <= 2){
-					t.tag = "Snail";
+					if(Owner.level >= 5){
+						t.tag = "GoblinAlphaShaman";
+					} else if (Owner.level >= 3){
+						t.tag = "GoblinSpear";
+					} else {
+						t.tag = "Snail";
+					}
 				} else if (enemyTypeRoll <= 3){
-					t.tag = "Crab";
+					if(Owner.level >= 4){
+						t.tag = "Ghost";
+					} else if (Owner.level >= 2){
+						t.tag = "Skeleton";
+					} else {
+						t.tag = "Rat";
+					}
 				} else if(enemyTypeRoll <= 10){
-					t.tag = "Rat";
+					if(Owner.level >= 5){
+						t.tag = "GoblinAlpha";
+					} else if (Owner.level >= 2){
+						t.tag = "GoblinSpear";
+					} else {
+						t.tag = "Goblin";
+					}
+				} else if(enemyTypeRoll <= 12){
+					if(Owner.level >= 3){
+						t.tag = "Rat";
+					} else if (Owner.level >= 2){
+						t.tag = "Chicken";
+					} else {
+						t.tag = "Crab";
+					}
 				}
-			} else if (n < 25){
+			} else if (n < 24){
 				t.tag = "Dummy";
 			} else if(n < 2){
 				float potionTypeRoll = this.r.Next(0,10);

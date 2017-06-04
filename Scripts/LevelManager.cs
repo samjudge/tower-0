@@ -64,8 +64,11 @@ public class LevelManager {
 		this.markedForReset = true;
 	}
 
+	public int level = 0;
+
 	public void GenerateDungeonLevel(){
 		//generate new dungeon
+		level++;
 		this.markedForReset = false;
 		DungeonGenerator dg = new DungeonGenerator(this);
 		this.map = dg.m.tiles;
@@ -92,33 +95,6 @@ public class LevelManager {
 					} else {
 						gm.Player.transform.position = new Vector3(x,-0.25f,z);
 					}
-					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
-					break;
-				case "Rat":
-					GameObject ghostEnemy = gm.UnitFactory.CreateUnit("Rat",new Vector3(x,-0.25f,z)) as GameObject;
-					enemies.Add(ghostEnemy);
-					Enemy ghost = (ghostEnemy.GetComponent<Enemy>() as Enemy);
-					(ghost.GetComponent<Enemy>() as Enemy).GameManager = gm;
-					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
-					break;
-				case "Snail":
-					GameObject chickenEnemy = gm.UnitFactory.CreateUnit("Snail",new Vector3(x,-0.25f,z)) as GameObject;
-					enemies.Add(chickenEnemy);
-					Enemy chicken = (chickenEnemy.GetComponent<Enemy>() as Enemy);
-					(chicken.GetComponent<Enemy>() as Enemy).GameManager = gm;
-					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
-					break;
-				case "Crab":
-					GameObject skeletonEnemy = gm.UnitFactory.CreateUnit("Crab",new Vector3(x,-0.25f,z)) as GameObject;
-					enemies.Add(skeletonEnemy);
-					Enemy skeleton = (skeletonEnemy.GetComponent<Enemy>() as Enemy);
-					(skeletonEnemy.GetComponent<Enemy>() as Enemy).GameManager = gm;
-					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
-					break;
-				case "Dummy":
-					GameObject dummyEnemy = gm.UnitFactory.CreateUnit("Dummy",new Vector3(x,-0.25f,z)) as GameObject;
-					enemies.Add(dummyEnemy);
-					(dummyEnemy.GetComponent<Enemy>() as Enemy).GameManager = gm;
 					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					break;
 				case "HealthPotion" :
@@ -156,6 +132,13 @@ public class LevelManager {
 					gameobjects.Add(d);
 					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					walls.Add(sW);
+					break;
+				default:
+					GameObject MakeEnemy = gm.UnitFactory.CreateUnit(tileCode.tag,new Vector3(x,-0.25f,z)) as GameObject;
+					enemies.Add(MakeEnemy);
+					Enemy ghost = (MakeEnemy.GetComponent<Enemy>() as Enemy);
+					(ghost.GetComponent<Enemy>() as Enemy).GameManager = gm;
+					floors.Add(gm.FloorFactory.CreateFloor("StoneFloor",new Vector3(x,-0.5f,z)));
 					break;
 				}
 			}
