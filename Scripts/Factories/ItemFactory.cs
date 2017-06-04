@@ -7,16 +7,18 @@ public class ItemFactory : MonoBehaviour{
 	
 	public GameObject ChickenItem;
 	public GameObject DaggerItem;
-	public GameObject SwordItem;
 	public GameObject ManaPotionItem;
 	public GameObject HealthPotionItem;
+	public GameObject NiceCheeseItem;
+	public GameObject SwordItem;
+	public GameObject WeirdCheeseItem;
 
 	public GameObject CreateItem(String name, Vector3 position){
 		FieldInfo Property = this.GetType().GetField(name + "Item");
 		GameObject ItemPrefab = Property.GetValue(this) as GameObject;
 		GameObject nItem = Instantiate(ItemPrefab, position, Quaternion.Euler(15,180,0)) as GameObject;
 		ItemEffect[] ItemEffects = nItem.GetComponents<ItemEffect>() as ItemEffect[];
-		Debug.Log(ItemEffects.Length);
+
 		String TypeName = ItemEffects[0].ItemTypeName;
 		Item i;
 		int Tracker = 0;

@@ -293,16 +293,16 @@ public class DungeonGenerator {
 
 			} else if (n < 20){
 				float enemyTypeRoll = this.r.Next(0,10);
-				if(enemyTypeRoll <= 3){
-					t.tag = "Skeleton";
-				} else if (enemyTypeRoll <= 6){
-					t.tag = "Ghost";
+				if(enemyTypeRoll <= 2){
+					t.tag = "Snail";
+				} else if (enemyTypeRoll <= 3){
+					t.tag = "Crab";
 				} else if(enemyTypeRoll <= 10){
-					t.tag = "Chicken";
+					t.tag = "Rat";
 				}
-			} else if (n < 30){
+			} else if (n < 25){
 				t.tag = "Dummy";
-			} else if(n < 4){
+			} else if(n < 2){
 				float potionTypeRoll = this.r.Next(0,10);
 				if(potionTypeRoll < 5){
 					t.tag = "HealthPotion";

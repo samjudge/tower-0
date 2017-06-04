@@ -8,10 +8,17 @@ using UnityEngine.UI;
 
 public class UnitFactory : MonoBehaviour{
 	
-	public GameObject DummyEnemy;
 	public GameObject ChickenEnemy;
-	public GameObject SkeletonEnemy;
+	public GameObject CrabEnemy;
+	public GameObject DummyEnemy;
 	public GameObject GhostEnemy;
+	public GameObject GoblinEnemy;
+	public GameObject GoblinAlphaEnemy;
+	public GameObject GoblinAlphaShamanEnemy;
+	public GameObject GoblinSpearEnemy;
+	public GameObject RatEnemy;
+	public GameObject SkeletonEnemy;
+	public GameObject SnailEnemy;
 
 	System.Random RandomGen = new System.Random();
 

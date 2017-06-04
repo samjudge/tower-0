@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: c4f1278bd9eb7c94aa28b1799d959b7f
-timeCreated: 1495272198
+timeCreated: 1496564352
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -14,10 +14,12 @@ TextureImporter:
     21300014: healthpot
     21300016: cloak
     21300018: orgon_cloak
+    21300020: nice_cheese
+    21300022: weird_cheese
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     linearTexture: 0
     correctGamma: 0
     fadeOut: 0
@@ -36,8 +38,8 @@ TextureImporter:
   cubemapConvolutionSteps: 8
   cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
-  textureFormat: -1
-  maxTextureSize: 2048
+  textureFormat: -3
+  maxTextureSize: 8192
   textureSettings:
     filterMode: 0
     aniso: 16
@@ -130,6 +132,26 @@ TextureImporter:
         y: 177
         width: 20
         height: 29
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: nice_cheese
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 181
+        width: 21
+        height: 23
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: weird_cheese
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 151
+        width: 22
+        height: 23
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}

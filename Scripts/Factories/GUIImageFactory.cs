@@ -18,9 +18,11 @@ public class GUIImageFactory : MonoBehaviour{
 	//items
 	public Image Chicken;
 	public Image Dagger;
-	public Image Sword;
 	public Image HealthPotion;
 	public Image ManaPotion;
+	public Image NiceCheese;
+	public Image Sword;
+	public Image WeirdCheese;
 
 	public Image CreateImage(String name, Vector3 position){
 		FieldInfo Property = this.GetType().GetField(name);
