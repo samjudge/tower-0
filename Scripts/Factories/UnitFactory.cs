@@ -30,6 +30,7 @@ public class UnitFactory : MonoBehaviour{
 		String DeathActionName = nEnemeyScript.DeathActionName;
 		switch(DeathActionName){
 			case "BasicEnemyDeathAction":
+				nEnemeyScript.GameManager = GameManager.Instance;
 				nEnemeyScript.DeathAction = delegate(){
 					Drop[] Drops = nEnemeyScript.Drops;
 					Player p = nEnemeyScript.GameManager.Player.GetComponent<Player>() as Player;

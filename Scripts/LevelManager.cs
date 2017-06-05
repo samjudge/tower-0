@@ -134,6 +134,7 @@ public class LevelManager {
 					walls.Add(sW);
 					break;
 				default:
+					//create unit with the given tag name
 					GameObject MakeEnemy = gm.UnitFactory.CreateUnit(tileCode.tag,new Vector3(x,-0.25f,z)) as GameObject;
 					enemies.Add(MakeEnemy);
 					Enemy ghost = (MakeEnemy.GetComponent<Enemy>() as Enemy);

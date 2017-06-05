@@ -4,6 +4,8 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
+	public static GameManager Instance;
+
 	public FloorFactory FloorFactory;
 	public WallFactory WallFactory;
 	public GUIImageFactory GuiFactory;
@@ -71,6 +73,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Start () {
+		GameManager.Instance = this;
 		this.HPBar = UIHealthBar.GetComponent<UIHorizontalFillBar>();
 		this.MPBar = UIManaBar.GetComponent<UIHorizontalFillBar>();
 		this.ExperienceBar = UIExperienceBar.GetComponent<UIHorizontalFillBar>();

@@ -19,6 +19,9 @@ public class ChaserEnemy : Enemy {
 	}
 
 	public override float ProcessTurn(){
+		if(!this.HasStarted){
+			return 1f;
+		}
 		if(this.CheckIsInLOSOf(GameManager.Player.GetComponent<Unit>() as Unit)){
 			if(this.IsInputLocked == false){
 				this.AI = new AStarPathfindNoWalls(this.GameManager.Player.transform.position,new Vector3(1,0,1));
@@ -53,11 +56,11 @@ public class ChaserEnemy : Enemy {
 				ActionsManager.AddGameAction(
 					"Move",
 					new GameActionAttackMove(
-					this,
-					targetX,
-					targetY,
-					"Player",
-					"Enemies"
+						this,
+						targetX,
+						targetY,
+						"Player",
+						"Enemies"
 					)
 				);
 				this.ActionsManager.GetGameAction("Move").action();

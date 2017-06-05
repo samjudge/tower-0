@@ -10,6 +10,7 @@ public class GUIImageFactory : MonoBehaviour{
 	public Image Heal;
 	public Image Sight;
 	public Image Placeholder;
+	public Image SummonSkeleton;
 
 	//extra
 	public Image Green;

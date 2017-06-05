@@ -22,7 +22,10 @@ public abstract class Enemy : Unit {
 				this.GameManager.level.RemoveEnemy(this);
 			};
 		}
+		this.HasStarted = true;
 	}
+
+	public bool HasStarted = false;
 
 	public delegate void OnDeath();
 	public abstract void Die();

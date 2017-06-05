@@ -60,6 +60,9 @@ public class Player : Unit {
 		SkillManager.AddSkill(
 			"Heal"
 		);
+		SkillManager.AddSkill(
+			"SummonSkeleton"
+		);
 		//Sight Status Passive
 		//(Because Skill Factory not created yet - see todo @ GameActionCastSkillByNameToPointTarget.cs)
 		new SightPassive(this);
