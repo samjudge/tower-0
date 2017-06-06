@@ -27,7 +27,7 @@ public class TurnManager {
 
 	public IEnumerator ProcessAllTurns(){
 		this.Phase = TurnPhase.Start;
-		this.Enemies = gm.level.GetEnemies();
+		this.Enemies = gm.level.GetEnemies().Clone() as ArrayList;
 		foreach(GameObject eObj in Enemies){
 			//wait for all enemy inputs to become unlocked before proceding.. If they're locked it's because they
 			//are in the middle of an animation and have not completed it yet

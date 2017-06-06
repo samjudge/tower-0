@@ -9,6 +9,11 @@ public class Drop {
 	public float chance;
 }
 
+[Serializable]
+public class Spell {
+	public String name;
+	public float priority;
+}
 
 public abstract class Enemy : Unit {
 
@@ -22,6 +27,9 @@ public abstract class Enemy : Unit {
 				this.GameManager.level.RemoveEnemy(this);
 			};
 		}
+		foreach(Spell s in Spells){
+			this.SkillManager.AddSkill(s.name);
+		}
 		this.HasStarted = true;
 	}
 
@@ -32,6 +40,7 @@ public abstract class Enemy : Unit {
 	public OnDeath DeathAction;
 	public String DeathActionName;
 	public Drop[] Drops;
+	public Spell[] Spells;
 
 	public float ATUsRemaining = 0f;
 

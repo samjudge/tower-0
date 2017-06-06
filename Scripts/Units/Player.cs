@@ -112,7 +112,7 @@ public class Player : Unit {
 				}
 			} else {
 				//inputs
-				this.CastTarget = MousePosition;
+				this.CastTarget = Player.TransformMouseClickToPointTarget(MousePosition);
 				if(Input.GetMouseButtonDown(0)){
 					this.ActionsManager.GetGameAction("Cast").action();
 					ATUsUsed += 1;
@@ -220,6 +220,17 @@ public class Player : Unit {
 				);
 			}
 		}
+	}
+
+	public static Vector3 TransformMouseClickToPointTarget(Vector3 ClickPosition){
+		LayerMask mask = LayerMask.GetMask("Walls","Floors");
+		RaycastHit Hit = new RaycastHit();
+		Ray ray = Camera.main.ScreenPointToRay(ClickPosition);
+		Physics.Raycast(ray, out Hit, Mathf.Infinity, mask);
+		if(Hit.transform != null){
+			return Hit.point;
+		}
+		return ClickPosition;
 	}
 
 }

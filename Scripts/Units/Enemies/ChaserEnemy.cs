@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 public class ChaserEnemy : Enemy {
 
-	private AStarPathfindNoWalls AI;
+	private AStarPathfind AI;
 
 	public void Start(){
 		base.Start();
 		this.CastTarget = new Vector3(0f,0f,0f);
-		this.AI = new AStarPathfindNoWalls(this.GameManager.Player.transform.position,new Vector3(1,0,1));
+		this.AI = new AStarPathfind(this.GameManager.Player.transform.position,new Vector3(1,0,1));
 		Renderer renderer = this.GetComponentInParent<Renderer>() as Renderer;
 		if (!renderer.material.HasProperty("_Color")){
 			renderer.material.SetColor("_Color", Color.white);
@@ -24,7 +24,12 @@ public class ChaserEnemy : Enemy {
 		}
 		if(this.CheckIsInLOSOf(GameManager.Player.GetComponent<Unit>() as Unit)){
 			if(this.IsInputLocked == false){
-				this.AI = new AStarPathfindNoWalls(this.GameManager.Player.transform.position,new Vector3(1,0,1));
+				this.AI = new AStarPathfind(this.GameManager.Player.transform.position,new Vector3(1,0,1));
+				Vector3[] WallTilePositions = new Vector3[this.GameManager.level.walls.Count];
+				for(int x = 0 ; x < this.GameManager.level.walls.Count - 1 ; x++){
+					WallTilePositions[x] = (this.GameManager.level.walls[x] as GameObject).transform.position;
+				}
+				this.AI.AddClosedNodeSet(WallTilePositions);
 				AStarPathfind.Node n = new AStarPathfind.Node();
 				n.parent = null;
 				n.position = this.transform.position;
