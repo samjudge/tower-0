@@ -26,11 +26,11 @@ public class AStarPathfind {
 		this.OpenNodes = new ArrayList();
 	}
 
-	private ArrayList GetNeighborOpenNodes(Node node){
+	protected ArrayList GetNeighborOpenNodes(Node node){
 		ArrayList nodeList = new ArrayList();
 		for(int x = -1;x < 2;x++){
 			for(int y = -1;y < 2;y++){
-				//no diagonals
+				//no diagonals or sametile
 				if(x == -1 && y == -1){ 
 					continue;
 				}
@@ -41,6 +41,9 @@ public class AStarPathfind {
 					continue;
 				}
 				if(x == 1 && y == 1){
+					continue;
+				}
+				if(x == 0 && y == 0){
 					continue;
 				}
 				Vector3 nNode = new Vector3((node.position.x+(StepSize.x*(x))), node.position.y, (node.position.z+(StepSize.z*(y))));
@@ -66,7 +69,7 @@ public class AStarPathfind {
 		return nodeList;
 	}
 
-	private Node GetOpen(Node n){
+	protected Node GetOpen(Node n){
 		foreach(Node CNode in OpenNodes){
 			if(CNode.position == n.position){
 				return CNode;
@@ -75,7 +78,7 @@ public class AStarPathfind {
 		throw new Exception("No Such Node Exists (A*)");
 	}
 
-	private bool IsOpen(Node n){
+	protected bool IsOpen(Node n){
 		foreach(Node CNode in OpenNodes){
 			if(CNode.position == n.position){
 				return true;
@@ -84,7 +87,7 @@ public class AStarPathfind {
 		return false;
 	}
 
-	private bool IsClosed(Node Node){
+	protected bool IsClosed(Node Node){
 		foreach(Node CNode in ClosedNodes){
 			if(CNode.position == Node.position){
 				return true;
@@ -112,7 +115,7 @@ public class AStarPathfind {
 
 	int MaxSearchDepth = 60;
 
-	public Node FindPath(Node Position){
+	public virtual Node FindPath(Node Position){
 		ArrayList Adjacent = this.GetNeighborOpenNodes(Position);
 		bool pathFound = false;
 		int searchDepth = 0;

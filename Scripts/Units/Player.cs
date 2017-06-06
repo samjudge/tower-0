@@ -84,7 +84,6 @@ public class Player : Unit {
 	private float ATUsUsed = 0;
 
 	public void Update(){
-		Debug.Log(this.FreeSLIDPoints);
 		this.GameManager.GetOnScreenHPBar().UpdateBar(this.Hp,this.MaxHp);
 		this.GameManager.GetOnScreenMPBar().UpdateBar(this.Mp,this.MaxMp);
 		this.GameManager.GetOnScreenExperienceBar().UpdateBar(this.Experience,this.CalculateRequiredExpForLevelUp());

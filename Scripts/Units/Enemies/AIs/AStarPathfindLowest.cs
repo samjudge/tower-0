@@ -3,141 +3,46 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class AStarPathfindLowest {
-	
-	protected Vector3 Target;
-	protected ArrayList ClosedNodes;
-	protected ArrayList OpenNodes;
-	protected float LowestScore = 99999;
-	protected Vector3 StepSize;
+public class AStarPathfindLowest : AStarPathfind {
 
-	public void AddClosedNodeSet(Vector3[] closedPositions){
-		foreach(Vector3 closed in closedPositions){
-			Node n = new Node();
-			n.position = closed;
-			this.ClosedNodes.Add(n);
-		}
-	}
-
-	public AStarPathfindLowest(Vector3 Target,Vector3 StepSize){
-		this.Target = Target;
-		this.StepSize = StepSize;
-		this.ClosedNodes = new ArrayList();
-		this.OpenNodes = new ArrayList();
-	}
-
-	private ArrayList GetNeighborOpenNodes(Node node){
-		ArrayList nodeList = new ArrayList();
-		for(int x = -1;x < 2;x++){
-			for(int y = -1;y < 2;y++){
-				//no diagonals
-				if(x == -1 && y == -1){ 
-					continue;
-				}
-				if(x == 1 && y == -1){
-					continue;
-				}
-				if(x == -1 && y ==1){
-					continue;
-				}
-				if(x == 1 && y == 1){
-					continue;
-				}
-				Vector3 nNode = new Vector3((node.position.x+(StepSize.x*(x))), node.position.y, (node.position.z+(StepSize.z*(y))));
-				Node n = new Node();
-				n.position = nNode;
-				n.parent = node;
-				n.value = CalculateH(n);
-				n.pathscore = (node.pathscore) + n.value;
-				if(IsClosed(n)){
-					continue; //ignore
-				}
-				if(IsOpen(n)){
-					Node oNode = GetOpen(n); //recalculate
-					if(n.pathscore > oNode.pathscore){
-						oNode.parent = node;
-						oNode.value = n.value;
-					}
-					continue;
-				}
-				nodeList.Add(n);
-			}
-		}
-		return nodeList;
-	}
-
-	private Node GetOpen(Node n){
-		foreach(Node CNode in OpenNodes){
-			if(CNode.position == n.position){
-				return CNode;
-			}
-		}
-		throw new Exception("No Such Node Exists (A*)");
-	}
-
-	private bool IsOpen(Node n){
-		foreach(Node CNode in OpenNodes){
-			if(CNode.position == n.position){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private bool IsClosed(Node Node){
-		foreach(Node CNode in ClosedNodes){
-			if(CNode.position == Node.position){
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public class Node : IComparable {
-		public Node(){}
-		public float pathscore;
-		public float value;
-		public Vector3 position;
-		public Node parent;
-
-		public virtual int CompareTo(object obj) {
-			Node n = obj as Node;
-			return (pathscore.CompareTo(n.pathscore));
-		}
+	public AStarPathfindLowest(Vector3 Target,Vector3 StepSize) : base(Target,StepSize){
 	}
 	
-	public Vector3 GetTopNode(){
-		return ((Node) this.OpenNodes[0]).position;
-	}
-
 	int MaxSearchDepth = 60;
-
+	
 	public Node FindPath(Node Position){
+		this.ClosedNodes.Add(Position);
 		ArrayList Adjacent = this.GetNeighborOpenNodes(Position);
-		bool pathFound = false;
-		int searchDepth = 0;
-		while(!pathFound && searchDepth < MaxSearchDepth){
-			searchDepth++;
-			this.ClosedNodes.Add(Position);
-			Adjacent = this.GetNeighborOpenNodes(Position);
-			Adjacent.Sort();
-			Adjacent.Reverse();
-			Position = Adjacent[0] as Node;
-			this.OpenNodes.AddRange(Adjacent);
-			if(Position.value >= 10f){
-				pathFound = true;
-				break;
+		Adjacent.Sort();
+		Node furthest = Adjacent[0] as Node;
+		foreach(Node n in Adjacent){
+			Debug.Log (n.value);
+			if(n.value > furthest.value && n.value != this.LowestScore){
+				Debug.Log ("New Target");
+				furthest = n;
 			}
 		}
+		Debug.Log(furthest.pathscore);
+		Position = furthest;
+		this.OpenNodes.AddRange(Adjacent);
 		return Position;
 	}
 
 	//Heuristic
-	protected virtual float CalculateH(Node n){
-		return 1/CalculateDistance(n.position);
-	}
-
-	protected float CalculateDistance(Vector3 Position){
-		return (this.Target - Position).sqrMagnitude;
+	override protected float CalculateH(Node n){
+		if(n.parent != null){
+			int mask = LayerMask.GetMask("Walls");
+			RaycastHit hit = new RaycastHit();
+			bool isHit = Physics.Linecast(n.parent.position, n.position, out hit, mask);
+			if(isHit){
+				Debug.Log ("Wall Here");
+				return LowestScore;
+			} else {
+				return CalculateDistance(n.position);
+			}
+		} else {
+			return CalculateDistance(n.position);
+		}
+		
 	}
 }

@@ -16,7 +16,6 @@ public class AStarPathfindNoWalls : AStarPathfind {
 			bool isHit = Physics.Linecast(n.parent.position, n.position, out hit, mask);
 			if(isHit){
 				return LowestScore;
-				return CalculateDistance(n.position);
 			} else {
 				return CalculateDistance(n.position);
 			}
